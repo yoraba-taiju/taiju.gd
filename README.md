@@ -1,5 +1,11 @@
 # Taiju.gd
 
+# How to build
+
+```sh
+
+```
+
 # References
 
 - [Godot Docs – master branch — Godot Engine (latest) documentation in English](https://docs.godotengine.org/en/latest/)
