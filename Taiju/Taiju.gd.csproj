@@ -5,6 +5,7 @@
     <RootNamespace>Taiju</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Plugins\ShaderNodes\PerlinNoise3D.glsl" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
