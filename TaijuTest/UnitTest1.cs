@@ -1,7 +1,19 @@
 namespace TaijuTest;
 
-public class UnitTest1 {
-  [Fact]
+public class Test
+{
+  [SetUp]
+  public void SetUp() {
+    
+  }
+
+  [TearDown]
+  public void TearDown() {
+    
+  }
+
+  [Test]
   public void Test1() {
+    
   }
 }
