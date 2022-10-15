@@ -2,5 +2,12 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
+    <RootNamespace>Taiju</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="TaijuTest\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="TaijuTest\**" />
+  </ItemGroup>
 </Project>

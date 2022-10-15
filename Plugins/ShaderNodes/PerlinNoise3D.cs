@@ -2,10 +2,10 @@ using System.ComponentModel;
 using Godot;
 using Godot.Collections;
 
-namespace Taiju.gd.Plugins.ShaderNodes;
+namespace Taiju.Plugins.ShaderNodes;
 
 [Tool]
-class PerlinNoise3D : VisualShaderNodeCustom {
+public partial class PerlinNoise3D : VisualShaderNodeCustom {
   public PerlinNoise3D() {
     SetInputPortDefaultValue(2, 0.0);
   }
