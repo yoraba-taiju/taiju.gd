@@ -3,31 +3,26 @@ class_name VisualShaderNodePerlinNoise3D
 extends VisualShaderNodeCustom
 
 
-func _get_name():
+func _get_name() -> String:
 	return "PerlinNoise3D"
 
 
-func _get_category():
-	return "MyShaderNodes"
+func _get_category() -> String:
+	return "Noise"
 
-
-func _get_description():
+func _get_description() -> String :
 	return "Classic Perlin-Noise-3D function (by Curly-Brace)"
-
 
 func _init():
 	set_input_port_default_value(2, 0.0)
 
-
 func _get_return_icon_type():
 	return VisualShaderNode.PORT_TYPE_SCALAR
-
 
 func _get_input_port_count():
 	return 4
 
-
-func _get_input_port_name(port):
+func _get_input_port_name(port: int):
 	match port:
 		0:
 			return "uv"
@@ -38,8 +33,7 @@ func _get_input_port_name(port):
 		3:
 			return "time"
 
-
-func _get_input_port_type(port):
+func _get_input_port_type(port: int):
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_VECTOR
@@ -49,7 +43,6 @@ func _get_input_port_type(port):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 		3:
 			return VisualShaderNode.PORT_TYPE_SCALAR
-
 
 func _get_output_port_count():
 	return 1
