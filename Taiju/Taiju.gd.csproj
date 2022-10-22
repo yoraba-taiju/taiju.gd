@@ -7,4 +7,8 @@
   <ItemGroup>
     <Content Include="Plugins\ShaderNodes\PerlinNoise3D.glsl" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Enemies" />
+    <Folder Include="Witches" />
+  </ItemGroup>
 </Project>
