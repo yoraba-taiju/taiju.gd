@@ -2,7 +2,7 @@ using System.ComponentModel;
 using Godot;
 using Godot.Collections;
 
-namespace Taiju.Plugins.ShaderNodes;
+namespace Taiju.Plugin.ShaderNodes;
 
 [Tool]
 public partial class PerlinNoise3D : VisualShaderNodeCustom {
@@ -66,6 +66,6 @@ public partial class PerlinNoise3D : VisualShaderNodeCustom {
   }
 
   public override string _GetGlobalCode(Godot.Shader.Mode mode) {
-    return GD.Load<string>("res://Plugins/ShaderNodes/PerlinNoise3D.glsl");
+    return GD.Load<string>("res://Plugin/ShaderNodes/PerlinNoise3D.glsl");
   }
 }

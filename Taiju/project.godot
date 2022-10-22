@@ -12,7 +12,7 @@ _global_script_classes=[{
 "base": "VisualShaderNodeCustom",
 "class": &"VisualShaderNodePerlinNoise3D",
 "language": &"GDScript",
-"path": "res://Plugins/ShaderNodes/PerlinNoise3D.gd"
+"path": "res://Plugin/ShaderNodes/PerlinNoise3D.gd"
 }]
 _global_script_class_icons={
 "VisualShaderNodePerlinNoise3D": ""
@@ -21,7 +21,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Taiju.gd"
-run/main_scene="res://Scenes/Stage.tscn"
+run/main_scene="res://Scene/Stage.tscn"
 config/features=PackedStringArray("4.0", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 

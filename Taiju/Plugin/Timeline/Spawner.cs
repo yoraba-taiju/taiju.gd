@@ -1,7 +1,7 @@
 ﻿using System;
 using Godot;
 
-namespace Taiju.Plugins.Timeline; 
+namespace Taiju.Plugin.Timeline; 
 
 public partial class Spawner : AnimationPlayer {
   private Node3D field_;

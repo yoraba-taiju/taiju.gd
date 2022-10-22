@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://cop1ljjif3arv"]
-
-[node name="Sora" type="Node3D"]
-
-[node name="CSGSphere3D" type="CSGSphere3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.26598, 0, 0)
