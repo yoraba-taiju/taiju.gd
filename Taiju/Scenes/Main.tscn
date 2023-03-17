@@ -1,3 +1,27 @@
-[gd_scene format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=5 format=3 uid="uid://ceqv14au1y2ag"]
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_aadso"]
+energy_multiplier = 1.5
+
+[sub_resource type="Sky" id="Sky_7rgmx"]
+resource_local_to_scene = true
+sky_material = SubResource("PhysicalSkyMaterial_aadso")
+
+[sub_resource type="Environment" id="Environment_t1wdw"]
+background_mode = 2
+sky = SubResource("Sky_7rgmx")
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_y7npk"]
 
 [node name="Root" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_t1wdw")
+camera_attributes = SubResource("CameraAttributesPractical_y7npk")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(1, 0, 0, 0, 0.436975, 0.899474, 0, -0.899474, 0.436975, 0, 10, 0)
+light_energy = 2.0
+
+[node name="MainCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
