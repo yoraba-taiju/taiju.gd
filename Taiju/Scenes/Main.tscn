@@ -1,4 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=9 format=3 uid="uid://ceqv14au1y2ag"]
+
+[ext_resource type="Material" uid="uid://dxb0h08vdwfrl" path="res://Background/Forest/Forest.tres" id="1_bmh26"]
+[ext_resource type="Script" path="res://Background/Forest/Forest.cs" id="2_fdere"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_aadso"]
 energy_multiplier = 1.5
@@ -13,6 +16,14 @@ sky = SubResource("Sky_7rgmx")
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_y7npk"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vj3aa"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_17g3q"]
+material = ExtResource("1_bmh26")
+size = Vector2(2, 1)
+subdivide_width = 30
+subdivide_depth = 30
+
 [node name="Root" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -25,3 +36,15 @@ light_energy = 2.0
 
 [node name="MainCamera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+
+[node name="Managements" type="Node3D" parent="."]
+
+[node name="Background" type="Node3D" parent="."]
+
+[node name="Forest" type="MeshInstance3D" parent="Background"]
+transform = Transform3D(50, 0, 0, 0, 45.3154, -21.1309, 0, 21.1309, 45.3154, 0, -10, 0)
+material_overlay = SubResource("ShaderMaterial_vj3aa")
+mesh = SubResource("PlaneMesh_17g3q")
+script = ExtResource("2_fdere")
+
+[node name="Scene" type="Node3D" parent="."]
