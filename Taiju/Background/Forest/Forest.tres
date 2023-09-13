@@ -1,0 +1,27 @@
+[gd_resource type="StandardMaterial3D" load_steps=7 format=3 uid="uid://dxb0h08vdwfrl"]
+
+[ext_resource type="Texture2D" uid="uid://c15u4uhs6fscv" path="res://Background/Forest/Image/forest1_basecolor.png" id="1_fmcoc"]
+[ext_resource type="Texture2D" uid="uid://bdppyclbi134u" path="res://Background/Forest/Image/forest1_ambientocclusion.png" id="2_haxto"]
+[ext_resource type="Texture2D" uid="uid://8x4ixebdg86u" path="res://Background/Forest/Image/forest1_height.png" id="3_af1ih"]
+[ext_resource type="Texture2D" uid="uid://itie7odxiwmf" path="res://Background/Forest/Image/forest1_metallic.png" id="3_nrah8"]
+[ext_resource type="Texture2D" uid="uid://dj86h2ms6bbml" path="res://Background/Forest/Image/forest1_normal.png" id="4_1xg3n"]
+[ext_resource type="Texture2D" uid="uid://c5np0vurlcgyp" path="res://Background/Forest/Image/forest1_roughness.png" id="5_gcgyy"]
+
+[resource]
+albedo_texture = ExtResource("1_fmcoc")
+metallic = 1.0
+metallic_texture = ExtResource("3_nrah8")
+metallic_texture_channel = 4
+roughness_texture = ExtResource("5_gcgyy")
+roughness_texture_channel = 4
+normal_enabled = true
+normal_texture = ExtResource("4_1xg3n")
+ao_enabled = true
+ao_texture = ExtResource("2_haxto")
+heightmap_enabled = true
+heightmap_deep_parallax = true
+heightmap_min_layers = 8
+heightmap_max_layers = 32
+heightmap_texture = ExtResource("3_af1ih")
+uv1_scale = Vector3(15, 15, 15)
+texture_filter = 5
