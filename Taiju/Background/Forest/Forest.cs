@@ -13,7 +13,7 @@ public partial class Forest : MeshInstance3D {
   public override void _Process(double delta) {
     var prop = mat_.Get("uv1_offset").AsVector3();
     prop.X += (float)(0.1f * delta);
-    prop.Y += (float)(0.1f * delta);
+    // prop.Y += (float)(0.0f * delta);
     mat_.Set("uv1_offset", prop);
   }
 }

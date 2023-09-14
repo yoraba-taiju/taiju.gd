@@ -21,7 +21,7 @@ sky = SubResource("Sky_7rgmx")
 [sub_resource type="PlaneMesh" id="PlaneMesh_17g3q"]
 material = ExtResource("1_bmh26")
 size = Vector2(2, 1)
-subdivide_width = 30
+subdivide_width = 60
 subdivide_depth = 30
 
 [node name="Root" type="Node3D"]
@@ -31,20 +31,20 @@ environment = SubResource("Environment_t1wdw")
 camera_attributes = SubResource("CameraAttributesPractical_y7npk")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
-transform = Transform3D(1, 0, 0, 0, 0.436975, 0.899474, 0, -0.899474, 0.436975, 0, 10, 0)
+transform = Transform3D(1, 0, 0, 0, 0.866026, 0.5, 0, -0.5, 0.866026, 0, 100, 0)
 light_energy = 2.0
 
 [node name="MainCamera" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 100)
 
 [node name="Managements" type="Node3D" parent="."]
 
 [node name="Background" type="Node3D" parent="."]
 
 [node name="Forest" type="MeshInstance3D" parent="Background"]
-transform = Transform3D(50, 0, 0, 0, 45.3154, -21.1309, 0, 21.1309, 45.3154, 0, -10, 0)
+transform = Transform3D(400, 0, 0, 0, 386.37, -103.528, 0, 103.528, 386.37, 0, -50, 0)
 material_overlay = SubResource("ShaderMaterial_vj3aa")
 mesh = SubResource("PlaneMesh_17g3q")
 script = ExtResource("2_fdere")
 
-[node name="Scene" type="Node3D" parent="."]
+[node name="Field" type="Node3D" parent="."]
