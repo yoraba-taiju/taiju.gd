@@ -1,9 +1,10 @@
 using Godot;
 
-namespace Taiju.Background.Forest; 
+namespace Taiju.Background.Forest;
 
 public partial class Forest : MeshInstance3D {
   private Material mat_;
+
   // Called when the node enters the scene tree for the first time.
   public override void _Ready() {
     mat_ = GetActiveMaterial(0);

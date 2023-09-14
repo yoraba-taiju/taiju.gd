@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using Godot;
 
-namespace Taiju; 
+namespace Taiju.Scenes;
 
 public partial class Spawner : Node3D {
   private bool value_;
