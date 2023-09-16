@@ -1,8 +1,6 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taiju", "Taiju.csproj", "{D5656C70-5C36-4FEE-B78F-0369AF816126}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaijuTest", "..\TaijuTest\TaijuTest.csproj", "{0890B180-7F1D-4402-88A5-44628653D967}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taiju", "Taiju.csproj", "{0521F7CC-EBE1-4BD9-9D27-31628E2451C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,17 +9,11 @@ Global
 	ExportRelease|Any CPU = ExportRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D5656C70-5C36-4FEE-B78F-0369AF816126}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D5656C70-5C36-4FEE-B78F-0369AF816126}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D5656C70-5C36-4FEE-B78F-0369AF816126}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
-		{D5656C70-5C36-4FEE-B78F-0369AF816126}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
-		{D5656C70-5C36-4FEE-B78F-0369AF816126}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
-		{D5656C70-5C36-4FEE-B78F-0369AF816126}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
-		{0890B180-7F1D-4402-88A5-44628653D967}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0890B180-7F1D-4402-88A5-44628653D967}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0890B180-7F1D-4402-88A5-44628653D967}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0890B180-7F1D-4402-88A5-44628653D967}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
-		{0890B180-7F1D-4402-88A5-44628653D967}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
-		{0890B180-7F1D-4402-88A5-44628653D967}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{0521F7CC-EBE1-4BD9-9D27-31628E2451C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0521F7CC-EBE1-4BD9-9D27-31628E2451C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0521F7CC-EBE1-4BD9-9D27-31628E2451C6}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{0521F7CC-EBE1-4BD9-9D27-31628E2451C6}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{0521F7CC-EBE1-4BD9-9D27-31628E2451C6}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{0521F7CC-EBE1-4BD9-9D27-31628E2451C6}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
 	EndGlobalSection
 EndGlobal

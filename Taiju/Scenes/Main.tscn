@@ -23,9 +23,7 @@ sky = SubResource("Sky_7rgmx")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_17g3q"]
 material = ExtResource("1_bmh26")
-size = Vector2(2, 1)
-subdivide_width = 60
-subdivide_depth = 30
+size = Vector2(6, 3)
 
 [node name="Root" type="Node3D"]
 
@@ -38,14 +36,13 @@ transform = Transform3D(0.707107, -0.353553, 0.612372, 0, 0.866025, 0.5, -0.7071
 light_energy = 2.0
 
 [node name="MainCamera" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 40)
-
-[node name="Managements" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
 
 [node name="Background" type="Node3D" parent="."]
 
 [node name="Forest" type="MeshInstance3D" parent="Background"]
-transform = Transform3D(160, 0, 0, 0, 154.548, -41.4112, 0, 41.4112, 154.548, 0, -25, 0)
+transform = Transform3D(160, 0, 0, 0, 154.548, -41.4112, 0, 41.4112, 154.548, 0, -70, -110)
+layers = 16
 material_overlay = SubResource("ShaderMaterial_vj3aa")
 mesh = SubResource("PlaneMesh_17g3q")
 script = ExtResource("2_fdere")
@@ -58,5 +55,5 @@ script = ExtResource("2_fdere")
 script = ExtResource("3_0qmii")
 
 [node name="Spirit" parent="Field/Witches/Sora" instance=ExtResource("3_ad04p")]
-transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, 0, 0, 0)
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
 script = ExtResource("4_7x8vt")

@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 project/assembly_name="Taiju"
 
+[filesystem]
+
+import/fbx/enabled=false
+
 [input]
 
 move_left={
@@ -41,3 +45,11 @@ move_down={
 "events": [Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":12,"pressure":0.0,"pressed":false,"script":null)
 ]
 }
+
+[layer_names]
+
+3d_render/layer_1="Spirit"
+3d_render/layer_2="Bullet"
+3d_render/layer_3="Witch"
+3d_render/layer_4="Enemy"
+3d_render/layer_5="Background"
