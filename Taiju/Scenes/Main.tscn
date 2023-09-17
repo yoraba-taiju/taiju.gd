@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cg4voy4ohhema" path="res://Objects/Enemy/Drone0/Drone0.tscn" id="6_j7xnn"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_aadso"]
-energy_multiplier = 1.5
+energy_multiplier = 2.0
 
 [sub_resource type="Sky" id="Sky_7rgmx"]
 resource_local_to_scene = true
@@ -17,6 +17,7 @@ sky_material = SubResource("PhysicalSkyMaterial_aadso")
 [sub_resource type="Environment" id="Environment_t1wdw"]
 background_mode = 2
 sky = SubResource("Sky_7rgmx")
+ambient_light_source = 3
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_y7npk"]
 
@@ -38,6 +39,7 @@ light_energy = 2.0
 
 [node name="MainCamera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 17)
+current = true
 
 [node name="Background" type="Node3D" parent="."]
 

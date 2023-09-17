@@ -13,5 +13,6 @@ public partial class Drone0 : Node3D {
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _Process(double delta) {
+    
   }
 }
