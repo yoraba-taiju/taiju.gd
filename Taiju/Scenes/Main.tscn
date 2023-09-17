@@ -52,12 +52,12 @@ script = ExtResource("2_fdere")
 
 [node name="Field" type="Node3D" parent="."]
 
-[node name="Witches" type="Node3D" parent="Field"]
+[node name="Witch" type="Node3D" parent="Field"]
 
-[node name="Sora" type="Node3D" parent="Field/Witches"]
+[node name="Sora" type="Node3D" parent="Field/Witch"]
 script = ExtResource("3_0qmii")
 
-[node name="Spirit" parent="Field/Witches/Sora" instance=ExtResource("3_ad04p")]
+[node name="Spirit" parent="Field/Witch/Sora" instance=ExtResource("3_ad04p")]
 transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
 script = ExtResource("4_7x8vt")
 
