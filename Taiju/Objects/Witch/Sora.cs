@@ -1,4 +1,3 @@
-using System;
 using Godot;
 
 namespace Taiju.Objects.Witch;
