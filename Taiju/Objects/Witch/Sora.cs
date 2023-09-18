@@ -11,30 +11,30 @@ public partial class Sora : Node3D {
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _Process(double delta) {
-  var pos = new Vector3();
-  var moved = false;
-  if (Input.IsActionPressed("move_right")) {
-    pos.X += 1;
-    moved = true;
-  }
-  if (Input.IsActionPressed("move_left")) {
-    pos.X -= 1;
-    moved = true;
-  }
-  if (Input.IsActionPressed("move_up")) {
-    pos.Y += 1;
-    moved = true;
-  }
-  if (Input.IsActionPressed("move_down")) {
-    pos.Y -= 1;
-    moved = true;
-  }
+    var pos = new Vector3();
+    var moved = false;
+    if (Input.IsActionPressed("move_right")) {
+      pos.X += 1;
+      moved = true;
+    }
+    if (Input.IsActionPressed("move_left")) {
+      pos.X -= 1;
+      moved = true;
+    }
+    if (Input.IsActionPressed("move_up")) {
+      pos.Y += 1;
+      moved = true;
+    }
+    if (Input.IsActionPressed("move_down")) {
+      pos.Y -= 1;
+      moved = true;
+    }
 
-  if (!moved) {
-    return;
-  }
+    if (!moved) {
+      return;
+    }
 
-  pos = pos.Normalized() * (float)(delta * MoveDelta);
-  Position += pos;
+    pos = pos.Normalized() * (float)(delta * MoveDelta);
+    Position += pos;
   }
 }

@@ -10,7 +10,7 @@ public partial class Spawner : Node3D {
   get => value;
   set {
     if (value != null) {
-    throw new Exception();
+      throw new Exception();
     }
   }
   }

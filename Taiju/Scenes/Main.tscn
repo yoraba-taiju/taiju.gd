@@ -1,8 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=13 format=3 uid="uid://ceqv14au1y2ag"]
 
 [ext_resource type="Material" uid="uid://dxb0h08vdwfrl" path="res://Background/Forest/Forest.tres" id="1_bmh26"]
 [ext_resource type="Script" path="res://Background/Forest/Forest.cs" id="2_2tbfw"]
+[ext_resource type="Script" path="res://Objects/Witch/Sora.cs" id="3_6q3cx"]
 [ext_resource type="PackedScene" uid="uid://qa808tl8icr3" path="res://Objects/Witch/Spirit.blend" id="3_ad04p"]
+[ext_resource type="Script" path="res://Objects/Witch/Spirit.cs" id="4_tk1ki"]
 [ext_resource type="PackedScene" uid="uid://cg4voy4ohhema" path="res://Objects/Enemy/Drone0/Drone0.tscn" id="6_j7xnn"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_aadso"]
@@ -53,9 +55,11 @@ script = ExtResource("2_2tbfw")
 [node name="Witch" type="Node3D" parent="Field"]
 
 [node name="Sora" type="Node3D" parent="Field/Witch"]
+script = ExtResource("3_6q3cx")
 
 [node name="Spirit" parent="Field/Witch/Sora" instance=ExtResource("3_ad04p")]
 transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+script = ExtResource("4_tk1ki")
 
 [node name="Enemy" type="Node3D" parent="Field"]
 
