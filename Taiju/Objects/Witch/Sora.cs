@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 namespace Taiju.Objects.Witch;
@@ -7,7 +8,7 @@ public partial class Sora : Node3D {
   public override void _Ready() {
   }
 
-  private const double MoveDelta = 8.0;
+  private const double MoveDelta = 12.0;
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _Process(double delta) {
@@ -35,6 +36,9 @@ public partial class Sora : Node3D {
     }
 
     pos = pos.Normalized() * (float)(delta * MoveDelta);
-    Position += pos;
+    var newPos = Position + pos;
+    newPos.X = Math.Clamp(newPos.X, -22.0f, 22.0f);
+    newPos.Y = Math.Clamp(newPos.Y, -12.0f, 12.0f);
+    Position = newPos;
   }
 }
