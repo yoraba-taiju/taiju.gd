@@ -1,4 +1,3 @@
-using System;
 using Godot;
 
 namespace Taiju.Background.Forest;
