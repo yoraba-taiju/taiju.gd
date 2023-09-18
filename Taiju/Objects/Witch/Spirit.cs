@@ -10,6 +10,6 @@ public partial class Spirit : Node3D {
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _Process(double delta) {
-    Rotation = new Vector3(0.0f, Rotation.Y - (float)delta, 0.0f);
+  Rotation = new Vector3(0.0f, Rotation.Y - (float)delta, 0.0f);
   }
 }
