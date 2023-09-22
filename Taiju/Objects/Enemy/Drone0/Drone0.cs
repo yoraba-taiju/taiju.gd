@@ -13,11 +13,11 @@ public partial class Drone0 : Node3D {
 
   //
   private enum State{
-    SEEK,
-    ESCAPE,
+    Seek,
+    Escape,
   };
 
-  private State state_ = State.SEEK;
+  private State state_ = State.Seek;
   private Vector3 velocity_ = new(-10.0f, 0.0f, 0.0f);
 
   // Called when the node enters the scene tree for the first time.
@@ -39,16 +39,16 @@ public partial class Drone0 : Node3D {
     var maxAngle = (float)(dt * maxRotateDegreePerSec_);
 
     switch (state_) {
-      case State.SEEK: {
+      case State.Seek: {
         var delta = soraPosition - currentPosition;
         if (Mathf.Abs(delta.X) > 10.0f) {
           velocity_ = Mover.Follow(delta, velocity_, maxAngle);
         } else {
-          state_ = State.ESCAPE;
+          state_ = State.Escape;
         }
       }
         break;
-      case State.ESCAPE: {
+      case State.Escape: {
         var delta = soraPosition - currentPosition;
         if (delta.Length() < 10.0f) {
           var sign = Mathf.Sign(delta.Y);
