@@ -5,7 +5,7 @@
 [ext_resource type="Script" path="res://Objects/Witch/Sora.cs" id="3_6q3cx"]
 [ext_resource type="PackedScene" uid="uid://qa808tl8icr3" path="res://Objects/Witch/Spirit.blend" id="3_ad04p"]
 [ext_resource type="Script" path="res://Objects/Witch/Spirit.cs" id="4_tk1ki"]
-[ext_resource type="PackedScene" uid="uid://cg4voy4ohhema" path="res://Objects/Enemy/Drone0/Drone0.tscn" id="6_j7xnn"]
+[ext_resource type="PackedScene" uid="uid://c2c2263gmalwx" path="res://Objects/Enemy/Drone0/Drone0.tscn" id="6_j7xnn"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_aadso"]
 energy_multiplier = 2.0
@@ -64,4 +64,4 @@ script = ExtResource("4_tk1ki")
 [node name="Enemy" type="Node3D" parent="Field"]
 
 [node name="Drone0" parent="Field/Enemy" instance=ExtResource("6_j7xnn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 0)

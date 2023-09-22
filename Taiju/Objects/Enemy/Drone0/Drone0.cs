@@ -17,12 +17,15 @@ public partial class Drone0 : Node3D {
     Escape,
   };
 
+  private Node3D body_;
   private State state_ = State.Seek;
   private Vector3 velocity_ = new(-10.0f, 0.0f, 0.0f);
 
   // Called when the node enters the scene tree for the first time.
   public override void _Ready() {
-    var player = GetNode<AnimationPlayer>("AnimationPlayer");
+    body_ = GetNode<Node3D>("Body");
+    var model = body_.GetNode<Node3D>("Model");
+    var player = model.GetNode<AnimationPlayer>("AnimationPlayer");
     var anim = player.GetAnimation("Rotate");
     anim.LoopMode = Animation.LoopModeEnum.Linear;
     anim.RemoveTrack(anim.GetTrackCount() - 1);
@@ -62,7 +65,7 @@ public partial class Drone0 : Node3D {
       default:
         throw new ArgumentOutOfRangeException();
     }
-    Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-velocity_)));
+    Rotation = new Vector3( 0, 0, Mathf.DegToRad(Vec.Atan2(-velocity_)));
     Position += (float)dt * velocity_;
   }
 }
