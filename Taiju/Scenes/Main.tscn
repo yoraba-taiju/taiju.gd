@@ -64,4 +64,4 @@ script = ExtResource("4_tk1ki")
 [node name="Enemy" type="Node3D" parent="Field"]
 
 [node name="Drone0" parent="Field/Enemy" instance=ExtResource("6_j7xnn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.243, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 0)
