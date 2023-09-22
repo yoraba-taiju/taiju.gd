@@ -10,6 +10,7 @@ public partial class Drone0 : Node3D {
     var anim = player.GetAnimation("Rotate");
     anim.LoopMode = Animation.LoopModeEnum.Linear;
     anim.RemoveTrack(anim.GetTrackCount() - 1);
+    player.PlaybackActive = true;
     player.Play("Rotate");
     sora_ = GetNode<Node3D>("/root/Root/Field/Witch/Sora");
   }
