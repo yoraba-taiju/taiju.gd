@@ -52,7 +52,11 @@ public partial class Drone0 : Node3D {
       case State.ESCAPE: {
         var delta = soraPosition - currentPosition;
         if (delta.Length() < 10.0f) {
-          velocity_ = Vec.Rotate(velocity_, Mathf.Sign(delta.Y) * maxAngle) * Mathf.Exp((float)dt / 2);
+          var sign = Mathf.Sign(delta.Y);
+          if (sign == 0) {
+            sign = Math.Sign(Random.Shared.Next());
+          }
+          velocity_ = Vec.Rotate(velocity_, sign * maxAngle) * Mathf.Exp((float)dt / 2);
         }
         Position += (float)dt * velocity_;
       }
