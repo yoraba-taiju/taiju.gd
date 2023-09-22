@@ -46,7 +46,6 @@ public partial class Drone0 : Node3D {
         } else {
           state_ = State.ESCAPE;
         }
-        Position += (float)dt * velocity_;
       }
         break;
       case State.ESCAPE: {
@@ -58,11 +57,12 @@ public partial class Drone0 : Node3D {
           }
           velocity_ = Vec.Rotate(velocity_, sign * maxAngle) * Mathf.Exp((float)dt / 2);
         }
-        Position += (float)dt * velocity_;
       }
         break;
       default:
         throw new ArgumentOutOfRangeException();
     }
+    Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-velocity_)));
+    Position += (float)dt * velocity_;
   }
 }
