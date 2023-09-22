@@ -1,11 +1,12 @@
-﻿using System;
+﻿#nullable enable
+using System;
 
 namespace Taiju.Util.Value;
 
 public struct Sparse<T> : IValue<T> where T : struct {
   private struct Entry {
-    public uint tick;
-    public T value;
+    public uint Tick;
+    public T Value;
   }
 
   private readonly Clock clock_;
@@ -27,8 +28,8 @@ public struct Sparse<T> : IValue<T> where T : struct {
     clock_ = clock;
     entries_ = new Entry[Clock.HistoryLength];
     entries_[0] = new Entry {
-      tick = clock.CurrentTick,
-      value = initial,
+      Tick = clock.CurrentTick,
+      Value = initial,
     };
     lastTouchedLeap_ = clock.CurrentLeap;
     lastTouchedTick_ = clock.CurrentTick;
@@ -41,7 +42,7 @@ public struct Sparse<T> : IValue<T> where T : struct {
     var vs = "[";
     for (var i = 0; i < entriesLen_; i++) {
       ref readonly var e = ref entries_[(i + entriesBeg_) % Clock.HistoryLength];
-      vs += $"[{i}]({e.tick}, {e.value})";
+      vs += $"[{i}]({e.Tick}, {e.Value})";
       if (i < entriesLen_ - 1) {
         vs += ", ";
       }
@@ -56,7 +57,7 @@ public struct Sparse<T> : IValue<T> where T : struct {
     while (beg < end) {
       // tick[beg] < tick <= tick[end]
       var midIdx = beg + (end - beg) / 2;
-      var midTick = entries_[midIdx % Clock.HistoryLength].tick;
+      var midTick = entries_[midIdx % Clock.HistoryLength].Tick;
       if (tick == midTick) {
         return midIdx;
       }
@@ -81,7 +82,7 @@ public struct Sparse<T> : IValue<T> where T : struct {
         return beg;
       }
 
-      var midTick = entries_[midIdx % Clock.HistoryLength].tick;
+      var midTick = entries_[midIdx % Clock.HistoryLength].Tick;
       if (tick == midTick) {
         return midIdx;
       }
@@ -103,7 +104,7 @@ public struct Sparse<T> : IValue<T> where T : struct {
       var currentTick = clock_.CurrentTick;
       var currentLeap = clock_.CurrentLeap;
       if (currentLeap == lastTouchedLeap_ && lastTouchedTick_ <= currentTick) {
-        return ref entries_[(entriesBeg_ + entriesLen_ - 1) % Clock.HistoryLength].value;
+        return ref entries_[(entriesBeg_ + entriesLen_ - 1) % Clock.HistoryLength].Value;
       }
 
       var tick = clock_.AdjustTick(lastTouchedLeap_, currentTick);
@@ -113,7 +114,7 @@ public struct Sparse<T> : IValue<T> where T : struct {
         tick
       );
       var idx = rawIdx % Clock.HistoryLength;
-      if (currentTick < entries_[idx].tick) {
+      if (currentTick < entries_[idx].Tick) {
         Debug();
         throw new InvalidOperationException("Can't access before value born.");
       }
@@ -122,8 +123,8 @@ public struct Sparse<T> : IValue<T> where T : struct {
       ref var e = ref entries_[idx];
       entriesLen_ = Math.Min(currentLen, entriesLen_);
       lastTouchedLeap_ = currentLeap;
-      lastTouchedTick_ = e.tick;
-      return ref e.value;
+      lastTouchedTick_ = e.Tick;
+      return ref e.Value;
     }
   }
 
@@ -132,7 +133,7 @@ public struct Sparse<T> : IValue<T> where T : struct {
       var currentTick = clock_.CurrentTick;
       var currentLeap = clock_.CurrentLeap;
       if (currentLeap == lastTouchedLeap_ && currentTick == lastTouchedTick_) {
-        return ref entries_[(entriesBeg_ + entriesLen_ - 1) % Clock.HistoryLength].value;
+        return ref entries_[(entriesBeg_ + entriesLen_ - 1) % Clock.HistoryLength].Value;
       }
 
       var tick = clock_.AdjustTick(lastTouchedLeap_, currentTick);
@@ -149,7 +150,7 @@ public struct Sparse<T> : IValue<T> where T : struct {
           entriesBeg_ = (entriesBeg_ + 1) % Clock.HistoryLength;
         }
         else {
-          if (currentTick < entries_[idx].tick) {
+          if (currentTick < entries_[idx].Tick) {
             Debug();
             throw new InvalidOperationException("Can't access before value born.");
           }
@@ -161,22 +162,22 @@ public struct Sparse<T> : IValue<T> where T : struct {
         entriesLen_ = (rawIdx - entriesBeg_) + 1;
       }
 
-      entries_[idx].tick = currentTick;
+      entries_[idx].Tick = currentTick;
       if (oldEntriesLen < entriesLen_) {
         if (clonerFn_ == null) {
-          entries_[idx].value = entries_[(idx + Clock.HistoryLength - 1) % Clock.HistoryLength].value;
+          entries_[idx].Value = entries_[(idx + Clock.HistoryLength - 1) % Clock.HistoryLength].Value;
         }
         else {
           clonerFn_(
-            ref entries_[idx].value,
-            in entries_[(idx + Clock.HistoryLength - 1) % Clock.HistoryLength].value
+            ref entries_[idx].Value,
+            in entries_[(idx + Clock.HistoryLength - 1) % Clock.HistoryLength].Value
           );
         }
       }
 
       lastTouchedLeap_ = currentLeap;
       lastTouchedTick_ = currentTick;
-      return ref entries_[idx].value;
+      return ref entries_[idx].Value;
     }
   }
 }
