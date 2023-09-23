@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using Taiju.Objects.Witch;
 using Taiju.Util.Gd;
 
 namespace Taiju.Objects.Enemy.Drone0;
@@ -31,12 +32,11 @@ public partial class Drone0 : Node3D {
     anim.RemoveTrack(anim.GetTrackCount() - 1);
     player.PlaybackActive = true;
     player.Play("Rotate");
-    sora_ = GetNode<Node3D>("/root/Root/Field/Witch/Sora");
+    sora_ = GetNode<Sora>("/root/Root/Field/Witch/Sora");
   }
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _Process(double dt) {
-    var trans = Transform;
     var currentPosition = Position;
     var soraPosition = sora_.Position;
     var maxAngle = (float)(dt * maxRotateDegreePerSec_);
