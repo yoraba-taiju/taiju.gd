@@ -4,7 +4,7 @@ using Godot;
 public partial class ReversibleParticles : Node3D {
   [Export] private Mesh mesh_;
   [Export] private int meshCount_ = 32;
-  [Export] private Texture2D texture_ = ResourceLoader.Load<CompressedTexture2D>("res://Objects/Effect/魔素.png");
+  [Export] private Texture2D texture_ = ResourceLoader.Load<CompressedTexture2D>("res://Objects/Effect/textures/魔素.png");
   
   private MultiMeshInstance3D multiMesh_;
   // Called when the node enters the scene tree for the first time.

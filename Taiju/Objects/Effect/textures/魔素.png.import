@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://lfrcr5gyqpq1"
-path.s3tc="res://.godot/imported/魔素.png-526551d4d55775db82a21b98d9c452c5.s3tc.ctex"
+path.s3tc="res://.godot/imported/魔素.png-d18b2ec88336561b50f0189260be5be6.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Objects/Effect/魔素.png"
-dest_files=["res://.godot/imported/魔素.png-526551d4d55775db82a21b98d9c452c5.s3tc.ctex"]
+source_file="res://Objects/Effect/textures/魔素.png"
+dest_files=["res://.godot/imported/魔素.png-d18b2ec88336561b50f0189260be5be6.s3tc.ctex"]
 
 [params]
 
