@@ -1,11 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=15 format=3 uid="uid://ceqv14au1y2ag"]
 
 [ext_resource type="Material" uid="uid://dxb0h08vdwfrl" path="res://Background/Forest/Forest.tres" id="1_bmh26"]
 [ext_resource type="Script" path="res://Background/Forest/Forest.cs" id="2_2tbfw"]
 [ext_resource type="Script" path="res://Objects/Witch/Sora.cs" id="3_6q3cx"]
 [ext_resource type="PackedScene" uid="uid://qa808tl8icr3" path="res://Objects/Witch/Spirit.blend" id="3_ad04p"]
 [ext_resource type="Script" path="res://Objects/Witch/Spirit.cs" id="4_tk1ki"]
-[ext_resource type="PackedScene" uid="uid://c2c2263gmalwx" path="res://Objects/Enemy/Drone0/Drone0.tscn" id="6_j7xnn"]
+[ext_resource type="PackedScene" uid="uid://dj3ie2qhiow02" path="res://Objects/Enemy/Drone0/Drone0.tscn" id="6_j7xnn"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_aadso"]
 energy_multiplier = 2.0
@@ -26,6 +26,12 @@ ambient_light_source = 3
 [sub_resource type="PlaneMesh" id="PlaneMesh_17g3q"]
 material = ExtResource("1_bmh26")
 size = Vector2(8, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_l7djg"]
+size = Vector3(100, 1, 100)
+
+[sub_resource type="BoxMesh" id="BoxMesh_io3pq"]
+size = Vector3(100, 1, 100)
 
 [node name="Root" type="Node3D"]
 
@@ -63,5 +69,19 @@ script = ExtResource("4_tk1ki")
 
 [node name="Enemy" type="Node3D" parent="Field"]
 
-[node name="Drone0" parent="Field/Enemy" instance=ExtResource("6_j7xnn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 0)
+[node name="RigidBody3D" parent="Field/Enemy" instance=ExtResource("6_j7xnn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.1868, 0, 0)
+
+[node name="Background" type="Node3D" parent="Field"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Field/Background"]
+input_ray_pickable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Field/Background/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -12.2491, 0)
+shape = SubResource("BoxShape3D_l7djg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Field/Background/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -12.2491, 0)
+mesh = SubResource("BoxMesh_io3pq")
+skeleton = NodePath("")

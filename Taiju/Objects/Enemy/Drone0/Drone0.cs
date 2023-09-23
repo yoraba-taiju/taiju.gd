@@ -5,15 +5,14 @@ using Taiju.Util.Gd;
 
 namespace Taiju.Objects.Enemy.Drone0;
 
-public partial class Drone0 : Node3D {
-  [ExportGroup("Behaviours")] [Export(PropertyHint.Range, "0,180,")]
-  private float maxRotateDegreePerSec_ = 60.0f;
+public partial class Drone0 : RigidBody3D {
+  [Export(PropertyHint.Range, "0,180,")] private float maxRotateDegreePerSec_ = 60.0f;
 
   //
   private Node3D sora_;
 
   //
-  private enum State{
+  private enum State {
     Seek,
     Escape,
   };
@@ -25,6 +24,7 @@ public partial class Drone0 : Node3D {
   // Called when the node enters the scene tree for the first time.
   public override void _Ready() {
     body_ = GetNode<Node3D>("Body");
+
     var model = body_.GetNode<Node3D>("Model");
     var player = model.GetNode<AnimationPlayer>("AnimationPlayer");
     var anim = player.GetAnimation("Rotate");
@@ -46,7 +46,8 @@ public partial class Drone0 : Node3D {
         var delta = soraPosition - currentPosition;
         if (Mathf.Abs(delta.X) > 10.0f) {
           velocity_ = Mover.Follow(delta, velocity_, maxAngle);
-        } else {
+        }
+        else {
           state_ = State.Escape;
         }
       }
@@ -58,6 +59,7 @@ public partial class Drone0 : Node3D {
           if (sign == 0) {
             sign = Math.Sign(Random.Shared.Next());
           }
+
           velocity_ = Vec.Rotate(velocity_, sign * maxAngle) * Mathf.Exp((float)dt / 2);
         }
       }
@@ -65,7 +67,8 @@ public partial class Drone0 : Node3D {
       default:
         throw new ArgumentOutOfRangeException();
     }
-    Rotation = new Vector3( 0, 0, Mathf.DegToRad(Vec.Atan2(-velocity_)));
-    Position += (float)dt * velocity_;
+
+    body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-velocity_)));
+    LinearVelocity = velocity_;
   }
 }
