@@ -69,6 +69,9 @@ public partial class Drone0 : RigidBody3D {
     }
 
     body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-velocity_)));
-    LinearVelocity = velocity_;
+  }
+
+  public override void _IntegrateForces(PhysicsDirectBodyState3D state) {
+    state.LinearVelocity = velocity_;
   }
 }

@@ -11,6 +11,7 @@ axis_lock_linear_z = true
 axis_lock_angular_z = true
 mass = 100.0
 gravity_scale = 0.0
+custom_integrator = true
 script = ExtResource("1_8x76u")
 
 [node name="Body" type="Node3D" parent="."]
