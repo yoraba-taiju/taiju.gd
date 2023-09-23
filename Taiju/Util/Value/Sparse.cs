@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using System;
+using Godot;
 
 namespace Taiju.Util.Value;
 
@@ -49,8 +50,8 @@ public struct Sparse<T> : IValue<T> where T : struct {
     }
 
     vs += "]";
-    System.Diagnostics.Debug.WriteLine($"Current: {clock_.CurrentTick} / lastTouched: ({lastTouchedLeap_}, {lastTouchedTick_})");
-    System.Diagnostics.Debug.WriteLine($"Record: {vs}");
+    GD.Print($"Current: {clock_.CurrentTick} / lastTouched: ({lastTouchedLeap_}, {lastTouchedTick_})");
+    GD.Print($"Record: {vs}");
   }
 
   private readonly uint LowerBound(uint beg, uint end, uint tick) {

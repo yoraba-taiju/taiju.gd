@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using System;
+using Godot;
 
 namespace Taiju.Util.Value;
 
@@ -37,8 +38,8 @@ public struct Dense<T> : IValue<T> where T : struct {
     }
 
     vs += "]";
-    System.Diagnostics.Debug.WriteLine($"Current: {clock_.CurrentTick} / Beg: {historyBegin_}, lastTouched: ({lastTouchedLeap_}, {lastTouchedTick_})");
-    System.Diagnostics.Debug.WriteLine($"Record: {vs}");
+    GD.Print($"Current: {clock_.CurrentTick} / Beg: {historyBegin_}, lastTouched: ({lastTouchedLeap_}, {lastTouchedTick_})");
+    GD.Print($"Record: {vs}");
   }
 
   public ref readonly T Ref {
