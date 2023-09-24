@@ -37,8 +37,8 @@ public partial class Sora : Node3D {
 
     pos = pos.Normalized() * (float)(delta * MoveDelta);
     var newPos = Position + pos;
-    newPos.X = Math.Clamp(newPos.X, -22.0f, 22.0f);
-    newPos.Y = Math.Clamp(newPos.Y, -12.0f, 12.0f);
+    newPos.X = Math.Clamp(newPos.X, -21.0f, 21.0f);
+    newPos.Y = Math.Clamp(newPos.Y, -11.5f, 11.5f);
     Position = newPos;
   }
 }
