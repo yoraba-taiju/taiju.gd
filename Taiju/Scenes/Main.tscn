@@ -25,7 +25,7 @@ ambient_light_source = 3
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_17g3q"]
 material = ExtResource("1_bmh26")
-size = Vector2(8, 4)
+size = Vector2(4, 2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_l7djg"]
 size = Vector3(100, 1, 100)
@@ -44,13 +44,14 @@ transform = Transform3D(0.707107, -0.353553, 0.612372, 0, 0.866025, 0.5, -0.7071
 light_energy = 2.0
 
 [node name="MainCamera" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 17)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
 current = true
+fov = 45.0
 
 [node name="Background" type="Node3D" parent="."]
 
 [node name="Forest" type="MeshInstance3D" parent="Background"]
-transform = Transform3D(160, 0, 0, 0, 154.548, -41.4112, 0, 41.4112, 154.548, 0, -80, -140)
+transform = Transform3D(160, 0, 0, 0, 154.548, -41.4112, 0, 41.4112, 154.548, 0, -60, -250)
 layers = 16
 material_overlay = SubResource("ShaderMaterial_vj3aa")
 mesh = SubResource("PlaneMesh_17g3q")
@@ -72,6 +73,7 @@ script = ExtResource("4_tk1ki")
 [node name="Drone0" parent="Field/Enemy" instance=ExtResource("6_j7xnn")]
 
 [node name="Background" type="Node3D" parent="Field"]
+visible = false
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Field/Background"]
 input_ray_pickable = false
