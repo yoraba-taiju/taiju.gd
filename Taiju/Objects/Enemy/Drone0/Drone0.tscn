@@ -6,7 +6,7 @@
 [sub_resource type="SphereShape3D" id="SphereShape3D_u58e6"]
 radius = 1.0
 
-[node name="RigidBody3D" type="RigidBody3D"]
+[node name="Drone0" type="RigidBody3D"]
 axis_lock_linear_z = true
 axis_lock_angular_z = true
 mass = 100.0
