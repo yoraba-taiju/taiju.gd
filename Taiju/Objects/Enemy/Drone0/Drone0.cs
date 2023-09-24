@@ -22,7 +22,6 @@ public partial class Drone0 : RigidBody3D {
   private State state_ = State.Seek;
   private Vector3 velocity_ = new(-10.0f, 0.0f, 0.0f);
 
-  // Called when the node enters the scene tree for the first time.
   public override void _Ready() {
     body_ = GetNode<Node3D>("Body");
 
@@ -36,7 +35,6 @@ public partial class Drone0 : RigidBody3D {
     sora_ = GetNode<Sora>("/root/Root/Field/Witch/Sora");
   }
 
-  // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _Process(double dt) {
     var currentPosition = Position;
     var soraPosition = sora_.Position;
