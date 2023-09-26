@@ -1,10 +1,14 @@
 using System;
 using Godot;
+using Taiju.Reversible.GD;
+using Taiju.Util.Value;
 
 namespace Taiju.Objects.Witch;
 
-public partial class Sora : Node3D {
+public partial class Sora : ReversibleNode3D {
+
   public override void _Ready() {
+    base._Ready();
   }
 
   private const double MoveDelta = 12.0;
