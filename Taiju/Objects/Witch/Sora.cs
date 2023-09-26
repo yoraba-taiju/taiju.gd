@@ -1,35 +1,36 @@
 using System;
 using Godot;
 using Taiju.Reversible.GD;
-using Taiju.Util.Value;
+using Taiju.Reversible.Value;
 
 namespace Taiju.Objects.Witch;
 
 public partial class Sora : ReversibleNode3D {
+  private const double MoveDelta = 12.0;
+  private Dense<Vector3> position_;
 
   public override void _Ready() {
     base._Ready();
+    position_ = new Dense<Vector3>(Clock, new Vector3(0f, 0f, 0f));
   }
 
-  private const double MoveDelta = 12.0;
-
   public override void _Process(double delta) {
-    var pos = new Vector3();
+    var deltaPos = new Vector3();
     var moved = false;
     if (Input.IsActionPressed("move_right")) {
-      pos.X += 1;
+      deltaPos.X += 1;
       moved = true;
     }
     if (Input.IsActionPressed("move_left")) {
-      pos.X -= 1;
+      deltaPos.X -= 1;
       moved = true;
     }
     if (Input.IsActionPressed("move_up")) {
-      pos.Y += 1;
+      deltaPos.Y += 1;
       moved = true;
     }
     if (Input.IsActionPressed("move_down")) {
-      pos.Y -= 1;
+      deltaPos.Y -= 1;
       moved = true;
     }
 
@@ -37,10 +38,13 @@ public partial class Sora : ReversibleNode3D {
       return;
     }
 
-    pos = pos.Normalized() * (float)(delta * MoveDelta);
-    var newPos = Position + pos;
-    newPos.X = Math.Clamp(newPos.X, -21.0f, 21.0f);
-    newPos.Y = Math.Clamp(newPos.Y, -11.5f, 11.5f);
-    Position = newPos;
+    deltaPos = deltaPos.Normalized() * (float)(delta * MoveDelta);
+    ref var pos = ref position_.Mut;
+    pos += deltaPos;
+    pos.X = Math.Clamp(pos.X, -21.0f, 21.0f);
+    pos.Y = Math.Clamp(pos.Y, -11.5f, 11.5f);
+
+    // Update using current value.
+    Position = pos;
   }
 }

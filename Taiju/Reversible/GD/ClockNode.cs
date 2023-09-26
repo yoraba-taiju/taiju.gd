@@ -3,8 +3,7 @@
 namespace Taiju.Reversible.GD; 
 
 public partial class ClockNode : Node3D {
-  private Clock clock_;
-  public ref Clock Clock => ref clock_;
+  public Clock Clock { get; private set; }
 
   public override void _Ready() {
     Clock = new Clock();

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Taiju.Reversible; 
+namespace Taiju.Reversible;
 
 public class Clock {
   public const uint HistoryLength = 512;
