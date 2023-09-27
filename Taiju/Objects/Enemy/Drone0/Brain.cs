@@ -1,11 +1,12 @@
 using System;
 using Godot;
 using Taiju.Objects.Witch;
+using Taiju.Reversible.Value;
 using Taiju.Util.Gd;
 
 namespace Taiju.Objects.Enemy.Drone0;
 
-public partial class Drone0 : RigidBody3D {
+public partial class Brain : EnemyBase {
   [Export(PropertyHint.Range, "0,180,")] private float maxRotateDegreePerSec_ = 60.0f;
   [Export(PropertyHint.Range, "0,20,")] private float escapeDistance_ = 12.0f;
 
@@ -19,11 +20,22 @@ public partial class Drone0 : RigidBody3D {
   };
 
   private Node3D body_;
-  private State state_ = State.Seek;
-  private Vector3 velocity_ = new(-10.0f, 0.0f, 0.0f);
+  private Dense<Record> record_;
+
+  private record struct Record(
+    State State,
+    Vector3 Position,
+    Vector3 Velocity
+  );
 
   public override void _Ready() {
+    base._Ready();
     body_ = GetNode<Node3D>("Body");
+    record_ = new Dense<Record>(Clock, new Record(
+      State.Seek,
+      Vector3.Zero,
+      new Vector3(-10.0f, 0.0f, 0.0f)
+    ));
 
     var model = body_.GetNode<Node3D>("Model");
     var player = model.GetNode<AnimationPlayer>("AnimationPlayer");
@@ -39,15 +51,16 @@ public partial class Drone0 : RigidBody3D {
     var currentPosition = Position;
     var soraPosition = sora_.Position;
     var maxAngle = (float)(dt * maxRotateDegreePerSec_);
+    ref var rec = ref record_.Mut;
 
-    switch (state_) {
+    switch (rec.State) {
       case State.Seek: {
         var delta = soraPosition - currentPosition;
         if (Mathf.Abs(delta.X) > escapeDistance_) {
-          velocity_ = Mover.Follow(delta, velocity_, maxAngle);
+          rec.Velocity = Mover.Follow(delta, rec.Velocity, maxAngle);
         }
         else {
-          state_ = State.Escape;
+          rec.State = State.Escape;
         }
       }
         break;
@@ -59,7 +72,7 @@ public partial class Drone0 : RigidBody3D {
             sign = Math.Sign(Random.Shared.Next());
           }
 
-          velocity_ = Vec.Rotate(velocity_, sign * maxAngle) * Mathf.Exp((float)dt / 2);
+          rec.Velocity = Vec.Rotate(rec.Velocity, sign * maxAngle) * Mathf.Exp((float)dt / 2);
         }
       }
         break;
@@ -67,10 +80,12 @@ public partial class Drone0 : RigidBody3D {
         throw new ArgumentOutOfRangeException();
     }
 
-    body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-velocity_)));
+    rec.Position = Position;
+    body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity)));
   }
 
   public override void _IntegrateForces(PhysicsDirectBodyState3D state) {
-    state.LinearVelocity = velocity_;
+    ref readonly var rec = ref record_.Ref;
+    state.LinearVelocity = rec.Velocity;
   }
 }

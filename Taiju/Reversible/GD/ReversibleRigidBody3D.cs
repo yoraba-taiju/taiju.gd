@@ -2,7 +2,7 @@
 
 namespace Taiju.Reversible.GD; 
 
-public abstract partial class ReversibleNode3D : Node3D, IReversibleNode {
+public abstract partial class ReversibleRigidBody3D : RigidBody3D, IReversibleNode {
   private ClockNode clockNode_;
 
   protected Clock Clock => ClockNode.Clock;
