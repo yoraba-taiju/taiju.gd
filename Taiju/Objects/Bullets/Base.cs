@@ -2,7 +2,7 @@
 
 namespace Taiju.Objects.Bullets;
 
-public partial class Base : MultiMeshInstance3D {
+public abstract class ServerBase : MultiMeshInstance3D {
   [Export] private Mesh mesh_;
   private MultiMesh multiMesh_;
   public override void _Ready() {
