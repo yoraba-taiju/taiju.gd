@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace Taiju.Objects.Bullets.Enemy;
+namespace Taiju.Objects.Bullets;
 
 public partial class Base : MultiMeshInstance3D {
   [Export] private Mesh mesh_;
