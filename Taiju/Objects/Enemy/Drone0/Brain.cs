@@ -48,6 +48,7 @@ public partial class Brain : EnemyBase {
   }
 
   public override void _Process(double dt) {
+    base._Process(dt);
     var currentPosition = Position;
     var soraPosition = sora_.Position;
     var maxAngle = (float)(dt * maxRotateDegreePerSec_);
