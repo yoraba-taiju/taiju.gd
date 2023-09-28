@@ -14,12 +14,11 @@ public abstract partial class EnemyBase : ReversibleRigidBody3D {
     VisibleRect = Viewport.GetVisibleRect();
   }
 
-  protected bool IsOutOfView(float size) {
+  protected bool IsOutOfView(float halfSize) {
     var pos = Camera.UnprojectPosition(GlobalPosition);
-    var half = size / 2.0f;
-    return VisibleRect.HasPoint(pos + new Vector2(-half, -half)) &&
-           VisibleRect.HasPoint(pos + new Vector2(-half, +half)) &&
-           VisibleRect.HasPoint(pos + new Vector2(+half, -half)) && 
-           VisibleRect.HasPoint(pos + new Vector2(+half, +half));
+    return VisibleRect.HasPoint(pos + new Vector2(-halfSize, -halfSize)) &&
+           VisibleRect.HasPoint(pos + new Vector2(-halfSize, +halfSize)) &&
+           VisibleRect.HasPoint(pos + new Vector2(+halfSize, -halfSize)) && 
+           VisibleRect.HasPoint(pos + new Vector2(+halfSize, +halfSize));
   }
 }
