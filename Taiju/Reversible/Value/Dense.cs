@@ -42,7 +42,8 @@ public struct Dense<T> : IValue<T> where T : struct {
       $"Current: {clock_.CurrentTick} / Beg: {historyBegin_}, lastTouched: ({lastTouchedLeap_}, {lastTouchedTick_})\n" +
       $"Record: {vs}";
 
-    Godot.GD.PrintErr(msg);
+    Console.WriteLine(msg);
+    //Godot.GD.PrintErr(msg);
   }
 
   public ref readonly T Ref {

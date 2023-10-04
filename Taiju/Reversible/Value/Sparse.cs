@@ -53,7 +53,8 @@ public struct Sparse<T> : IValue<T> where T : struct {
       $"Current: {clock_.CurrentTick} / lastTouched: ({lastTouchedLeap_}, {lastTouchedTick_})" + 
       $"Record: {vs}";
     
-    Godot.GD.Print(msg);
+    Console.WriteLine(msg);
+    //Godot.GD.Print(msg);
   }
 
   private readonly uint LowerBound(uint beg, uint end, uint tick) {
