@@ -3,7 +3,7 @@
 using Taiju.Reversible;
 using Taiju.Reversible.Value;
 
-public abstract class ValueTest<T>
+public abstract class AbstractValueTest<T>
   where T : IValue<int> {
   protected abstract T Create(Clock clock, int initial);
 
