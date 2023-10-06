@@ -6,7 +6,7 @@ using Taiju.Reversible.Value;
 namespace Taiju.Objects.Witch;
 
 public partial class Sora : ReversibleNode3D {
-  private const double MoveDelta = 12.0;
+  private const double MoveDelta = 16.0;
   private Dense<Vector3> position_;
 
   public override void _Ready() {
