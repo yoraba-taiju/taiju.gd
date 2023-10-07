@@ -13,7 +13,7 @@ public partial class ReversibleParticles : Node3D {
     multiMesh_.Multimesh = new MultiMesh();
     var meshes = multiMesh_.Multimesh;
     meshes.Mesh = mesh_;
-    var material = meshes.Mesh.SurfaceGetMaterial(0) as StandardMaterial3D;
+    var material = mesh_.SurfaceGetMaterial(0) as StandardMaterial3D;
     material!.AlbedoTexture = texture_;
   }
 
