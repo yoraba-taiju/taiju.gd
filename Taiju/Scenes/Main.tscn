@@ -66,9 +66,13 @@ script = ExtResource("3_6q3cx")
 transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
 script = ExtResource("4_tk1ki")
 
+[node name="WitchBullet" type="Node3D" parent="Field"]
+
 [node name="Enemy" type="Node3D" parent="Field"]
 
 [node name="Drone0" parent="Field/Enemy" instance=ExtResource("6_j7xnn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.745, 0, 0)
+
+[node name="EnemyBulet" type="Node3D" parent="Field"]
 
 [node name="Background" type="Node3D" parent="Field"]
