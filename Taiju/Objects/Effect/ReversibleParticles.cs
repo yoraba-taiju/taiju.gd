@@ -55,10 +55,11 @@ public partial class ReversibleParticles : Node3D {
   public override void _Process(double dt) {
     integrateTime_ += dt;
     var meshes = multiMesh_.Multimesh;
-    var trans = Transform2D.Identity;
+    var transform = Transform2D.Identity;
     var nan = new Transform2D().TranslatedLocal(new Vector2(Single.NaN, Single.NaN));
     var integrateTime = (float)integrateTime_;
     for (var i = 0; i < meshCount_; ++i) {
+      var trans = transform;
       ref var item = ref items_[i];
       if (item.LifeTime <= integrateTime) {
         meshes.SetInstanceTransform2D(i, nan);
@@ -68,7 +69,11 @@ public partial class ReversibleParticles : Node3D {
       var lifeTime = item.LifeTime;
       var leftTime = lifeTime - integrateTime;
       var offset = item.Angle * (v * integrateTime - integrateTime * integrateTime * v * 0.2f);
-      meshes.SetInstanceTransform2D(i, trans.TranslatedLocal(offset).ScaledLocal(Vector2.One * (leftTime / lifeTime)));
+      trans = trans.TranslatedLocal(offset);
+      if (leftTime < lifeTime / 2.0f) {
+        trans = trans.ScaledLocal(Vector2.One * (leftTime / (lifeTime * 0.5f)));
+      }
+      meshes.SetInstanceTransform2D(i, trans);
     }
   }
 }
