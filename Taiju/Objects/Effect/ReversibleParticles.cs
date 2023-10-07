@@ -64,8 +64,11 @@ public partial class ReversibleParticles : Node3D {
         meshes.SetInstanceTransform2D(i, nan);
         continue;
       }
-      var offset = item.Angle * item.Velocity * integrateTime;
-      meshes.SetInstanceTransform2D(i, trans.TranslatedLocal(offset));
+      var v = item.Velocity;
+      var lifeTime = item.LifeTime;
+      var leftTime = lifeTime - integrateTime;
+      var offset = item.Angle * (v * integrateTime - integrateTime * integrateTime * v * 0.2f);
+      meshes.SetInstanceTransform2D(i, trans.TranslatedLocal(offset).ScaledLocal(Vector2.One * (leftTime / lifeTime)));
     }
   }
 }
