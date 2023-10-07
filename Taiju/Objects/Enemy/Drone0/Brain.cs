@@ -36,7 +36,6 @@ public partial class Brain : EnemyBase {
       Vector3.Zero,
       new Vector3(-10.0f, 0.0f, 0.0f)
     ));
-
     var model = body_.GetNode<Node3D>("Model");
     var player = model.GetNode<AnimationPlayer>("AnimationPlayer");
     var anim = player.GetAnimation("Rotate");

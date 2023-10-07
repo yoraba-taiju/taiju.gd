@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=15 format=3 uid="uid://ceqv14au1y2ag"]
 
 [ext_resource type="Material" uid="uid://dxb0h08vdwfrl" path="res://Background/Forest/Forest.tres" id="1_bmh26"]
 [ext_resource type="Script" path="res://Reversible/GD/ClockNode.cs" id="1_wvbh2"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://qa808tl8icr3" path="res://Objects/Witch/Spirit.blend" id="3_ad04p"]
 [ext_resource type="Script" path="res://Objects/Witch/Spirit.cs" id="4_tk1ki"]
 [ext_resource type="PackedScene" uid="uid://dj3ie2qhiow02" path="res://Objects/Enemy/Drone0/Drone0.tscn" id="6_j7xnn"]
+[ext_resource type="PackedScene" uid="uid://dpv0yhqrreb71" path="res://Objects/Effect/RevesibleParticles.tscn" id="8_ftrvb"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_aadso"]
 energy_multiplier = 2.0
@@ -76,3 +77,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.745, 0, 0)
 [node name="EnemyBulet" type="Node3D" parent="Field"]
 
 [node name="Background" type="Node3D" parent="Field"]
+
+[node name="EnemyEffect" type="Node3D" parent="Field"]
+
+[node name="RevesibleParticles" parent="Field/EnemyEffect" instance=ExtResource("8_ftrvb")]
