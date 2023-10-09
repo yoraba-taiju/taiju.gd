@@ -26,7 +26,7 @@ public partial class ReversibleParticles : Node3D {
   private Item[] items_;
 
   public override void _Ready() {
-    var rng = new RandomNumberGenerator();
+    var rand = new RandomNumberGenerator();
     multiMesh_ = GetNode<MultiMeshInstance3D>("MultiMesh");
     multiMesh_.Multimesh = new MultiMesh();
     var meshes = multiMesh_.Multimesh;
@@ -41,9 +41,9 @@ public partial class ReversibleParticles : Node3D {
     var zero = Transform2D.Identity;
     for (var i = 0; i < meshCount_; ++i) {
       ref var item = ref items_[i];
-      item.Color = new Color(rng.Randf() * 0.7f + 0.3f, rng.Randf() * 0.7f + 0.3f, rng.Randf() * 0.7f + 0.3f);
-      item.Velocity = maxSpeed_ * (rng.Randf() / 2.0f + 0.5f);
-      item.Angle = new Vector2(rng.Randf() * 2.0f - 1.0f, rng.Randf() * 2.0f - 1.0f).Normalized();
+      item.Color = new Color(rand.Randf() * 0.7f + 0.3f, rand.Randf() * 0.7f + 0.3f, rand.Randf() * 0.7f + 0.3f);
+      item.Velocity = maxSpeed_ * (rand.Randf() / 2.0f + 0.5f);
+      item.Angle = new Vector2(rand.Randf() * 2.0f - 1.0f, rand.Randf() * 2.0f - 1.0f).Normalized();
       item.LifeTime = item.Velocity * lifeTimeScale_;
       meshes.SetInstanceColor(i, item.Color);
       meshes.SetInstanceTransform2D(i, zero);
