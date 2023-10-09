@@ -1,12 +1,12 @@
 ﻿namespace Taiju.Reversible.GD; 
 
 public interface IReversibleNode {
-  public void _ProcessForward(double delta) {
+  protected void _ProcessForward(double integrateTime, double dt) {
   }
 
-  public void _ProcessBack() {
+  protected void _ProcessBack() {
   }
 
-  public void _ProcessLeap() {
+  protected void _ProcessLeap() {
   }
 }

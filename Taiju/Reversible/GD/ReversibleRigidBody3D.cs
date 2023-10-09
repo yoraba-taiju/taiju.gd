@@ -13,4 +13,9 @@ public abstract partial class ReversibleRigidBody3D : RigidBody3D, IReversibleNo
     clockNode_ = GetNode<ClockNode>("/root/Root/Clock");
     clock_ = clockNode_.Clock;
   }
+
+  public override void _Process(double delta) {
+
+  }
+
 }
