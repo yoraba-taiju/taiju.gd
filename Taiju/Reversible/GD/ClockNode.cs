@@ -6,8 +6,12 @@ namespace Taiju.Reversible.GD;
 
 public partial class ClockNode : Node3D {
   public Clock Clock { get; private set; }
-  private Camera3D mainCamera_;
-  private Viewport mainViewport_;
+  public double IntegrateTime { get; private set; }
+  private double leftToTick_ = 0.0;
+  private const double TickTime = 1.0 / 30.0;
+  public bool Ticked { get; private set; }
+  public bool Backed { get; private set; }
+  public bool Leaped { get; private set; }
 
   /* GameObject Management */
   public HashSet<Node3D> LivingEnemies { get; } = new();
@@ -15,10 +19,18 @@ public partial class ClockNode : Node3D {
 
   public override void _Ready() {
     Clock = new Clock();
-    mainCamera_ = GetNode<Camera3D>("/root/Root/MainCamera");
-    mainViewport_ = mainCamera_.GetViewport();
   }
 
   public override void _Process(double delta) {
+    IntegrateTime += delta;
+    leftToTick_ += delta;
+    Ticked = false;
+    Backed = false;
+    Leaped = false;
+    if (leftToTick_ > TickTime) {
+      leftToTick_ -= TickTime;
+      Clock.Tick();
+      Ticked = true;
+    }
   }
 }
