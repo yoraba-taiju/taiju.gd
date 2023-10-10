@@ -6,11 +6,9 @@ namespace Taiju.Reversible.GD;
 public struct ReversibleHelper {
   /// Members
   private ClockNode clockNode_;
-  private Clock clock_;
 
   /// Accessors
   private ClockNode ClockNode => clockNode_;
-  private Clock Clock => clock_;
   /// Clock Stats
   private double ClockIntegrateTime => clockNode_.IntegrateTime;
   
@@ -27,7 +25,6 @@ public struct ReversibleHelper {
 
   public void Ready(Node3D self) {
     clockNode_ = self.GetNode<ClockNode>("/root/Root/Clock");
-    clock_ = clockNode_.Clock;
     bornAt_ = ClockIntegrateTime;
   }
 
