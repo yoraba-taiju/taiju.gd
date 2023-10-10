@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using Taiju.Objects.Witch;
+using Taiju.Reversible.GD;
 using Taiju.Reversible.Value;
 using Taiju.Util.Gd;
 
@@ -17,25 +18,25 @@ public partial class Brain : EnemyBase {
   private enum State {
     Seek,
     Escape,
-  };
+  }
 
   private Node3D body_;
   private Dense<Record> record_;
 
-  private record struct Record(
-    State State,
-    Vector3 Position,
-    Vector3 Velocity
-  );
+  private record struct Record {
+    public State State;
+    public Vector3 Position;
+    public Vector3 Velocity;
+  }
 
   public override void _Ready() {
     base._Ready();
     body_ = GetNode<Node3D>("Body");
-    record_ = new Dense<Record>(Clock, new Record(
-      State.Seek,
-      Vector3.Zero,
-      new Vector3(-10.0f, 0.0f, 0.0f)
-    ));
+    record_ = new Dense<Record>(Clock, new Record {
+      State = State.Seek,
+      Position = Vector3.Zero,
+      Velocity = new Vector3(-10.0f, 0.0f, 0.0f),
+    });
     var model = body_.GetNode<Node3D>("Model");
     var player = model.GetNode<AnimationPlayer>("AnimationPlayer");
     var anim = player.GetAnimation("Rotate");
@@ -46,21 +47,23 @@ public partial class Brain : EnemyBase {
     sora_ = GetNode<Sora>("/root/Root/Field/Witch/Sora");
   }
 
-  public override void _Process(double dt) {
-    base._Process(dt);
-    var currentPosition = Position;
+  public override bool _ProcessForward(double integrateTime, double dt) {
+    ref var rec = ref record_.Mut;
+    ref var pos = ref rec.Position;
+    ref var state = ref rec.State;
+    ref var velocity = ref rec.Velocity;
+    var currentPosition = rec.Position;
     var soraPosition = sora_.Position;
     var maxAngle = (float)(dt * maxRotateDegreePerSec_);
-    ref var rec = ref record_.Mut;
 
-    switch (rec.State) {
+    switch (state) {
       case State.Seek: {
         var delta = soraPosition - currentPosition;
         if (Mathf.Abs(delta.X) > escapeDistance_) {
-          rec.Velocity = Mover.Follow(delta, rec.Velocity, maxAngle);
+          velocity = Mover.Follow(delta, rec.Velocity, maxAngle);
         }
         else {
-          rec.State = State.Escape;
+          state = State.Escape;
         }
       }
         break;
@@ -72,7 +75,7 @@ public partial class Brain : EnemyBase {
             sign = Math.Sign(Random.Shared.Next());
           }
 
-          rec.Velocity = Vec.Rotate(rec.Velocity, sign * maxAngle) * Mathf.Exp((float)dt / 2);
+          velocity = Vec.Rotate(rec.Velocity, sign * maxAngle) * Mathf.Exp((float)dt / 2);
         }
       }
         break;
@@ -80,8 +83,18 @@ public partial class Brain : EnemyBase {
         throw new ArgumentOutOfRangeException();
     }
 
-    rec.Position = Position;
+    // Update or Record godot states
+    pos = Position;
+    body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-velocity)));
+
+    return true;
+  }
+
+  public override bool _ProcessBack() {
+    ref readonly var rec = ref record_.Ref;
+    Position = rec.Position;
     body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity)));
+    return true;
   }
 
   public override void _IntegrateForces(PhysicsDirectBodyState3D state) {
