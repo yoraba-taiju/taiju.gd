@@ -1,9 +1,9 @@
 ﻿using System;
 using Godot;
 
-namespace Taiju.Reversible.GD; 
+namespace Taiju.Reversible.GD.Companion;
 
-public struct ReversibleHelper {
+public struct ReversibleCompanion {
   /// Members
   private ClockNode clockNode_;
 

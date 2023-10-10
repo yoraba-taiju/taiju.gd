@@ -1,18 +1,19 @@
 ﻿using System;
 using Godot;
+using Taiju.Reversible.GD.Companion;
 
 namespace Taiju.Reversible.GD; 
 
 public abstract partial class ReversibleRigidBody3D : RigidBody3D, IReversibleNode {
-  private ReversibleHelper helper_;
+  private ReversibleCompanion comp_;
 
   public override void _Ready() {
-    helper_.Ready(this);
+    comp_.Ready(this);
   }
 
   /// Impls
   public override void _Process(double delta) {
-    helper_.Process(this, delta);
+    comp_.Process(this, delta);
   }
 
   /*
