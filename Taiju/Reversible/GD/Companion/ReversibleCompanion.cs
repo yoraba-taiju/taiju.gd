@@ -4,13 +4,11 @@ using Godot;
 namespace Taiju.Reversible.GD.Companion;
 
 public struct ReversibleCompanion {
-  /// Members
-  private ClockNode clockNode_;
-
   /// Accessors
-  private ClockNode ClockNode => clockNode_;
+  public ClockNode ClockNode { get; private set; }
+  public Clock Clock { get; private set; }
   /// Clock Stats
-  private double ClockIntegrateTime => clockNode_.IntegrateTime;
+  private double ClockIntegrateTime => ClockNode.IntegrateTime;
   
   private ClockNode.TimeDirection Direction => ClockNode.Direction;
   private bool Ticked => ClockNode.Ticked;
@@ -24,7 +22,8 @@ public struct ReversibleCompanion {
    */
 
   public void Ready(Node3D self) {
-    clockNode_ = self.GetNode<ClockNode>("/root/Root/Clock");
+    ClockNode = self.GetNode<ClockNode>("/root/Root/Clock");
+    Clock = ClockNode.Clock;
     bornAt_ = ClockIntegrateTime;
   }
 

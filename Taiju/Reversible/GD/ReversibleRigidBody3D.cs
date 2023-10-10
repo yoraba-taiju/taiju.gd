@@ -7,6 +7,9 @@ namespace Taiju.Reversible.GD;
 public abstract partial class ReversibleRigidBody3D : RigidBody3D, IReversibleNode {
   private ReversibleCompanion comp_;
 
+  /// Members
+  protected Clock Clock => comp_.Clock;
+
   public override void _Ready() {
     comp_.Ready(this);
   }
