@@ -5,8 +5,8 @@ using Taiju.Reversible.GD;
 namespace Taiju.Objects.Effect;
 
 public partial class ReversibleExplosion : ReversibleParticle3D {
-  [Export] private bool useRandomHue_;
   [Export] private Color color_ = Colors.Purple;
+  [Export] private bool replaceHueWithRandom_;
   private const float LifeTimeScale = 1.0f / 10.0f / 2.0f;
 
   protected override void _Update(ref Item[] items, double integrateTime) {
@@ -40,7 +40,7 @@ public partial class ReversibleExplosion : ReversibleParticle3D {
     color_.ToHsv(out _, out var saturation, out var value);
     for (var i = 0; i < MeshCount; ++i) {
       ref var item = ref items[i];
-      item.Color = useRandomHue_ ? Color.FromHsv(rand.Randf() * 360.0f, saturation, value) : color_;
+      item.Color = replaceHueWithRandom_ ? Color.FromHsv(rand.Randf() * 360.0f, saturation, value) : color_;
       item.Velocity = maxSpeed * (rand.Randf() / 2.0f + 0.5f);
       item.Angle = new Vector2(rand.Randf() * 2.0f - 1.0f, rand.Randf() * 2.0f - 1.0f).Normalized();
       item.LifeTime = item.Velocity * LifeTimeScale;
