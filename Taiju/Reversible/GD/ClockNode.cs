@@ -28,18 +28,22 @@ public partial class ClockNode : Node3D {
     Ticked = false;
     Back = false;
     Leaped = false;
+    
     if (Input.IsActionJustPressed("time_back")) {
       leftToTick_ = 0.0;
       Clock.Back();
       Back = true;
       return;
     }
+
     if (Input.IsActionJustPressed("time_back")) {
       leftToTick_ = 0.0;
       Clock.Leap();
       Leaped = true;
       return;
+      
     }
+    
     if (Input.IsActionPressed("time_back")) {
       Back = true;
       if (leftToTick_ > TickTime) {
@@ -50,9 +54,11 @@ public partial class ClockNode : Node3D {
     }
 
     Forward = true;
+
     if (leftToTick_ <= TickTime) {
       return;
     }
+
     leftToTick_ -= TickTime;
     Clock.Tick();
     Ticked = true;
