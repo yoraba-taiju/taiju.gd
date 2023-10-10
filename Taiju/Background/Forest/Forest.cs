@@ -26,8 +26,6 @@ public partial class Forest : ReversibleNode3D {
   }
 
   public override void _ProcessRaw(double integrateTime) {
-    var prop = mat_.Get("uv1_offset").AsVector3();
-    prop.X = (float)(0.1f * integrateTime);
-    mat_.Set("uv1_offset", prop);
+    mat_.Set("uv1_offset", new Vector3((float)(0.1 * integrateTime), 0.0f, 0.0f));
   }
 }
