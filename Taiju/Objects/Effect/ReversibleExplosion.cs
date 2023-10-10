@@ -32,7 +32,7 @@ public partial class ReversibleExplosion : ReversibleOneShotParticle3D {
     }
   }
 
-  protected override void _Emit(ref Item[] items, double integrateTime) {
+  protected override void _Emit(ref Item[] items) {
     var rand = new RandomNumberGenerator();
     var zero = Transform2D.Identity;
     var maxSpeed = MaxSpeed;

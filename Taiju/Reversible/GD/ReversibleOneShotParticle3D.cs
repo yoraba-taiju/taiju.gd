@@ -38,7 +38,7 @@ public abstract partial class ReversibleOneShotParticle3D : Node3D {
     multiMesh_.Multimesh = Meshes;
     items_ = new Item[MeshCount];
     bornAt_ = clockNode_.IntegrateTime;
-    _Emit(ref items_, 0.0);
+    _Emit(ref items_);
   }
 
   public override void _Process(double dt) {
@@ -46,7 +46,7 @@ public abstract partial class ReversibleOneShotParticle3D : Node3D {
     _Update(ref items_, integrateTime);
   }
 
-  protected abstract void _Emit(ref Item[] items, double integrateTime);
+  protected abstract void _Emit(ref Item[] items);
 
   protected abstract void _Update(ref Item[] items, double integrateTime);
 }
