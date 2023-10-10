@@ -4,55 +4,15 @@ using Godot;
 namespace Taiju.Reversible.GD; 
 
 public abstract partial class ReversibleRigidBody3D : RigidBody3D, IReversibleNode {
-  /// Members
-  private ClockNode clockNode_;
-  private Clock clock_;
+  private ReversibleHelper helper_;
 
-  /// Accessors
-  protected ClockNode ClockNode => clockNode_;
-  protected Clock Clock => clock_;
-  
-  /// Clock Stats
-  private double ClockIntegrateTime => clockNode_.IntegrateTime;
-  private ClockNode.TimeDirection Direction => ClockNode.Direction;
-  private bool Ticked => ClockNode.Ticked;
-  private bool Leap => ClockNode.Leaped;
-
-  /// This object
-  private double bornAt_;
+  public override void _Ready() {
+    helper_.Ready(this);
+  }
 
   /// Impls
-  public override void _Ready() {
-    clockNode_ = GetNode<ClockNode>("/root/Root/Clock");
-    clock_ = clockNode_.Clock;
-    bornAt_ = ClockIntegrateTime;
-  }
   public override void _Process(double delta) {
-    var integrateTime = ClockIntegrateTime - bornAt_;
-    switch (Direction) {
-      case ClockNode.TimeDirection.Stop:
-        if (Leap) {
-          if (_ProcessLeap()) {
-            return;
-          }
-          _ProcessRaw(integrateTime);
-        }
-        break;
-      case ClockNode.TimeDirection.Forward:
-        if (_ProcessForward(integrateTime, delta)) {
-          return;
-        }
-        _ProcessRaw(integrateTime);
-        break;
-      case ClockNode.TimeDirection.Back:
-        if (_ProcessBack()) {
-          return;
-        }
-        _ProcessRaw(integrateTime);
-        break;
-      default:
-        throw new ArgumentOutOfRangeException();
-    }
+    helper_.Process(this, delta);
   }
 
   /*
