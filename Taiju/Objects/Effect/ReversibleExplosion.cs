@@ -7,7 +7,7 @@ namespace Taiju.Objects.Effect;
 public partial class ReversibleExplosion : ReversibleParticle3D {
   [Export] private bool useRandomColor_;
   [Export] private Color color_ = Colors.Purple;
-  [Export(PropertyHint.Range, "0.0, 1.0")] private float lifeTimeScale_ = 1.0f / 10.0f / 2.0f;
+  private const float LifeTimeScale = 1.0f / 10.0f / 2.0f;
   protected override void _Emit(ref Item[] items, double integrateTime) {
     var rand = new RandomNumberGenerator();
     var zero = Transform2D.Identity;
@@ -18,14 +18,13 @@ public partial class ReversibleExplosion : ReversibleParticle3D {
       item.Color = useRandomColor_ ? Color.FromHsv(rand.Randf() * 360.0f, 0.5f, 0.9f) : color_;
       item.Velocity = maxSpeed * (rand.Randf() / 2.0f + 0.5f);
       item.Angle = new Vector2(rand.Randf() * 2.0f - 1.0f, rand.Randf() * 2.0f - 1.0f).Normalized();
-      item.LifeTime = item.Velocity * lifeTimeScale_;
+      item.LifeTime = item.Velocity * LifeTimeScale;
       meshes.SetInstanceColor(i, item.Color);
       meshes.SetInstanceTransform2D(i, zero);
     }
   }
 
   protected override void _Update(ref Item[] items, double integrateTime) {
-    integrateTime = 0.3;
     var meshes = Meshes;
     var transform = Transform2D.Identity;
     var nan = new Transform2D().TranslatedLocal(new Vector2(Single.NaN, Single.NaN));
