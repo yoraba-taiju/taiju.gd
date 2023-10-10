@@ -14,9 +14,9 @@ public abstract partial class ReversibleNode3D : Node3D, IReversibleNode {
   /// Clock Stats
   private double ClockIntegrateTime => clockNode_.IntegrateTime;
   
-  protected ClockNode.TimeDirection Direction => ClockNode.Direction;
-  protected bool Ticked => ClockNode.Ticked;
-  protected bool Leap => ClockNode.Leaped;
+  private ClockNode.TimeDirection Direction => ClockNode.Direction;
+  private bool Ticked => ClockNode.Ticked;
+  private bool Leap => ClockNode.Leaped;
 
   /// This object
   private double bornAt_;
