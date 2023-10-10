@@ -13,7 +13,7 @@ public abstract partial class ReversibleRigidBody3D : RigidBody3D, IReversibleNo
   protected Clock Clock => clock_;
   
   /// Clock Stats
-  public double IntegrateTime => clockNode_.IntegrateTime;
+  private double ClockIntegrateTime => clockNode_.IntegrateTime;
   protected ClockNode.TimeDirection Direction => ClockNode.Direction;
   protected bool Ticked => ClockNode.Ticked;
   protected bool Leap => ClockNode.Leaped;
@@ -25,10 +25,10 @@ public abstract partial class ReversibleRigidBody3D : RigidBody3D, IReversibleNo
   public override void _Ready() {
     clockNode_ = GetNode<ClockNode>("/root/Root/Clock");
     clock_ = clockNode_.Clock;
-    bornAt_ = IntegrateTime;
+    bornAt_ = ClockIntegrateTime;
   }
   public override void _Process(double delta) {
-    var integrateTime = IntegrateTime - bornAt_;
+    var integrateTime = ClockIntegrateTime - bornAt_;
     switch (Direction) {
       case ClockNode.TimeDirection.Stop:
         if (Leap) {

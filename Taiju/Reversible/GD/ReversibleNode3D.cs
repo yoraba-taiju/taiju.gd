@@ -12,7 +12,7 @@ public abstract partial class ReversibleNode3D : Node3D, IReversibleNode {
   protected ClockNode ClockNode => clockNode_;
   protected Clock Clock => clock_;
   /// Clock Stats
-  public double IntegrateTime => clockNode_.IntegrateTime;
+  private double ClockIntegrateTime => clockNode_.IntegrateTime;
   
   protected ClockNode.TimeDirection Direction => ClockNode.Direction;
   protected bool Ticked => ClockNode.Ticked;
@@ -24,12 +24,12 @@ public abstract partial class ReversibleNode3D : Node3D, IReversibleNode {
   public override void _Ready() {
     clockNode_ = GetNode<ClockNode>("/root/Root/Clock");
     clock_ = clockNode_.Clock;
-    bornAt_ = IntegrateTime;
+    bornAt_ = ClockIntegrateTime;
   }
 
   /// Impls
   public override void _Process(double delta) {
-    var integrateTime = IntegrateTime - bornAt_;
+    var integrateTime = ClockIntegrateTime - bornAt_;
     switch (Direction) {
       case ClockNode.TimeDirection.Stop:
         if (Leap) {
