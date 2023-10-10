@@ -16,7 +16,7 @@ public struct SparseArray<T> : IValueArray<T> where T : struct {
   private uint entriesBeg_;
   private uint entriesLen_;
 
-  private int size_;
+  private readonly int size_;
 
   public SparseArray(Clock clock, int size, in T initial) {
     clock_ = clock;
