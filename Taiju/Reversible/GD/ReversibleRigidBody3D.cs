@@ -14,8 +14,7 @@ public abstract partial class ReversibleRigidBody3D : RigidBody3D, IReversibleNo
   
   /// Clock Stats
   public double IntegrateTime => clockNode_.IntegrateTime;
-  protected bool Forward => ClockNode.Forward;
-  protected bool Back => ClockNode.Forward;
+  protected ClockNode.TimeDirection Direction => ClockNode.Direction;
   protected bool Ticked => ClockNode.Ticked;
   protected bool Leap => ClockNode.Leaped;
 
@@ -30,29 +29,30 @@ public abstract partial class ReversibleRigidBody3D : RigidBody3D, IReversibleNo
   }
   public override void _Process(double delta) {
     var integrateTime = IntegrateTime - bornAt_;
-    if (Forward) {
-      if (_ProcessForward(integrateTime, delta)) {
-        return;
-      }
-      _ProcessRaw(integrateTime);
-      return;
+    switch (Direction) {
+      case ClockNode.TimeDirection.Stop:
+        if (Leap) {
+          if (_ProcessLeap()) {
+            return;
+          }
+          _ProcessRaw(integrateTime);
+        }
+        break;
+      case ClockNode.TimeDirection.Forward:
+        if (_ProcessForward(integrateTime, delta)) {
+          return;
+        }
+        _ProcessRaw(integrateTime);
+        break;
+      case ClockNode.TimeDirection.Back:
+        if (_ProcessBack()) {
+          return;
+        }
+        _ProcessRaw(integrateTime);
+        break;
+      default:
+        throw new ArgumentOutOfRangeException();
     }
-
-    if (Back) {
-      if (_ProcessBack()) {
-        return;
-      }
-      _ProcessRaw(integrateTime);
-      return;
-    }
-
-    if (Leap) {
-      if (_ProcessLeap()) {
-        return;
-      }
-      _ProcessRaw(integrateTime);
-    }
-    throw new NotImplementedException("???");
   }
 
   /*

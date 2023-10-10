@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Godot;
 using Taiju.Reversible.Value;
 using Taiju.Util;
@@ -12,9 +13,13 @@ public partial class ClockNode : Node3D {
   private double leftToTick_ = 0.0;
   private const double TickTime = 1.0 / 30.0;
 
+  public enum TimeDirection {
+    Stop,
+    Forward,
+    Back,
+  }
+  public TimeDirection Direction { get; private set; }
   public bool Ticked { get; private set; }
-  public bool Back { get; private set; }
-  public bool Forward { get; private set; }
   public bool Leaped { get; private set; }
 
   /* GameObject Management */
@@ -27,22 +32,21 @@ public partial class ClockNode : Node3D {
   }
 
   public override void _Process(double delta) {
-    ref var integrateTime = ref integrateTime_.Mut;
     leftToTick_ += delta;
+    Direction = TimeDirection.Stop;
     Ticked = false;
-    Back = false;
     Leaped = false;
 
     // Backing started
     if (Input.IsActionJustPressed("time_back")) {
+      Direction = TimeDirection.Back;
       leftToTick_ = 0.0;
       Clock.Back();
-      Back = true;
       return;
     }
 
     // Leaped
-    if (Input.IsActionJustPressed("time_back")) {
+    if (Input.IsActionJustReleased("time_back")) {
       leftToTick_ = 0.0;
       Clock.Leap();
       Leaped = true;
@@ -51,7 +55,7 @@ public partial class ClockNode : Node3D {
 
     // Backing
     if (Input.IsActionPressed("time_back")) {
-      Back = true;
+      Direction = TimeDirection.Back;
       if (leftToTick_ > TickTime) {
         leftToTick_ -= TickTime;
         Clock.Back();
@@ -61,7 +65,8 @@ public partial class ClockNode : Node3D {
     }
 
     // Forwarding
-    Forward = true;
+    Direction = TimeDirection.Forward;
+    ref var integrateTime = ref integrateTime_.Mut;
     integrateTime += delta;
     if (leftToTick_ > TickTime) {
       leftToTick_ -= TickTime;

@@ -1,7 +1,7 @@
 ﻿using System;
 using Godot;
 
-namespace Taiju.Reversible.GD; 
+namespace Taiju.Reversible.GD;
 
 public abstract partial class ReversibleNode3D : Node3D, IReversibleNode {
   /// Members
@@ -13,8 +13,8 @@ public abstract partial class ReversibleNode3D : Node3D, IReversibleNode {
   protected Clock Clock => clock_;
   /// Clock Stats
   public double IntegrateTime => clockNode_.IntegrateTime;
-  protected bool Forward => ClockNode.Forward;
-  protected bool Back => ClockNode.Forward;
+  
+  protected ClockNode.TimeDirection Direction => ClockNode.Direction;
   protected bool Ticked => ClockNode.Ticked;
   protected bool Leap => ClockNode.Leaped;
 
@@ -30,47 +30,48 @@ public abstract partial class ReversibleNode3D : Node3D, IReversibleNode {
   /// Impls
   public override void _Process(double delta) {
     var integrateTime = IntegrateTime - bornAt_;
-    if (Forward) {
-      if (_ProcessForward(integrateTime, delta)) {
-        return;
-      }
-      _ProcessRaw(integrateTime);
-      return;
+    switch (Direction) {
+      case ClockNode.TimeDirection.Stop:
+        if (Leap) {
+          if (_ProcessLeap()) {
+            return;
+          }
+          _ProcessRaw(integrateTime);
+        }
+        break;
+      case ClockNode.TimeDirection.Forward:
+        if (_ProcessForward(integrateTime, delta)) {
+          return;
+        }
+        _ProcessRaw(integrateTime);
+        break;
+      case ClockNode.TimeDirection.Back:
+        if (_ProcessBack()) {
+          return;
+        }
+        _ProcessRaw(integrateTime);
+        break;
+      default:
+        throw new ArgumentOutOfRangeException();
     }
-
-    if (Back) {
-      if (_ProcessBack()) {
-        return;
-      }
-      _ProcessRaw(integrateTime);
-      return;
-    }
-
-    if (Leap) {
-      if (_ProcessLeap()) {
-        return;
-      }
-      _ProcessRaw(integrateTime);
-    }
-    throw new NotImplementedException("???");
   }
 
   /*
    * Default overrides
    */
 
-  public bool _ProcessForward(double integrateTime, double dt) {
+  public virtual bool _ProcessForward(double integrateTime, double dt) {
     return true;
   }
 
-  public bool _ProcessBack() {
+  public virtual bool _ProcessBack() {
     return true;
   }
 
-  public bool _ProcessLeap() {
+  public virtual bool _ProcessLeap() {
     return true;
   }
   
-  public void _ProcessRaw(double integrateTime) {
+  public virtual void _ProcessRaw(double integrateTime) {
   }
 }

@@ -11,10 +11,10 @@ public partial class Sora : ReversibleNode3D {
 
   public override void _Ready() {
     base._Ready();
-    position_ = new Dense<Vector3>(Clock, new Vector3(0f, 0f, 0f));
+    position_ = new Dense<Vector3>(Clock, Vector3.Zero);
   }
 
-  public override void _Process(double dt) {
+  public override bool _ProcessForward(double integrateTime, double dt) {
     var deltaPos = new Vector3();
     var moved = false;
     if (Input.IsActionPressed("move_right")) {
@@ -35,7 +35,7 @@ public partial class Sora : ReversibleNode3D {
     }
 
     if (!moved) {
-      return;
+      return true;
     }
 
     deltaPos = deltaPos.Normalized() * (float)(dt * MoveDelta);
@@ -46,5 +46,11 @@ public partial class Sora : ReversibleNode3D {
 
     // Update using current value.
     Position = pos;
+    return base._ProcessForward(integrateTime, dt);
+  }
+
+  public override bool _ProcessBack() {
+    Position = position_.Ref;
+    return true;
   }
 }
