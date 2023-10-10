@@ -9,10 +9,10 @@ namespace Taiju.Objects.Witch;
 
 public partial class Sora : ReversibleNode3D {
   private const double MoveDelta = 16.0;
-  private record struct Record(
-    Vector3 Position,
-    double SpiritRot
-  );
+  private record struct Record {
+    public Vector3 Position;
+    public double SpiritRot;
+  }
   private Dense<Record> state_;
   
   // Nodes
