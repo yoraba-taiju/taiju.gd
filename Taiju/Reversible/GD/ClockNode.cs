@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using Godot;
+using Taiju.Reversible.Value;
 using Taiju.Util;
 
 namespace Taiju.Reversible.GD; 
 
 public partial class ClockNode : Node3D {
   public Clock Clock { get; private set; }
-  public double IntegrateTime { get; private set; }
+  public double IntegrateTime => integrateTime_.Ref;
+  private Dense<double> integrateTime_;
   private double leftToTick_ = 0.0;
   private const double TickTime = 1.0 / 30.0;
 
@@ -21,9 +23,11 @@ public partial class ClockNode : Node3D {
 
   public override void _Ready() {
     Clock = new Clock();
+    integrateTime_ = new Dense<double>(Clock, 0.0);
   }
 
   public override void _Process(double delta) {
+    ref var integrateTime = ref integrateTime_.Mut;
     leftToTick_ += delta;
     Ticked = false;
     Back = false;
@@ -58,7 +62,7 @@ public partial class ClockNode : Node3D {
 
     // Forwarding
     Forward = true;
-    IntegrateTime += delta;
+    integrateTime += delta;
     if (leftToTick_ > TickTime) {
       leftToTick_ -= TickTime;
       Clock.Tick();
