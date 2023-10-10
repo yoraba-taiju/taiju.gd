@@ -1,7 +1,7 @@
 ﻿using System;
 using Godot;
 
-namespace Taiju.Reversible.GD.Companion;
+namespace Taiju.Reversible.Gd.Companion;
 
 public struct ReversibleCompanion {
   /// Accessors

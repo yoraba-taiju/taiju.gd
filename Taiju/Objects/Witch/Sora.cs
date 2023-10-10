@@ -1,7 +1,7 @@
 using System;
 using System.Numerics;
 using Godot;
-using Taiju.Reversible.GD;
+using Taiju.Reversible.Gd;
 using Taiju.Reversible.Value;
 using Vector3 = Godot.Vector3;
 

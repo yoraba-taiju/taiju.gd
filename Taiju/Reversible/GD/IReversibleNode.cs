@@ -1,4 +1,4 @@
-﻿namespace Taiju.Reversible.GD; 
+﻿namespace Taiju.Reversible.Gd; 
 
 public interface IReversibleNode {
   public bool _ProcessForward(double integrateTime, double dt);

@@ -1,5 +1,5 @@
 ﻿using Godot;
-using Taiju.Reversible.GD;
+using Taiju.Reversible.Gd;
 
 namespace Taiju.Objects.Enemy; 
 

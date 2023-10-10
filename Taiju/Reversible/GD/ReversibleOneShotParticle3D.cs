@@ -1,7 +1,7 @@
 ﻿using System;
 using Godot;
 
-namespace Taiju.Reversible.GD;
+namespace Taiju.Reversible.Gd;
 
 // https://docs.godotengine.org/en/stable/tutorials/performance/vertex_animation/controlling_thousands_of_fish.html
 public abstract partial class ReversibleOneShotParticle3D : Node3D {

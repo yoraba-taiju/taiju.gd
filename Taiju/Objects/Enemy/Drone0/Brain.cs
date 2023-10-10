@@ -1,7 +1,7 @@
 using System;
 using Godot;
 using Taiju.Objects.Witch;
-using Taiju.Reversible.GD;
+using Taiju.Reversible.Gd;
 using Taiju.Reversible.Value;
 using Taiju.Util.Gd;
 

@@ -1,6 +1,6 @@
 using System;
 using Godot;
-using Taiju.Reversible.GD;
+using Taiju.Reversible.Gd;
 
 namespace Taiju.Objects.Effect;
 

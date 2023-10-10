@@ -4,7 +4,7 @@ using Godot;
 using Taiju.Reversible.Value;
 using Taiju.Util;
 
-namespace Taiju.Reversible.GD; 
+namespace Taiju.Reversible.Gd; 
 
 public partial class ClockNode : Node3D {
   public Clock Clock { get; private set; }
