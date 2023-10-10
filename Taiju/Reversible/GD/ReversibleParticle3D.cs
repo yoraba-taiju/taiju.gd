@@ -1,5 +1,6 @@
 ﻿using System;
 using Godot;
+using Taiju.Reversible.ValueArray;
 
 namespace Taiju.Reversible.Gd;
 
@@ -27,10 +28,11 @@ public abstract partial class ReversibleParticle3D : ReversibleNode3D {
 
   // Storages
   private ClockNode clockNode_;
-  private Item[] items_;
+  private SparseArray<Item> items_;
   private double leftToEmit_;
 
   public override void _Ready() {
+    base._Ready();
     Meshes = new MultiMesh();
     clockNode_ = GetNode<ClockNode>("/root/Root/Clock");
     multiMesh_ = GetNode<MultiMeshInstance3D>("MultiMesh");
@@ -39,18 +41,22 @@ public abstract partial class ReversibleParticle3D : ReversibleNode3D {
     Meshes.UseColors = true;
     Meshes.InstanceCount = MeshCount;
     multiMesh_.Multimesh = Meshes;
-    items_ = new Item[MeshCount];
+    items_ = new SparseArray<Item>(Clock, (uint)MeshCount, new Item());
     bornAt_ = clockNode_.IntegrateTime;
-    //_Emit(ref items_, 0.0);
+    var span = items_.Mut;
+    _Emit(ref span, 0.0);
   }
   
   public override bool _ProcessForward(double integrateTime, double dt) {
     leftToEmit_ -= dt;
     if (leftToEmit_ <= 0) {
       leftToEmit_ += EmitPerSecond;
-      //_Emit(ref items_, integrateTime);
+      var spanMut = items_.Mut;
+      _Emit(ref spanMut, integrateTime);
     }
-    //_Update(ref items_, integrateTime);
+
+    var span = items_.Ref;
+    _Update(ref span, integrateTime);
     return true;
   }
 
@@ -63,8 +69,8 @@ public abstract partial class ReversibleParticle3D : ReversibleNode3D {
     return true;
   }
 
-  protected abstract void _Emit(ref Span<Item> items);
+  protected abstract void _Emit(ref Span<Item> items, double integrateTime);
 
-  protected abstract void _Update(ref Span<Item> items, double integrateTime);
+  protected abstract void _Update(ref ReadOnlySpan<Item> items, double integrateTime);
 }
 
