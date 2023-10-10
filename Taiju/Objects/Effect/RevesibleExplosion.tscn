@@ -15,7 +15,8 @@ orientation = 2
 
 [node name="RevesibleParticles" type="Node3D"]
 script = ExtResource("1_sq2m3")
-useRandomColor_ = true
+useRandomHue_ = true
+color_ = Color(0.901961, 0.45098, 0.45098, 1)
 Mesh = SubResource("PlaneMesh_yuuuv")
 OneShot = true
 
