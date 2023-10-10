@@ -4,10 +4,11 @@ using Godot;
 namespace Taiju.Reversible.GD;
 
 // https://docs.godotengine.org/en/stable/tutorials/performance/vertex_animation/controlling_thousands_of_fish.html
-public abstract partial class ReversibleOneShotParticle3D : Node3D {
+public abstract partial class ReversibleParticle3D : ReversibleNode3D {
   [Export] protected Mesh Mesh;
   [Export] protected int MeshCount = 16;
   [Export] protected float MaxSpeed = 10.0f;
+  [Export(PropertyHint.Range, "1.0, 60.0")] protected double EmitPerSecond;
 
   // https://docs.godotengine.org/en/stable/classes/class_multimesh.html
   private MultiMeshInstance3D multiMesh_;
@@ -17,6 +18,7 @@ public abstract partial class ReversibleOneShotParticle3D : Node3D {
   protected MultiMesh Meshes { get; private set; }
 
   protected struct Item {
+    public bool Living;
     public Color Color;
     public float Velocity;
     public Vector2 Angle;
@@ -26,6 +28,7 @@ public abstract partial class ReversibleOneShotParticle3D : Node3D {
   // Storages
   private ClockNode clockNode_;
   private Item[] items_;
+  private double leftToEmit_;
 
   public override void _Ready() {
     Meshes = new MultiMesh();
@@ -38,16 +41,30 @@ public abstract partial class ReversibleOneShotParticle3D : Node3D {
     multiMesh_.Multimesh = Meshes;
     items_ = new Item[MeshCount];
     bornAt_ = clockNode_.IntegrateTime;
-    _Emit(ref items_, 0.0);
+    //_Emit(ref items_, 0.0);
+  }
+  
+  public override bool _ProcessForward(double integrateTime, double dt) {
+    leftToEmit_ -= dt;
+    if (leftToEmit_ <= 0) {
+      leftToEmit_ += EmitPerSecond;
+      //_Emit(ref items_, integrateTime);
+    }
+    //_Update(ref items_, integrateTime);
+    return true;
   }
 
-  public override void _Process(double dt) {
-    var integrateTime = clockNode_.IntegrateTime - bornAt_;
-    _Update(ref items_, integrateTime);
+  public override bool _ProcessBack() {
+    return true;
   }
 
-  protected abstract void _Emit(ref Item[] items, double integrateTime);
+  public override bool _ProcessLeap() {
+    // Do nothing.
+    return true;
+  }
 
-  protected abstract void _Update(ref Item[] items, double integrateTime);
+  protected abstract void _Emit(ref Span<Item> items);
+
+  protected abstract void _Update(ref Span<Item> items, double integrateTime);
 }
 
