@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://Objects/Witch/Sora.cs" id="3_6q3cx"]
 [ext_resource type="PackedScene" uid="uid://qa808tl8icr3" path="res://Objects/Witch/Spirit.blend" id="3_ad04p"]
 [ext_resource type="PackedScene" uid="uid://dj3ie2qhiow02" path="res://Objects/Enemy/Drone0/Drone0.tscn" id="6_j7xnn"]
-[ext_resource type="PackedScene" uid="uid://dpv0yhqrreb71" path="res://Objects/Effect/RevesibleParticles.tscn" id="8_ftrvb"]
+[ext_resource type="PackedScene" uid="uid://dpv0yhqrreb71" path="res://Objects/Effect/RevesibleExplosion.tscn" id="7_8xabg"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_aadso"]
 energy_multiplier = 2.0
@@ -70,6 +70,10 @@ transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
 
 [node name="WitchBullet" type="Node3D" parent="Field"]
 
+[node name="Mesh" type="MultiMeshInstance3D" parent="Field/WitchBullet"]
+
+[node name="WitchEffect" type="Node3D" parent="Field"]
+
 [node name="Enemy" type="Node3D" parent="Field"]
 
 [node name="Drone0" parent="Field/Enemy" instance=ExtResource("6_j7xnn")]
@@ -77,8 +81,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.745, 0, 0)
 
 [node name="EnemyBulet" type="Node3D" parent="Field"]
 
-[node name="Background" type="Node3D" parent="Field"]
+[node name="Mesh" type="MultiMeshInstance3D" parent="Field/EnemyBulet"]
 
 [node name="EnemyEffect" type="Node3D" parent="Field"]
 
-[node name="RevesibleParticles" parent="Field/EnemyEffect" instance=ExtResource("8_ftrvb")]
+[node name="RevesibleParticles" parent="Field/EnemyEffect" instance=ExtResource("7_8xabg")]
+
+[node name="Background" type="Node3D" parent="Field"]

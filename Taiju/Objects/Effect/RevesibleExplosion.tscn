@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://dpv0yhqrreb71"]
+
+[ext_resource type="Script" path="res://Objects/Effect/ReversibleExplosion.cs" id="1_sq2m3"]
+[ext_resource type="Texture2D" uid="uid://lfrcr5gyqpq1" path="res://Objects/Effect/textures/魔素.png" id="2_pm02t"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tlf4m"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("2_pm02t")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_yuuuv"]
+material = SubResource("StandardMaterial3D_tlf4m")
+size = Vector2(1, 1)
+orientation = 2
+
+[node name="RevesibleParticles" type="Node3D"]
+script = ExtResource("1_sq2m3")
+useRandomColor_ = true
+Mesh = SubResource("PlaneMesh_yuuuv")
+OneShot = true
+
+[node name="MultiMesh" type="MultiMeshInstance3D" parent="."]
