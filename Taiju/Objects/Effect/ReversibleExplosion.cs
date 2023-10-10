@@ -4,7 +4,7 @@ using Taiju.Reversible.GD;
 
 namespace Taiju.Objects.Effect;
 
-public partial class ReversibleExplosion : ReversibleParticle3D {
+public partial class ReversibleExplosion : ReversibleOneShotParticle3D {
   [Export] private Color color_ = Colors.Purple;
   [Export] private bool replaceHueWithRandomAngle_;
   private const float LifeTimeScale = 1.0f / 10.0f / 2.0f;

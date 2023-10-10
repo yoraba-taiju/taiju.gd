@@ -4,11 +4,10 @@ using Godot;
 namespace Taiju.Reversible.GD;
 
 // https://docs.godotengine.org/en/stable/tutorials/performance/vertex_animation/controlling_thousands_of_fish.html
-public abstract partial class ReversibleParticle3D : Node3D {
+public abstract partial class ReversibleOneShotParticle3D : Node3D {
   [Export] protected Mesh Mesh;
   [Export] protected int MeshCount = 16;
   [Export] protected float MaxSpeed = 10.0f;
-  [Export] protected bool OneShot;
   [Export(PropertyHint.Range, "1.0, 60.0")] protected double EmitPerSecond;
 
  
@@ -30,8 +29,6 @@ public abstract partial class ReversibleParticle3D : Node3D {
   // Storages
   private ClockNode clockNode_;
   private Item[] items_;
-  private double leftToEmit_;
-  protected int EmitCount { get; private set; }
 
   public override void _Ready() {
     Meshes = new MultiMesh();
@@ -44,20 +41,11 @@ public abstract partial class ReversibleParticle3D : Node3D {
     multiMesh_.Multimesh = Meshes;
     items_ = new Item[MeshCount];
     bornAt_ = clockNode_.IntegrateTime;
-    if (OneShot) {
-      _Emit(ref items_, 0.0);
-      EmitCount++;
-    }
+    _Emit(ref items_, 0.0);
   }
 
   public override void _Process(double dt) {
     var integrateTime = clockNode_.IntegrateTime - bornAt_;
-    leftToEmit_ -= dt;
-    if (!OneShot && leftToEmit_ <= 0) {
-      _Emit(ref items_, integrateTime);
-      EmitCount++;
-      leftToEmit_ += EmitPerSecond;
-    }
     _Update(ref items_, integrateTime);
   }
 
