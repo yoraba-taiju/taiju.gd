@@ -10,9 +10,9 @@ public struct DenseArray<T> : IValueArray<T> where T : struct {
   private uint lastTouchedLeap_;
   private uint lastTouchedTick_;
 
-  public DenseArray(Clock clock, int size,in T initial) {
+  public DenseArray(Clock clock, uint size,in T initial) {
     clock_ = clock;
-    size_ = size;
+    size_ = (int)size;
     entries_ = new T[Clock.HistoryLength * size];
     historyBegin_ = clock.CurrentTick;
     entries_[historyBegin_ % Clock.HistoryLength] = initial;

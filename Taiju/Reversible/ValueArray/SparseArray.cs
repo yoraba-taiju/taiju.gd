@@ -3,41 +3,36 @@
 namespace Taiju.Reversible.ValueArray;
 
 public struct SparseArray<T> : IValueArray<T> where T : struct {
-  private struct Entry {
-    public uint Tick;
-    public T[] Value;
-  }
-
   private readonly Clock clock_;
   private uint lastTouchedLeap_;
   private uint lastTouchedTick_;
 
-  private readonly Entry[] entries_;
+  private readonly T[] storage_;
+  private readonly uint[] ticks_;
   private uint entriesBeg_;
   private uint entriesLen_;
 
   private readonly int size_;
 
-  public SparseArray(Clock clock, int size, in T initial) {
+  public SparseArray(Clock clock, uint size, in T initial) {
     clock_ = clock;
-    entries_ = new Entry[Clock.HistoryLength];
-    entries_[0] = new Entry {
-      Tick = clock.CurrentTick,
-      Value = new T[size],
-    };
-    Array.Fill(entries_[0].Value, initial);
+    storage_ = new T[Clock.HistoryLength * size];
+    ticks_ = new uint[Clock.HistoryLength];
+    size_ = (int)size;
+    ticks_[0] = clock.CurrentTick;
+    Array.Fill(storage_, initial, 0, (int)size);
     lastTouchedLeap_ = clock.CurrentLeap;
     lastTouchedTick_ = clock.CurrentTick;
     entriesBeg_ = 0;
     entriesLen_ = 1;
-    size_ = size;
   }
 
   private void Debug() {
     var vs = "[";
     for (var i = 0; i < entriesLen_; i++) {
-      ref readonly var e = ref entries_[(i + entriesBeg_) % Clock.HistoryLength];
-      vs += $"[{i}]({e.Tick}, {e.Value})";
+      var tick = ticks_[(i + entriesBeg_) % Clock.HistoryLength];
+      var span = new ReadOnlySpan<T>(storage_, (int)((i + entriesBeg_) % Clock.HistoryLength) * size_, size_);
+      vs += $"[{i}]({tick}, {span.ToString()})";
       if (i < entriesLen_ - 1) {
         vs += ", ";
       }
@@ -56,7 +51,7 @@ public struct SparseArray<T> : IValueArray<T> where T : struct {
     while (beg < end) {
       // tick[beg] < tick <= tick[end]
       var midIdx = beg + (end - beg) / 2;
-      var midTick = entries_[midIdx % Clock.HistoryLength].Tick;
+      var midTick = ticks_[midIdx % Clock.HistoryLength];
       if (tick == midTick) {
         return midIdx;
       }
@@ -81,7 +76,7 @@ public struct SparseArray<T> : IValueArray<T> where T : struct {
         return beg;
       }
 
-      var midTick = entries_[midIdx % Clock.HistoryLength].Tick;
+      var midTick = ticks_[midIdx % Clock.HistoryLength];
       if (tick == midTick) {
         return midIdx;
       }
@@ -103,7 +98,7 @@ public struct SparseArray<T> : IValueArray<T> where T : struct {
       var currentTick = clock_.CurrentTick;
       var currentLeap = clock_.CurrentLeap;
       if (currentLeap == lastTouchedLeap_ && lastTouchedTick_ <= currentTick) {
-        return new ReadOnlySpan<T>(entries_[(entriesBeg_ + entriesLen_ - 1) % Clock.HistoryLength].Value);
+        return new ReadOnlySpan<T>(storage_, (int)((entriesBeg_ + entriesLen_ - 1) % Clock.HistoryLength) * size_, size_);
       }
 
       var tick = clock_.AdjustTick(lastTouchedLeap_, currentTick);
@@ -113,17 +108,17 @@ public struct SparseArray<T> : IValueArray<T> where T : struct {
         tick
       );
       var idx = rawIdx % Clock.HistoryLength;
-      if (currentTick < entries_[idx].Tick) {
+      if (currentTick < ticks_[idx]) {
         Debug();
         throw new InvalidOperationException("Can't access before value born.");
       }
 
       var currentLen = rawIdx - entriesBeg_ + 1;
-      ref var e = ref entries_[idx];
+      var lastTouchedTick = ticks_[idx];
       entriesLen_ = Math.Min(currentLen, entriesLen_);
       lastTouchedLeap_ = currentLeap;
-      lastTouchedTick_ = e.Tick;
-      return new ReadOnlySpan<T>(e.Value);
+      lastTouchedTick_ = lastTouchedTick;
+      return new ReadOnlySpan<T>(storage_, (int)idx * size_, size_);
     }
   }
 
@@ -132,7 +127,7 @@ public struct SparseArray<T> : IValueArray<T> where T : struct {
       var currentTick = clock_.CurrentTick;
       var currentLeap = clock_.CurrentLeap;
       if (currentLeap == lastTouchedLeap_ && currentTick == lastTouchedTick_) {
-        return new Span<T>(entries_[(entriesBeg_ + entriesLen_ - 1) % Clock.HistoryLength].Value);
+        return new Span<T>(storage_, (int)((entriesBeg_ + entriesLen_ - 1) % Clock.HistoryLength) * size_, size_);
       }
 
       var tick = clock_.AdjustTick(lastTouchedLeap_, currentTick);
@@ -149,7 +144,7 @@ public struct SparseArray<T> : IValueArray<T> where T : struct {
           entriesBeg_ = (entriesBeg_ + 1) % Clock.HistoryLength;
         }
         else {
-          if (currentTick < entries_[idx].Tick) {
+          if (currentTick < ticks_[idx]) {
             Debug();
             throw new InvalidOperationException("Can't access before value born.");
           }
@@ -161,18 +156,20 @@ public struct SparseArray<T> : IValueArray<T> where T : struct {
         entriesLen_ = (rawIdx - entriesBeg_) + 1;
       }
 
-      entries_[idx].Tick = currentTick;
+      ticks_[idx] = currentTick;
       if (oldEntriesLen < entriesLen_) {
-        if (entries_[idx].Value == null) {
-          entries_[idx].Value = entries_[(idx + Clock.HistoryLength - 1) % Clock.HistoryLength].Value.Clone() as T[];
-        } else {
-          Array.Copy(entries_[(idx + Clock.HistoryLength - 1) % Clock.HistoryLength].Value, entries_[idx].Value, size_);
-        }
+        Array.Copy(
+          storage_,
+          (int)((idx + Clock.HistoryLength - 1) % Clock.HistoryLength) * size_,
+          storage_, 
+          idx * size_, 
+          size_
+          );
       }
 
       lastTouchedLeap_ = currentLeap;
       lastTouchedTick_ = currentTick;
-      return new Span<T>(entries_[idx].Value);
+      return new Span<T>(storage_, (int)idx * size_, size_);
     }
   }
 }
