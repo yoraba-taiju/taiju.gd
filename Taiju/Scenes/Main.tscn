@@ -48,12 +48,15 @@ fov = 45.0
 
 [node name="Background" type="Node3D" parent="."]
 
-[node name="Forest" type="MeshInstance3D" parent="Background"]
+[node name="Forest" type="Node3D" parent="Background"]
+script = ExtResource("2_2tbfw")
+
+[node name="Mesh" type="MeshInstance3D" parent="Background/Forest"]
 transform = Transform3D(160, 0, 0, 0, 154.548, -41.4112, 0, 41.4112, 154.548, 0, -60, -250)
 layers = 16
 material_overlay = SubResource("ShaderMaterial_vj3aa")
 mesh = SubResource("PlaneMesh_17g3q")
-script = ExtResource("2_2tbfw")
+skeleton = NodePath("../..")
 
 [node name="Field" type="Node3D" parent="."]
 
