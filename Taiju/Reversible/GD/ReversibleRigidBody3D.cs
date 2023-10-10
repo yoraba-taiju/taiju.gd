@@ -59,13 +59,9 @@ public abstract partial class ReversibleRigidBody3D : RigidBody3D, IReversibleNo
    * Default overrides
    */
 
-  public virtual bool _ProcessForward(double integrateTime, double dt) {
-    return true;
-  }
+  public abstract bool _ProcessForward(double integrateTime, double dt);
 
-  public virtual bool _ProcessBack() {
-    return true;
-  }
+  public abstract bool _ProcessBack();
 
   public virtual bool _ProcessLeap() {
     return true;

@@ -21,7 +21,7 @@ public partial class Sora : ReversibleNode3D {
   public override void _Ready() {
     base._Ready();
     state_ = new Dense<Record>(Clock, new Record {
-      Position = Vector3.Zero,
+      Position = Position,
       SpiritRot = 0.0,
     });
     spirit_ = GetNode<Node3D>("Spirit/Spirit");
@@ -65,10 +65,14 @@ public partial class Sora : ReversibleNode3D {
     // Update using current value.
     Position = pos;
     spirit_.Rotation = new Vector3(0.0f, (float)rot, 0.0f);
-    return base._ProcessForward(integrateTime, dt);
+    return true;
   }
 
   public override bool _ProcessBack() {
+    return LoadCurrentStatus();
+  }
+
+  private bool LoadCurrentStatus() {
     ref readonly var state = ref state_.Ref;
     Position = state.Position;
     spirit_.Rotation = new Vector3(0.0f, (float)state.SpiritRot, 0.0f);

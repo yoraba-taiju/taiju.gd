@@ -60,18 +60,14 @@ public abstract partial class ReversibleNode3D : Node3D, IReversibleNode {
    * Default overrides
    */
 
-  public virtual bool _ProcessForward(double integrateTime, double dt) {
-    return true;
-  }
+  public abstract bool _ProcessForward(double integrateTime, double dt);
 
-  public virtual bool _ProcessBack() {
-    return true;
-  }
+  public abstract bool _ProcessBack();
 
   public virtual bool _ProcessLeap() {
     return true;
   }
-  
+
   public virtual void _ProcessRaw(double integrateTime) {
   }
 }

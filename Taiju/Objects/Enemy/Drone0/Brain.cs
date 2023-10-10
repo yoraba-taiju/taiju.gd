@@ -34,7 +34,7 @@ public partial class Brain : EnemyBase {
     body_ = GetNode<Node3D>("Body");
     record_ = new Dense<Record>(Clock, new Record {
       State = State.Seek,
-      Position = Vector3.Zero,
+      Position = Position,
       Velocity = new Vector3(-10.0f, 0.0f, 0.0f),
     });
     var model = body_.GetNode<Node3D>("Model");
@@ -91,14 +91,22 @@ public partial class Brain : EnemyBase {
   }
 
   public override bool _ProcessBack() {
-    ref readonly var rec = ref record_.Ref;
-    Position = rec.Position;
-    body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity)));
+    return LoadCurrentStatus();
+  }
+
+  public override bool _ProcessLeap() {
     return true;
   }
 
   public override void _IntegrateForces(PhysicsDirectBodyState3D state) {
     ref readonly var rec = ref record_.Ref;
     state.LinearVelocity = rec.Velocity;
+  }
+
+  private bool LoadCurrentStatus() {
+    ref readonly var rec = ref record_.Ref;
+    Position = rec.Position;
+    body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity)));
+    return true;
   }
 }
