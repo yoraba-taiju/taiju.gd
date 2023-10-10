@@ -20,7 +20,7 @@ public abstract partial class ReversibleOneShotParticle3D : Node3D {
     public Color Color;
     public float Velocity;
     public Vector2 Angle;
-    public float LifeTime;
+    public double LifeTime;
   }
 
   // Storages

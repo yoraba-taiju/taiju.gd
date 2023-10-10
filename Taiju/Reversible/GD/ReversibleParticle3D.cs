@@ -20,10 +20,11 @@ public abstract partial class ReversibleParticle3D : ReversibleNode3D {
 
   protected struct Item {
     public bool Living;
+    public double EmitAt;
     public Color Color;
     public float Velocity;
     public Vector2 Angle;
-    public float LifeTime;
+    public double LifeTime;
   }
 
   // Storages
