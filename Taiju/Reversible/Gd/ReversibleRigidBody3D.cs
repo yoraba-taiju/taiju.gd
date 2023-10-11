@@ -1,4 +1,5 @@
-﻿using Godot;
+﻿using System;
+using Godot;
 using Taiju.Reversible.Gd.Companion;
 
 namespace Taiju.Reversible.Gd;
@@ -26,8 +27,8 @@ public abstract partial class ReversibleRigidBody3D : RigidBody3D, IReversibleNo
    * Helpers
    */
 
-  protected void Destroy(uint after) {
-    comp_.Destroy(this, after);
+  protected void Destroy(double after) {
+    comp_.Destroy(this, (uint)Math.Ceiling(after / ClockNode.TickTime));
   }
 
   protected void Destroy() {

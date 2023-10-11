@@ -11,7 +11,7 @@ public partial class ClockNode : Node3D {
   public double IntegrateTime => integrateTime_.Ref;
   private Dense<double> integrateTime_;
   private double leftToTick_ = 0.0;
-  private const double TickTime = 1.0 / 30.0;
+  public const double TickTime = 1.0 / 30.0;
 
   public enum TimeDirection {
     Stop,

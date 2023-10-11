@@ -26,8 +26,8 @@ public abstract partial class ReversibleNode3D : Node3D, IReversibleNode {
    * Helpers
    */
 
-  protected void Destroy(uint after) {
-    comp_.Destroy(this, after);
+  protected void Destroy(double after) {
+    comp_.Destroy(this, (uint)Math.Ceiling(after / ClockNode.TickTime));
   }
 
   protected void Destroy() {
