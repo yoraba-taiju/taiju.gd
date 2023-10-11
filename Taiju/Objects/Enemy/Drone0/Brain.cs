@@ -21,12 +21,14 @@ public partial class Brain : EnemyBase {
   }
 
   private Node3D body_;
+  private AnimationPlayer animPlayer_;
   private Dense<Record> record_;
 
   private record struct Record {
     public State State;
     public Vector3 Position;
     public Vector3 Velocity;
+    public double Animation;
   }
 
   public override void _Ready() {
@@ -36,14 +38,15 @@ public partial class Brain : EnemyBase {
       State = State.Seek,
       Position = Position,
       Velocity = new Vector3(-10.0f, 0.0f, 0.0f),
+      Animation = 0.0,
     });
     var model = body_.GetNode<Node3D>("Model");
-    var player = model.GetNode<AnimationPlayer>("AnimationPlayer");
-    var anim = player.GetAnimation("Rotate");
+    animPlayer_ = model.GetNode<AnimationPlayer>("AnimationPlayer");
+    var anim = animPlayer_.GetAnimation("Rotate");
     anim.LoopMode = Animation.LoopModeEnum.Linear;
     anim.RemoveTrack(anim.GetTrackCount() - 1);
-    player.PlaybackActive = true;
-    player.Play("Rotate");
+    animPlayer_.PlaybackActive = true;
+    animPlayer_.Play("Rotate");
     sora_ = GetNode<Sora>("/root/Root/Field/Witch/Sora");
   }
 
@@ -86,6 +89,7 @@ public partial class Brain : EnemyBase {
     // Update or Record godot states
     pos = Position;
     body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-velocity)));
+    rec.Animation = animPlayer_.CurrentAnimationPosition;
 
     return true;
   }
@@ -107,6 +111,7 @@ public partial class Brain : EnemyBase {
     ref readonly var rec = ref record_.Ref;
     Position = rec.Position;
     body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity)));
+    animPlayer_.Seek(rec.Animation, true);
     return true;
   }
 }
