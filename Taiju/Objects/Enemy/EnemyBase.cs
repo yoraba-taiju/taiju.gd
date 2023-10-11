@@ -5,7 +5,7 @@ using Taiju.Reversible.Gd;
 namespace Taiju.Objects.Enemy; 
 
 public abstract partial class EnemyBase : ReversibleRigidBody3D {
-  protected Sora Sora { get; private set; };
+  protected Sora Sora { get; private set; }
   protected Viewport Viewport;
   protected Camera3D Camera;
   protected Rect2 VisibleRect;
