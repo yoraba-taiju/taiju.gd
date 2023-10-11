@@ -41,7 +41,8 @@ public struct ReversibleCompanion {
         selfAsNode3D.QueueFree();
         return;
       }
-      if (currentTick <= destroyedAt_) {
+      if (!(currentTick < destroyedAt_)) {
+        // When destroy queued.
         return;
       }
       Rebirth(selfAsNode3D);
@@ -81,7 +82,7 @@ public struct ReversibleCompanion {
     self.Visible = false;
   }
 
-  public void Rebirth(Node3D self) {
+  private void Rebirth(Node3D self) {
     destoryed_ = false;
     destroyedAt_ = uint.MaxValue;
     self.Visible = true;
