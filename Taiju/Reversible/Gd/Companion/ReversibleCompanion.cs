@@ -9,7 +9,7 @@ public struct ReversibleCompanion {
   public Clock Clock { get; private set; }
   /// Clock Stats
   private double ClockIntegrateTime => ClockNode.IntegrateTime;
-  
+    
   private ClockNode.TimeDirection Direction => ClockNode.Direction;
   private bool Ticked => ClockNode.Ticked;
   private bool Leap => ClockNode.Leaped;
@@ -67,7 +67,7 @@ public struct ReversibleCompanion {
           lifeStatus_ = LifeStatus.Living;
           destroyQueuedAt_ = uint.MaxValue;
           destroyedAt_ = uint.MaxValue;
-          selfAsNode3D.Visible = false;
+          selfAsNode3D.Visible = true;
           break;
         }
         if (currentTick <= destroyQueuedAt_) {
@@ -85,7 +85,7 @@ public struct ReversibleCompanion {
     switch (Direction) {
       case ClockNode.TimeDirection.Stop:
         if (Leap) {
-          if (self._ProcessLeap()) {
+          if (self._ProcessLeap(integrateTime)) {
             return;
           }
           self._ProcessRaw(integrateTime);
@@ -98,7 +98,7 @@ public struct ReversibleCompanion {
         self._ProcessRaw(integrateTime);
         break;
       case ClockNode.TimeDirection.Back:
-        if (self._ProcessBack()) {
+        if (self._ProcessBack(integrateTime)) {
           return;
         }
         self._ProcessRaw(integrateTime);

@@ -22,17 +22,14 @@ public partial class ClockNode : Node3D {
   public bool Ticked { get; private set; }
   public bool Leaped { get; private set; }
 
-  /* GameObject Management */
-  public HashSet<Node3D> LivingEnemies { get; } = new();
-  private RingBuffer<(uint, Node3D)> deactivated_ = new(16384);
-
   public override void _Ready() {
     Clock = new Clock();
     integrateTime_ = new Dense<double>(Clock, 0.0);
+    leftToTick_ = 0.0;
   }
 
   public override void _Process(double delta) {
-    leftToTick_ += delta;
+    leftToTick_ -= delta;
     Direction = TimeDirection.Stop;
     Ticked = false;
     Leaped = false;
@@ -47,6 +44,7 @@ public partial class ClockNode : Node3D {
 
     // Leaped
     if (Input.IsActionJustReleased("time_back")) {
+      Direction = TimeDirection.Stop;
       leftToTick_ = 0.0;
       Clock.Leap();
       Leaped = true;
@@ -56,8 +54,8 @@ public partial class ClockNode : Node3D {
     // Backing
     if (Input.IsActionPressed("time_back")) {
       Direction = TimeDirection.Back;
-      if (leftToTick_ > TickTime) {
-        leftToTick_ -= TickTime;
+      if (leftToTick_ <= 0.0) {
+        leftToTick_ += TickTime;
         Clock.Back();
         Ticked = true;
       }
@@ -66,12 +64,12 @@ public partial class ClockNode : Node3D {
 
     // Forwarding
     Direction = TimeDirection.Forward;
-    ref var integrateTime = ref integrateTime_.Mut;
-    integrateTime += delta;
-    if (leftToTick_ > TickTime) {
-      leftToTick_ -= TickTime;
+    if (leftToTick_ <= 0.0) {
+      leftToTick_ += TickTime;
       Clock.Tick();
       Ticked = true;
     }
+    ref var integrateTime = ref integrateTime_.Mut;
+    integrateTime += delta;
   }
 }

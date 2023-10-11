@@ -61,11 +61,11 @@ public abstract partial class ReversibleParticle3D : ReversibleNode3D {
     return true;
   }
 
-  public override bool _ProcessBack() {
+  public override bool _ProcessBack(double integrateTime) {
     return true;
   }
 
-  public override bool _ProcessLeap() {
+  public override bool _ProcessLeap(double integrateTime) {
     // Do nothing.
     return true;
   }

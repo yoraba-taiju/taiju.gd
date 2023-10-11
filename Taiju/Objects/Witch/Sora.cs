@@ -67,7 +67,7 @@ public partial class Sora : ReversibleNode3D {
     return true;
   }
 
-  public override bool _ProcessBack() {
+  public override bool _ProcessBack(double integrateTime) {
     return LoadCurrentStatus();
   }
 

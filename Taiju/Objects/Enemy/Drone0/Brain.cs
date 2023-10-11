@@ -90,12 +90,8 @@ public partial class Brain : EnemyBase {
     return true;
   }
 
-  public override bool _ProcessBack() {
+  public override bool _ProcessBack(double integrateTime) {
     return LoadCurrentStatus();
-  }
-
-  public override bool _ProcessLeap() {
-    return true;
   }
 
   public override void _IntegrateForces(PhysicsDirectBodyState3D state) {

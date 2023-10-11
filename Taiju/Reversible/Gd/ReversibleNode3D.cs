@@ -11,6 +11,7 @@ public abstract partial class ReversibleNode3D : Node3D, IReversibleNode {
    * Members
    */
   protected Clock Clock => comp_.Clock;
+  protected ClockNode ClockNode => comp_.ClockNode;
 
   public override void _Ready() {
     comp_.Ready(this);
@@ -41,9 +42,9 @@ public abstract partial class ReversibleNode3D : Node3D, IReversibleNode {
 
   public abstract bool _ProcessForward(double integrateTime, double dt);
 
-  public abstract bool _ProcessBack();
+  public abstract bool _ProcessBack(double integrateTime);
 
-  public virtual bool _ProcessLeap() {
+  public virtual bool _ProcessLeap(double integrateTime) {
     return true;
   }
 

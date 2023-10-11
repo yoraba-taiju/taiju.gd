@@ -41,9 +41,9 @@ public abstract partial class ReversibleRigidBody3D : RigidBody3D, IReversibleNo
 
   public abstract bool _ProcessForward(double integrateTime, double dt);
 
-  public abstract bool _ProcessBack();
+  public abstract bool _ProcessBack(double integrateTime);
 
-  public virtual bool _ProcessLeap() {
+  public virtual bool _ProcessLeap(double integrateTime) {
     return true;
   }
 

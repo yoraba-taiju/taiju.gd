@@ -29,11 +29,16 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
   private Item[] items_;
   
   // Status
-  private Sparse<Record> rec_;
+  private bool emitted_;
+  private double emittedAt_;
+  
+  // Record
   private struct Record {
     public bool Emitted;
     public double InitialTime;
   }
+
+  private Sparse<Record> rec_;
 
   public override void _Ready() {
     base._Ready();
@@ -47,7 +52,10 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
     multiMesh_.Multimesh = Meshes;
     items_ = new Item[MeshCount];
     bornAt_ = clockNode_.IntegrateTime;
-    rec_ = new Sparse<Record>(Clock, new Record());
+    rec_ = new Sparse<Record>(Clock, new Record {
+      Emitted = false,
+      InitialTime = 0.0,
+    });
   }
   
   /*
@@ -55,27 +63,32 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
    */
 
   public override bool _ProcessForward(double integrateTime, double dt) {
-    return false;
-  }
-
-  public override bool _ProcessBack() {
-    return false;
-  }
-
-  public override bool _ProcessLeap() {
-    return false;
-  }
-
-  public override void _ProcessRaw(double integrateTime) {
     ref readonly var rec = ref rec_.Ref;
-    if (!rec.Emitted) {
+    if (!rec_.Ref.Emitted) {
       _Emit(ref items_);
       ref var recMut = ref rec_.Mut;
       recMut.Emitted = true;
       recMut.InitialTime = integrateTime;
       Destroy();
+      _Update(ref items_, 0.0);
+    } else {
+      _Update(ref items_, integrateTime - rec.InitialTime);
     }
-    _Update(ref items_, integrateTime - rec.InitialTime);
+    return true;
+  }
+
+  public override bool _ProcessBack(double integrateTime) {
+    ref readonly var rec = ref rec_.Ref;
+    integrateTime -= rec.InitialTime;
+    _Update(ref items_, integrateTime);
+    return false;
+  }
+
+  public override bool _ProcessLeap(double integrateTime) {
+    ref readonly var rec = ref rec_.Ref;
+    integrateTime -= rec.InitialTime;
+    _Update(ref items_, integrateTime);
+    return true;
   }
 
   /*
