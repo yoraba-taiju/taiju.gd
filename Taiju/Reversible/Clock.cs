@@ -3,7 +3,7 @@
 namespace Taiju.Reversible;
 
 public class Clock {
-  public const uint HistoryLength = 512;
+  public const uint HistoryLength = 128;
 
   /* current leaps */
   public uint CurrentLeap { get; private set; }
