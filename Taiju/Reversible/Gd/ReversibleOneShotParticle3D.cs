@@ -28,6 +28,7 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
   private Item[] items_;
 
   public override void _Ready() {
+    base._Ready();
     Meshes = new MultiMesh();
     clockNode_ = GetNode<ClockNode>("/root/Root/Clock");
     multiMesh_ = GetNode<MultiMeshInstance3D>("MultiMesh");
