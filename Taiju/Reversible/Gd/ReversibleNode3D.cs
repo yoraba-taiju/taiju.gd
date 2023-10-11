@@ -27,11 +27,11 @@ public abstract partial class ReversibleNode3D : Node3D, IReversibleNode {
    * Helpers
    */
 
-  protected void Destroy(double after) {
+  protected virtual void Destroy(double after) {
     comp_.Destroy(this, (uint)Math.Ceiling(after / ClockNode.TickTime));
   }
 
-  protected void Destroy() {
+  protected virtual void Destroy() {
     comp_.Destroy(this, 0);
   }
 

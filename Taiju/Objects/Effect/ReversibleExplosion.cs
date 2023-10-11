@@ -9,6 +9,14 @@ public partial class ReversibleExplosion : ReversibleOneShotParticle3D {
   [Export] private bool replaceHueWithRandomAngle_;
   private const double LifeTimeScale = 1.0 / 20.0;
 
+  protected override void Destroy() {
+    base.Destroy(MaxSpeed * LifeTimeScale);
+  }
+
+  protected override void Destroy(double after) {
+    base.Destroy(after + MaxSpeed * LifeTimeScale);
+  }
+
   protected override void _Update(ref Item[] items, double integrateTime) {
     var meshes = Meshes;
     var transform = Transform2D.Identity;
