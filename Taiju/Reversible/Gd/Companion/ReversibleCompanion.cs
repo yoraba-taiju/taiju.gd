@@ -77,7 +77,7 @@ public struct ReversibleCompanion {
   }
 
   public void Destroy(Node3D self) {
-    destroyed_ = false;
+    destroyed_ = true;
     destroyedAt_ = Clock.CurrentTick;
     self.Visible = false;
   }
