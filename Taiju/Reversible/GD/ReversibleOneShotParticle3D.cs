@@ -4,7 +4,7 @@ using Godot;
 namespace Taiju.Reversible.Gd;
 
 // https://docs.godotengine.org/en/stable/tutorials/performance/vertex_animation/controlling_thousands_of_fish.html
-public abstract partial class ReversibleOneShotParticle3D : Node3D {
+public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
   [Export] protected Mesh Mesh;
   [Export] protected int MeshCount = 16;
   [Export] protected float MaxSpeed = 10.0f;
@@ -40,12 +40,30 @@ public abstract partial class ReversibleOneShotParticle3D : Node3D {
     bornAt_ = clockNode_.IntegrateTime;
     _Emit(ref items_);
   }
+  
+  /*
+   * Default overrides
+   */
 
-  public override void _Process(double dt) {
-    var integrateTime = clockNode_.IntegrateTime - bornAt_;
+  public override bool _ProcessForward(double integrateTime, double dt) {
+    return false;
+  }
+
+  public override bool _ProcessBack() {
+    return false;
+  }
+
+  public override bool _ProcessLeap() {
+    return false;
+  }
+
+  public override void _ProcessRaw(double integrateTime) {
     _Update(ref items_, integrateTime);
   }
 
+  /*
+   * Overrides
+   */
   protected abstract void _Emit(ref Item[] items);
 
   protected abstract void _Update(ref Item[] items, double integrateTime);

@@ -14,6 +14,10 @@ public struct ReversibleCompanion {
   private bool Ticked => ClockNode.Ticked;
   private bool Leap => ClockNode.Leaped;
 
+  /// Lifetime
+  private bool destoryed_;
+  private uint destroyedAt_;
+
   /// This object
   private double bornAt_;
   
@@ -25,9 +29,25 @@ public struct ReversibleCompanion {
     ClockNode = self.GetNode<ClockNode>("/root/Root/Clock");
     Clock = ClockNode.Clock;
     bornAt_ = ClockIntegrateTime;
+    destoryed_ = false;
+    destroyedAt_ = uint.MaxValue;
   }
 
-  public void Process(IReversibleNode self, double delta) {
+  public void Process(Node3D selfAsNode3D, double delta) {
+    if (destoryed_) {
+      var currentTick = Clock.CurrentTick;
+      if (destroyedAt_ + Clock.HistoryLength <= currentTick) {
+        // Vanish self.
+        selfAsNode3D.QueueFree();
+        return;
+      }
+      if (currentTick <= destroyedAt_) {
+        return;
+      }
+      Rebirth(selfAsNode3D);
+    }
+
+    var self = (IReversibleNode) selfAsNode3D;
     var integrateTime = ClockIntegrateTime - bornAt_;
     switch (Direction) {
       case ClockNode.TimeDirection.Stop:
@@ -53,5 +73,17 @@ public struct ReversibleCompanion {
       default:
         throw new ArgumentOutOfRangeException();
     }
+  }
+
+  public void Destroy(Node3D self) {
+    destoryed_ = false;
+    destroyedAt_ = Clock.CurrentTick;
+    self.Visible = false;
+  }
+
+  public void Rebirth(Node3D self) {
+    destoryed_ = false;
+    destroyedAt_ = uint.MaxValue;
+    self.Visible = true;
   }
 }

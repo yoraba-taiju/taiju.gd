@@ -6,16 +6,28 @@ namespace Taiju.Reversible.Gd;
 public abstract partial class ReversibleRigidBody3D : RigidBody3D, IReversibleNode {
   private ReversibleCompanion comp_;
 
-  /// Members
+  /*
+   * Members
+   */
   protected Clock Clock => comp_.Clock;
 
   public override void _Ready() {
     comp_.Ready(this);
   }
 
-  /// Impls
+  /*
+   * Impls
+   */
   public override void _Process(double delta) {
     comp_.Process(this, delta);
+  }
+  
+  /*
+   * Helpers
+   */
+
+  protected void Destroy() {
+    comp_.Destroy(this);
   }
 
   /*
@@ -29,7 +41,7 @@ public abstract partial class ReversibleRigidBody3D : RigidBody3D, IReversibleNo
   public virtual bool _ProcessLeap() {
     return true;
   }
-  
+
   public virtual void _ProcessRaw(double integrateTime) {
   }
 }
