@@ -39,6 +39,7 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
     items_ = new Item[MeshCount];
     bornAt_ = clockNode_.IntegrateTime;
     _Emit(ref items_);
+    Destroy();
   }
   
   /*
