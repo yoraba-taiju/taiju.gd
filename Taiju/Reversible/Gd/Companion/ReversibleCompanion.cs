@@ -15,7 +15,13 @@ public struct ReversibleCompanion {
   private bool Leap => ClockNode.Leaped;
 
   /// Lifetime
-  private bool destroyed_;
+  private enum LifeStatus {
+    Living,
+    DestroyQueued,
+    Destroyed,
+  }
+  private LifeStatus lifeStatus_;
+  private uint destroyQueuedAt_;
   private uint destroyedAt_;
 
   /// This object
@@ -29,23 +35,48 @@ public struct ReversibleCompanion {
     ClockNode = self.GetNode<ClockNode>("/root/Root/Clock");
     Clock = ClockNode.Clock;
     bornAt_ = ClockIntegrateTime;
-    destroyed_ = false;
+    lifeStatus_ = LifeStatus.Living;
     destroyedAt_ = uint.MaxValue;
   }
 
   public void Process(Node3D selfAsNode3D, double delta) {
-    if (destroyed_) {
-      var currentTick = Clock.CurrentTick;
-      if (destroyedAt_ + Clock.HistoryLength <= currentTick) {
-        // Vanish self.
-        selfAsNode3D.QueueFree();
+    var currentTick = Clock.CurrentTick;
+    switch (lifeStatus_) {
+      case LifeStatus.Living:
+        break;
+      case LifeStatus.DestroyQueued:
+        if (destroyedAt_ <= currentTick) {
+          lifeStatus_ = LifeStatus.Destroyed;
+          selfAsNode3D.Visible = false;
+          return;
+        }
+        if (currentTick < destroyQueuedAt_) {
+          destroyQueuedAt_ = uint.MaxValue;
+          destroyedAt_ = uint.MaxValue;
+          selfAsNode3D.Visible = true;
+        }
+        break;
+      case LifeStatus.Destroyed:
+        if (destroyedAt_ + Clock.HistoryLength <= currentTick) {
+          // Vanish self.
+          selfAsNode3D.QueueFree();
+          return;
+        }
+        if (currentTick < destroyedAt_) {
+          lifeStatus_ = LifeStatus.Living;
+          destroyQueuedAt_ = uint.MaxValue;
+          destroyedAt_ = uint.MaxValue;
+          selfAsNode3D.Visible = false;
+          break;
+        }
+        if (currentTick < destroyQueuedAt_) {
+          lifeStatus_ = LifeStatus.DestroyQueued;
+          selfAsNode3D.Visible = true;
+          return;
+        }
         return;
-      }
-      if (!(currentTick < destroyedAt_)) {
-        // When destroy queued.
-        return;
-      }
-      Rebirth(selfAsNode3D);
+      default:
+        throw new ArgumentOutOfRangeException();
     }
 
     var self = (IReversibleNode) selfAsNode3D;
@@ -76,15 +107,15 @@ public struct ReversibleCompanion {
     }
   }
 
-  public void Destroy(Node3D self) {
-    destroyed_ = true;
-    destroyedAt_ = Clock.CurrentTick;
-    self.Visible = false;
-  }
-
-  private void Rebirth(Node3D self) {
-    destroyed_ = false;
-    destroyedAt_ = uint.MaxValue;
-    self.Visible = true;
+  public void Destroy(Node3D self, uint after) {
+    destroyQueuedAt_ = Clock.CurrentTick;
+    destroyedAt_ = Clock.CurrentTick + after;
+    if (after == 0) {
+      lifeStatus_ = LifeStatus.Destroyed;
+      self.Visible = false;
+    } else {
+      lifeStatus_ = LifeStatus.DestroyQueued;
+      self.Visible = true;
+    }
   }
 }
