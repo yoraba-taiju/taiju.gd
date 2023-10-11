@@ -1,5 +1,6 @@
 ﻿using System;
 using Godot;
+using Taiju.Reversible.Value;
 
 namespace Taiju.Reversible.Gd;
 
@@ -26,6 +27,13 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
   // Storages
   private ClockNode clockNode_;
   private Item[] items_;
+  
+  // Status
+  private Sparse<Record> rec_;
+  private struct Record {
+    public bool Emitted;
+    public double InitialTime;
+  }
 
   public override void _Ready() {
     base._Ready();
@@ -39,8 +47,7 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
     multiMesh_.Multimesh = Meshes;
     items_ = new Item[MeshCount];
     bornAt_ = clockNode_.IntegrateTime;
-    _Emit(ref items_);
-    Destroy();
+    rec_ = new Sparse<Record>(Clock, new Record());
   }
   
   /*
@@ -60,7 +67,15 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
   }
 
   public override void _ProcessRaw(double integrateTime) {
-    _Update(ref items_, integrateTime);
+    ref readonly var rec = ref rec_.Ref;
+    if (!rec.Emitted) {
+      _Emit(ref items_);
+      ref var recMut = ref rec_.Mut;
+      recMut.Emitted = true;
+      recMut.InitialTime = integrateTime;
+      Destroy();
+    }
+    _Update(ref items_, integrateTime - rec.InitialTime);
   }
 
   /*

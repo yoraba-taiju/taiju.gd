@@ -45,19 +45,20 @@ public struct ReversibleCompanion {
       case LifeStatus.Living:
         break;
       case LifeStatus.DestroyQueued:
-        if (destroyedAt_ <= currentTick) {
+        if (destroyedAt_ < currentTick) {
           lifeStatus_ = LifeStatus.Destroyed;
           selfAsNode3D.Visible = false;
           return;
         }
-        if (currentTick < destroyQueuedAt_) {
+        if (currentTick <= destroyQueuedAt_) {
+          lifeStatus_ = LifeStatus.Living;
           destroyQueuedAt_ = uint.MaxValue;
           destroyedAt_ = uint.MaxValue;
           selfAsNode3D.Visible = true;
         }
         break;
       case LifeStatus.Destroyed:
-        if (destroyedAt_ + Clock.HistoryLength <= currentTick) {
+        if (destroyedAt_ + Clock.HistoryLength < currentTick) {
           // Vanish self.
           selfAsNode3D.QueueFree();
           return;
@@ -69,7 +70,7 @@ public struct ReversibleCompanion {
           selfAsNode3D.Visible = false;
           break;
         }
-        if (currentTick < destroyQueuedAt_) {
+        if (currentTick <= destroyQueuedAt_) {
           lifeStatus_ = LifeStatus.DestroyQueued;
           selfAsNode3D.Visible = true;
           return;
