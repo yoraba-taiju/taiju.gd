@@ -12,9 +12,6 @@ public partial class Brain : EnemyBase {
   [Export(PropertyHint.Range, "0,20,")] private float escapeDistance_ = 12.0f;
 
   //
-  private Node3D sora_;
-
-  //
   private enum State {
     Seek,
     Escape,
@@ -47,7 +44,6 @@ public partial class Brain : EnemyBase {
     anim.RemoveTrack(anim.GetTrackCount() - 1);
     animPlayer_.PlaybackActive = true;
     animPlayer_.Play("Rotate");
-    sora_ = GetNode<Sora>("/root/Root/Field/Witch/Sora");
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
@@ -56,7 +52,7 @@ public partial class Brain : EnemyBase {
     ref var state = ref rec.State;
     ref var velocity = ref rec.Velocity;
     var currentPosition = rec.Position;
-    var soraPosition = sora_.Position;
+    var soraPosition = Sora.Position;
     var maxAngle = (float)(dt * maxRotateDegreePerSec_);
 
     switch (state) {
