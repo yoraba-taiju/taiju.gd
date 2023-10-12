@@ -3,7 +3,7 @@ using Taiju.Reversible.Gd;
 
 namespace Taiju.Objects.Bullets;
 
-public abstract partial class ServerBase : ReversibleNode3D {
+public abstract partial class BulletServer : ReversibleNode3D {
   [Export] private Mesh mesh_;
   private MultiMeshInstance3D multiMeshInstance3D_;
   private MultiMesh multiMesh_;

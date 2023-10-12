@@ -26,6 +26,7 @@ public partial class Brain : EnemyBase {
     public Vector3 Position;
     public Vector3 Velocity;
     public double Animation;
+    public bool Emitted;
   }
 
   public override void _Ready() {
@@ -36,6 +37,7 @@ public partial class Brain : EnemyBase {
       Position = Position,
       Velocity = new Vector3(-10.0f, 0.0f, 0.0f),
       Animation = 0.0,
+      Emitted = false,
     });
     var model = body_.GetNode<Node3D>("Model");
     animPlayer_ = model.GetNode<AnimationPlayer>("AnimationPlayer");
@@ -72,6 +74,14 @@ public partial class Brain : EnemyBase {
           var sign = Mathf.Sign(delta.Y);
           if (sign == 0) {
             sign = Math.Sign(Random.Shared.Next());
+          }
+
+          if (delta.Length() > escapeDistance_ * 2.0f) {
+            // shot once
+            if (!rec.Emitted) {
+              rec.Emitted = true;
+              
+            }
           }
 
           velocity = Vec.Rotate(rec.Velocity, sign * maxAngle) * Mathf.Exp((float)dt / 2);
