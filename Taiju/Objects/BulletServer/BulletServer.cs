@@ -10,7 +10,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
   where TParam: struct, IBullet
 {
   [Export] private Mesh mesh_;
-  private MultiMeshInstance3D multiMeshInstance3D_;
+  private MultiMeshInstance3D multiMeshInstance_;
   private MultiMesh multiMesh_;
   private struct Bullet {
     public bool Living;
@@ -25,10 +25,11 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
   private SparseArray<Bullet> bullets_;
   public override void _Ready() {
     base._Ready();
-    multiMeshInstance3D_ = new MultiMeshInstance3D();
-    AddChild(multiMeshInstance3D_);
+    multiMeshInstance_ = new MultiMeshInstance3D();
+    multiMeshInstance_.Name = "SpritesNode";
+    AddChild(multiMeshInstance_);
     multiMesh_ = new MultiMesh();
-    multiMeshInstance3D_.Multimesh = multiMesh_;
+    multiMeshInstance_.Multimesh = multiMesh_;
     multiMesh_.Mesh = mesh_;
     multiMesh_.UseCustomData = true;
     multiMesh_.InstanceCount = BulletCount;
