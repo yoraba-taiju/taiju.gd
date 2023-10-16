@@ -7,6 +7,7 @@
 transparency = 1
 vertex_color_use_as_albedo = true
 albedo_texture = ExtResource("2_pm02t")
+billboard_mode = 1
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_yuuuv"]
 material = SubResource("StandardMaterial3D_tlf4m")
@@ -19,6 +20,5 @@ script = ExtResource("1_sq2m3")
 color_ = Color(0.901961, 0.45098, 0.45098, 1)
 replaceHueWithRandomAngle_ = true
 Mesh = SubResource("PlaneMesh_yuuuv")
-OneShot = true
 
 [node name="MultiMesh" type="MultiMeshInstance3D" parent="."]
