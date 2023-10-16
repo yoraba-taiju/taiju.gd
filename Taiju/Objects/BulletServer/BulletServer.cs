@@ -50,25 +50,22 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
   public override bool _ProcessLeap(double integrateTime) {
     return false;
   }
-
+  
   public override void _ProcessRaw(double integrateTime) {
-    SpawnEnqueuedBullets(integrateTime);
-    var bullets = bullets_.Ref;
-    var meshes = multiMesh_;
-    var zero = Transform2D.Identity.ScaledLocal(Vector2.Zero);
-    for (var i = 0; i < BulletCount; ++i) {
-      ref readonly var bullet = ref bullets[i];
-      if (!bullet.Living) {
-        meshes.SetInstanceTransform2D(i, zero);
-        continue;
-      }
-
-      var pos = bullet.Param.PositionAt(integrateTime - bullet.SpawnAt);
-      var trans = Transform2D.Identity.TranslatedLocal(pos);
-      meshes.SetInstanceTransform2D(i, trans);
+    switch (ClockNode.Direction) {
+      case ClockNode.TimeDirection.Forward:
+        SpawnEnqueuedBullets(integrateTime);
+        ProcessBullets(integrateTime, true);
+        break;
+      case ClockNode.TimeDirection.Stop:
+      case ClockNode.TimeDirection.Back:
+        ProcessBullets(integrateTime, false);
+        break;
+      default:
+        throw new ArgumentOutOfRangeException();
     }
   }
-
+  
   private void SpawnEnqueuedBullets(double integrateTime) {
     if (spawnQueue_.Count == 0) {
       return;
@@ -88,6 +85,30 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
       }
       Console.WriteLine("Failed to spawn bullet. Full.");
       break;
+    }
+  }
+
+  private void ProcessBullets(double integrateTime, bool manageLiving) {
+    var bullets = bullets_.Ref;
+    var meshes = multiMesh_;
+    var ident = Transform2D.Identity;
+    var zero = ident.ScaledLocal(Vector2.Zero);
+    for (var i = 0; i < BulletCount; ++i) {
+      ref readonly var bullet = ref bullets[i];
+      if (!bullet.Living) {
+        meshes.SetInstanceTransform2D(i, zero);
+        continue;
+      }
+
+      var pos = bullet.Param.PositionAt(integrateTime - bullet.SpawnAt);
+      if (manageLiving) {
+        if (Mathf.Abs(pos.X) >= 25.0f || Mathf.Abs(pos.Y) >= 15.0f) {
+          bullets_.Mut[i].Living = false;
+          meshes.SetInstanceTransform2D(i, zero);
+          continue;
+        }
+      }
+      meshes.SetInstanceTransform2D(i, ident.TranslatedLocal(pos));
     }
   }
 
