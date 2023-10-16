@@ -47,12 +47,13 @@ public struct Sparse<T> : IValue<T> where T : struct {
         vs += ", ";
       }
     }
+
     vs += "]";
 
     var msg =
-      $"Current: {clock_.CurrentTick} / lastTouched: ({lastTouchedLeap_}, {lastTouchedTick_})" + 
+      $"Current: {clock_.CurrentTick} / lastTouched: ({lastTouchedLeap_}, {lastTouchedTick_})" +
       $"Record: {vs}";
-    
+
     Console.WriteLine(msg);
     //Godot.GD.Print(msg);
   }
@@ -68,8 +69,7 @@ public struct Sparse<T> : IValue<T> where T : struct {
 
       if (midTick < tick) {
         beg = midIdx + 1;
-      }
-      else {
+      } else {
         // tick < midTick
         end = midIdx;
       }
@@ -93,8 +93,7 @@ public struct Sparse<T> : IValue<T> where T : struct {
 
       if (midTick < tick) {
         beg = midIdx;
-      }
-      else {
+      } else {
         // tick < midTick
         end = midIdx - 1;
       }
@@ -152,8 +151,7 @@ public struct Sparse<T> : IValue<T> where T : struct {
       if (idx == entriesBeg_) {
         if (entriesLen_ == Clock.HistoryLength) {
           entriesBeg_ = (entriesBeg_ + 1) % Clock.HistoryLength;
-        }
-        else {
+        } else {
           if (currentTick < entries_[idx].Tick) {
             Debug();
             throw new InvalidOperationException("Can't access before value born.");
@@ -161,8 +159,7 @@ public struct Sparse<T> : IValue<T> where T : struct {
 
           entriesLen_ = (rawIdx - entriesBeg_) + 1;
         }
-      }
-      else {
+      } else {
         entriesLen_ = (rawIdx - entriesBeg_) + 1;
       }
 
@@ -170,8 +167,7 @@ public struct Sparse<T> : IValue<T> where T : struct {
       if (oldEntriesLen < entriesLen_) {
         if (clonerFn_ == null) {
           entries_[idx].Value = entries_[(idx + Clock.HistoryLength - 1) % Clock.HistoryLength].Value;
-        }
-        else {
+        } else {
           clonerFn_(
             ref entries_[idx].Value,
             in entries_[(idx + Clock.HistoryLength - 1) % Clock.HistoryLength].Value

@@ -37,12 +37,13 @@ public struct SparseArray<T> : IValueArray<T> where T : struct {
         vs += ", ";
       }
     }
+
     vs += "]";
 
     var msg =
-      $"Current: {clock_.CurrentTick} / lastTouched: ({lastTouchedLeap_}, {lastTouchedTick_})" + 
+      $"Current: {clock_.CurrentTick} / lastTouched: ({lastTouchedLeap_}, {lastTouchedTick_})" +
       $"Record: {vs}";
-    
+
     Console.WriteLine(msg);
     //Godot.GD.Print(msg);
   }
@@ -58,8 +59,7 @@ public struct SparseArray<T> : IValueArray<T> where T : struct {
 
       if (midTick < tick) {
         beg = midIdx + 1;
-      }
-      else {
+      } else {
         // tick < midTick
         end = midIdx;
       }
@@ -83,8 +83,7 @@ public struct SparseArray<T> : IValueArray<T> where T : struct {
 
       if (midTick < tick) {
         beg = midIdx;
-      }
-      else {
+      } else {
         // tick < midTick
         end = midIdx - 1;
       }
@@ -98,7 +97,8 @@ public struct SparseArray<T> : IValueArray<T> where T : struct {
       var currentTick = clock_.CurrentTick;
       var currentLeap = clock_.CurrentLeap;
       if (currentLeap == lastTouchedLeap_ && lastTouchedTick_ <= currentTick) {
-        return new ReadOnlySpan<T>(storage_, (int)((entriesBeg_ + entriesLen_ - 1) % Clock.HistoryLength) * size_, size_);
+        return new ReadOnlySpan<T>(storage_, (int)((entriesBeg_ + entriesLen_ - 1) % Clock.HistoryLength) * size_,
+          size_);
       }
 
       var tick = clock_.AdjustTick(lastTouchedLeap_, currentTick);
@@ -142,8 +142,7 @@ public struct SparseArray<T> : IValueArray<T> where T : struct {
       if (idx == entriesBeg_) {
         if (entriesLen_ == Clock.HistoryLength) {
           entriesBeg_ = (entriesBeg_ + 1) % Clock.HistoryLength;
-        }
-        else {
+        } else {
           if (currentTick < ticks_[idx]) {
             Debug();
             throw new InvalidOperationException("Can't access before value born.");
@@ -151,8 +150,7 @@ public struct SparseArray<T> : IValueArray<T> where T : struct {
 
           entriesLen_ = (rawIdx - entriesBeg_) + 1;
         }
-      }
-      else {
+      } else {
         entriesLen_ = (rawIdx - entriesBeg_) + 1;
       }
 
@@ -161,10 +159,10 @@ public struct SparseArray<T> : IValueArray<T> where T : struct {
         Array.Copy(
           storage_,
           (int)((idx + Clock.HistoryLength - 1) % Clock.HistoryLength) * size_,
-          storage_, 
-          idx * size_, 
+          storage_,
+          idx * size_,
           size_
-          );
+        );
       }
 
       lastTouchedLeap_ = currentLeap;
