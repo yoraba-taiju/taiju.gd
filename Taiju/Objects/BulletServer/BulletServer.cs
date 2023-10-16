@@ -55,11 +55,11 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
     switch (ClockNode.Direction) {
       case ClockNode.TimeDirection.Forward:
         SpawnEnqueuedBullets(integrateTime);
-        ProcessBullets(integrateTime, true);
+        ProcessBullets(true, integrateTime);
         break;
       case ClockNode.TimeDirection.Stop:
       case ClockNode.TimeDirection.Back:
-        ProcessBullets(integrateTime, false);
+        ProcessBullets(false, integrateTime);
         break;
       default:
         throw new ArgumentOutOfRangeException();
@@ -88,7 +88,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
     }
   }
 
-  private void ProcessBullets(double integrateTime, bool manageLiving) {
+  private void ProcessBullets(bool forward, double integrateTime) {
     var bullets = bullets_.Ref;
     var meshes = multiMesh_;
     var ident = Transform2D.Identity;
@@ -101,7 +101,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
       }
 
       var pos = bullet.Param.PositionAt(integrateTime - bullet.SpawnAt);
-      if (manageLiving) {
+      if (forward) {
         if (Mathf.Abs(pos.X) >= 25.0f || Mathf.Abs(pos.Y) >= 15.0f) {
           bullets_.Mut[i].Living = false;
           meshes.SetInstanceTransform2D(i, zero);
