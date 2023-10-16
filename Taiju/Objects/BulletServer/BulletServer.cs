@@ -25,7 +25,8 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
   private SparseArray<Bullet> bullets_;
   public override void _Ready() {
     base._Ready();
-    multiMeshInstance3D_ = GetNode<MultiMeshInstance3D>("Mesh");
+    multiMeshInstance3D_ = new MultiMeshInstance3D();
+    AddChild(multiMeshInstance3D_);
     multiMesh_ = new MultiMesh();
     multiMeshInstance3D_.Multimesh = multiMesh_;
     multiMesh_.Mesh = mesh_;
@@ -72,28 +73,34 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
       return;
     }
     var bullets = bullets_.Mut;
-    while (spawnQueue_.TryDequeue(out var param)) {
-      for (var i = 0; i < BulletCount; ++i) {
-        if (bullets[i].Living) {
-          continue;
-        }
-
-        bullets[i] = new Bullet {
-          Living = true,
-          SpawnAt = integrateTime,
-          Param = param,
-        };
+    for (var i = 0; i < BulletCount; ++i) {
+      if (bullets[i].Living) {
+        continue;
       }
-      Console.WriteLine("Failed to spawn bullet. Full.");
-      break;
-    }
-  }
 
+      var found = spawnQueue_.TryDequeue(out var param);
+      if (!found) {
+        break;
+      }
+      bullets[i] = new Bullet {
+        Living = true,
+        SpawnAt = integrateTime,
+        Param = param,
+      };
+    }
+    var leftBullets = spawnQueue_.Count;
+    if (leftBullets <= 0) {
+      return;
+    }
+    Console.WriteLine($"Failed to spawn {leftBullets} bullet. Full.");
+    spawnQueue_.Clear();
+  }
+  
   private void ProcessBullets(bool forward, double integrateTime) {
     var bullets = bullets_.Ref;
     var meshes = multiMesh_;
     var ident = Transform2D.Identity;
-    var zero = ident.ScaledLocal(Vector2.Zero);
+    var zero = new Transform2D().Scaled(Vector2.One * 10.0f);
     for (var i = 0; i < BulletCount; ++i) {
       ref readonly var bullet = ref bullets[i];
       if (!bullet.Living) {

@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=16 format=3 uid="uid://ceqv14au1y2ag"]
 
 [ext_resource type="Script" path="res://Reversible/Gd/ClockNode.cs" id="1_alw2w"]
 [ext_resource type="Material" uid="uid://dxb0h08vdwfrl" path="res://Background/Forest/Forest.tres" id="1_bmh26"]
 [ext_resource type="Script" path="res://Background/Forest/Forest.cs" id="2_2tbfw"]
 [ext_resource type="Script" path="res://Objects/Witch/Sora.cs" id="3_6q3cx"]
 [ext_resource type="PackedScene" uid="uid://qa808tl8icr3" path="res://Objects/Witch/Spirit.blend" id="3_ad04p"]
+[ext_resource type="Script" path="res://Objects/BulletServer/Bullets/LinearBulletServer.cs" id="6_ciiqb"]
 [ext_resource type="PackedScene" uid="uid://dj3ie2qhiow02" path="res://Objects/Enemy/Drone0/Drone0.tscn" id="6_j7xnn"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_aadso"]
@@ -26,6 +27,15 @@ ambient_light_source = 3
 [sub_resource type="PlaneMesh" id="PlaneMesh_17g3q"]
 material = ExtResource("1_bmh26")
 size = Vector2(4, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_emyw4"]
+billboard_mode = 1
+billboard_keep_scale = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_0fcqq"]
+material = SubResource("StandardMaterial3D_emyw4")
+size = Vector2(1, 1)
+orientation = 2
 
 [node name="Root" type="Node3D"]
 
@@ -69,7 +79,9 @@ transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
 
 [node name="WitchBullet" type="Node3D" parent="Field"]
 
-[node name="Mesh" type="MultiMeshInstance3D" parent="Field/WitchBullet"]
+[node name="SoraBulletServer" type="Node3D" parent="Field/WitchBullet"]
+script = ExtResource("6_ciiqb")
+mesh_ = SubResource("PlaneMesh_0fcqq")
 
 [node name="WitchEffect" type="Node3D" parent="Field"]
 
@@ -77,6 +89,8 @@ transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
 
 [node name="Drone0" parent="Field/Enemy" instance=ExtResource("6_j7xnn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.745, 0, 0)
+maxRotateDegreePerSec_ = null
+escapeDistance_ = null
 
 [node name="EnemyBulet" type="Node3D" parent="Field"]
 
