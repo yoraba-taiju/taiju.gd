@@ -29,7 +29,6 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
     multiMeshInstance_.Name = "SpritesNode";
     multiMesh_ = new MultiMesh();
     multiMesh_.Mesh = mesh_;
-    multiMesh_.UseCustomData = true;
     multiMesh_.TransformFormat = MultiMesh.TransformFormatEnum.Transform2D;
     multiMesh_.InstanceCount = (int)bulletCount_;
     multiMeshInstance_.Multimesh = multiMesh_;
@@ -119,13 +118,8 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
           continue;
         }
       }
-      meshes.SetInstanceTransform2D(i, ident.TranslatedLocal(pos));
-      meshes.SetInstanceCustomData(i, new Color {
-        R = angle.X,
-        G = angle.Y,
-        B = 0.0f,
-        A = 0.0f,
-      });
+      
+      meshes.SetInstanceTransform2D(i, ident.TranslatedLocal(pos).RotatedLocal(Mathf.Atan2(angle.Y, angle.X)));
     }
   }
 
