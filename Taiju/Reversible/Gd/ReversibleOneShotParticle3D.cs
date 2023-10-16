@@ -11,7 +11,7 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
   [Export] protected float MaxSpeed = 10.0f;
 
   // https://docs.godotengine.org/en/stable/classes/class_multimesh.html
-  private MultiMeshInstance3D multiMesh_;
+  private MultiMeshInstance3D multiMeshInstance_;
   
   // MeshData
   private double bornAt_;
@@ -44,12 +44,14 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
     base._Ready();
     Meshes = new MultiMesh();
     clockNode_ = GetNode<ClockNode>("/root/Root/Clock");
-    multiMesh_ = GetNode<MultiMeshInstance3D>("MultiMesh");
+    multiMeshInstance_ = new MultiMeshInstance3D();
+    multiMeshInstance_.Name = "SpritesNode";
+    AddChild(multiMeshInstance_);
     Meshes.TransformFormat = MultiMesh.TransformFormatEnum.Transform2D;
     Meshes.Mesh = Mesh;
     Meshes.UseColors = true;
     Meshes.InstanceCount = MeshCount;
-    multiMesh_.Multimesh = Meshes;
+    multiMeshInstance_.Multimesh = Meshes;
     items_ = new Item[MeshCount];
     bornAt_ = clockNode_.IntegrateTime;
     rec_ = new Sparse<Record>(Clock, new Record {
