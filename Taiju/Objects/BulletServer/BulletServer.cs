@@ -20,21 +20,21 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
 
   private Queue<TParam> spawnQueue_;
 
-  private const int BulletCount = 64;
+  [Export] private uint bulletCount_ = 64;
 
   private SparseArray<Bullet> bullets_;
   public override void _Ready() {
     base._Ready();
     multiMeshInstance_ = new MultiMeshInstance3D();
     multiMeshInstance_.Name = "SpritesNode";
-    AddChild(multiMeshInstance_);
     multiMesh_ = new MultiMesh();
-    multiMeshInstance_.Multimesh = multiMesh_;
     multiMesh_.Mesh = mesh_;
     multiMesh_.UseCustomData = true;
-    multiMesh_.InstanceCount = BulletCount;
     multiMesh_.TransformFormat = MultiMesh.TransformFormatEnum.Transform2D;
-    bullets_ = new SparseArray<Bullet>(Clock, BulletCount, new Bullet {
+    multiMesh_.InstanceCount = (int)bulletCount_;
+    multiMeshInstance_.Multimesh = multiMesh_;
+    AddChild(multiMeshInstance_);
+    bullets_ = new SparseArray<Bullet>(Clock, bulletCount_, new Bullet {
       Living = false,
       SpawnAt = 0.0,
       Param = new TParam(),
@@ -74,7 +74,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
       return;
     }
     var bullets = bullets_.Mut;
-    for (var i = 0; i < BulletCount; ++i) {
+    for (var i = 0; i < bulletCount_; ++i) {
       if (bullets[i].Living) {
         continue;
       }
@@ -102,7 +102,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
     var meshes = multiMesh_;
     var ident = Transform2D.Identity;
     var zero = new Transform2D();
-    for (var i = 0; i < BulletCount; ++i) {
+    for (var i = 0; i < bulletCount_; ++i) {
       ref readonly var bullet = ref bullets[i];
       if (!bullet.Living) {
         meshes.SetInstanceTransform2D(i, zero);
