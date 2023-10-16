@@ -11,7 +11,10 @@ public readonly struct Linear: IBullet {
     spawnPosition_ = spawnAt;
     velocity_ = initialSpeed;
   }
-  public Vector2 PositionAt(double integrateTime) {
-    return spawnPosition_ + velocity_ * (float)integrateTime;
+  public IBullet.Attitude AttitudeAt(double integrateTime) {
+    return new IBullet.Attitude {
+      Position = spawnPosition_ + velocity_ * (float)integrateTime,
+      Angle = velocity_,
+    };
   }
 }

@@ -29,6 +29,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
     multiMesh_ = new MultiMesh();
     multiMeshInstance3D_.Multimesh = multiMesh_;
     multiMesh_.Mesh = mesh_;
+    multiMesh_.UseCustomData = true;
     multiMesh_.InstanceCount = BulletCount;
     multiMesh_.TransformFormat = MultiMesh.TransformFormatEnum.Transform2D;
     bullets_ = new SparseArray<Bullet>(Clock, BulletCount, new Bullet {
@@ -100,7 +101,9 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
         continue;
       }
 
-      var pos = bullet.Param.PositionAt(integrateTime - bullet.SpawnAt);
+      var attitude = bullet.Param.AttitudeAt(integrateTime - bullet.SpawnAt);
+      var pos = attitude.Position;
+      var angle = attitude.Angle;
       if (forward) {
         if (Mathf.Abs(pos.X) >= 25.0f || Mathf.Abs(pos.Y) >= 15.0f) {
           bullets_.Mut[i].Living = false;
@@ -109,6 +112,12 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
         }
       }
       meshes.SetInstanceTransform2D(i, ident.TranslatedLocal(pos));
+      meshes.SetInstanceCustomData(i, new Color {
+        R = angle.X,
+        G = angle.Y,
+        B = 0.0f,
+        A = 0.0f,
+      });
     }
   }
 
