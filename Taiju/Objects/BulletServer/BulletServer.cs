@@ -100,7 +100,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
     var bullets = bullets_.Ref;
     var meshes = multiMesh_;
     var ident = Transform2D.Identity;
-    var zero = new Transform2D().Scaled(Vector2.One * 10.0f);
+    var zero = new Transform2D();
     for (var i = 0; i < BulletCount; ++i) {
       ref readonly var bullet = ref bullets[i];
       if (!bullet.Living) {
