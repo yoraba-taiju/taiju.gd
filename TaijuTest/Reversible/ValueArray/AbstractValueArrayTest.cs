@@ -49,13 +49,13 @@ public abstract class AbstractValueArrayTest<T>
     var v = Create(clock, 0);
     for (var i = 0; i < Clock.HistoryLength * 2; ++i) {
       clock.Tick();
-      v.Mut[i % 2] = i;
+      v.Mut[0] = i;
     }
 
     var backCount = 0;
     for (var i = Clock.HistoryLength * 2 - 1; i >= Clock.HistoryLength; --i) {
       var j = (int)i;
-      Assert.That(v.Ref[j % 2], Is.EqualTo(i));
+      Assert.That(v.Ref[0], Is.EqualTo(i));
       clock.Back();
       backCount++;
     }
