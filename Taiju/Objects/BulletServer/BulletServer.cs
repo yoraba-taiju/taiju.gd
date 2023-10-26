@@ -30,6 +30,8 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
     multiMesh_ = new MultiMesh();
     multiMesh_.Mesh = mesh_;
     multiMesh_.TransformFormat = MultiMesh.TransformFormatEnum.Transform2D;
+    multiMesh_.UseColors = true;
+    multiMesh_.UseCustomData = false;
     multiMesh_.InstanceCount = (int)bulletCount_;
     multiMeshInstance_.Multimesh = multiMesh_;
     AddChild(multiMeshInstance_);
@@ -73,6 +75,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
       return;
     }
     var bullets = bullets_.Mut;
+    var meshes = multiMesh_;
     for (var i = 0; i < bulletCount_; ++i) {
       if (bullets[i].Living) {
         continue;
@@ -87,6 +90,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
         SpawnAt = integrateTime,
         Param = param,
       };
+      meshes.SetInstanceColor(i, Colors.White);
     }
     var leftBullets = spawnQueue_.Count;
     if (leftBullets <= 0) {
@@ -100,11 +104,10 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
     var bullets = bullets_.Ref;
     var meshes = multiMesh_;
     var ident = Transform2D.Identity;
-    var zero = new Transform2D();
     for (var i = 0; i < bulletCount_; ++i) {
       ref readonly var bullet = ref bullets[i];
       if (!bullet.Living) {
-        meshes.SetInstanceTransform2D(i, zero);
+        meshes.SetInstanceColor(i, Colors.Transparent);
         continue;
       }
 
@@ -114,7 +117,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
       if (forward) {
         if (Mathf.Abs(pos.X) >= 25.0f || Mathf.Abs(pos.Y) >= 15.0f) {
           bullets_.Mut[i].Living = false;
-          meshes.SetInstanceTransform2D(i, zero);
+          meshes.SetInstanceColor(i, Colors.White);
           continue;
         }
       }
