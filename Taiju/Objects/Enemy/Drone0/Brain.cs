@@ -19,6 +19,7 @@ public partial class Brain : EnemyBase {
   private AnimationPlayer animPlayer_;
   private Dense<Record> record_;
   private RandomNumberGenerator rand_ = new();
+  private int defaultEscapeDirection_;
 
   private record struct Record {
     public State State;
@@ -45,6 +46,7 @@ public partial class Brain : EnemyBase {
     anim.RemoveTrack(anim.GetTrackCount() - 1);
     animPlayer_.PlaybackActive = true;
     animPlayer_.Play("Rotate");
+    defaultEscapeDirection_ = ((int)(rand_.Randi() % 2) * 2) - 1;
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
@@ -72,14 +74,13 @@ public partial class Brain : EnemyBase {
         if (delta.Length() < escapeDistance_) {
           var sign = Mathf.Sign(delta.Y);
           if (sign == 0) {
-            sign = 1;
+            sign = defaultEscapeDirection_;
           }
 
           if (delta.Length() > escapeDistance_ * 2.0f) {
             // shot once
             if (!rec.Emitted) {
               rec.Emitted = true;
-              
             }
           }
 
