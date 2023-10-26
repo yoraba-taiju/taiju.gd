@@ -7,6 +7,7 @@ using Vector3 = Godot.Vector3;
 namespace Taiju.Objects.Witch;
 
 public partial class Sora : ReversibleNode3D {
+  [Export] private SoraBulletServer bulletServer_;
   private const double MoveDelta = 16.0;
   private record struct Record {
     public Vector3 Position;
@@ -61,6 +62,11 @@ public partial class Sora : ReversibleNode3D {
     ref var rot = ref state.SpiritRot;
     rot += dt;
 
+    // Handle shot
+    if (Input.IsActionJustPressed("fire")) {
+      bulletServer_.Spawn(pos);
+    }
+    
     // Update using current value.
     Position = pos;
     spirit_.Rotation = new Vector3(0.0f, (float)rot, 0.0f);

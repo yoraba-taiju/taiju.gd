@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://dulu3o8yh1dam"]
+
+[ext_resource type="Script" path="res://Objects/Witch/SoraBullet.cs" id="1_vidhp"]
+[ext_resource type="Texture2D" uid="uid://df45t0qdvgo6u" path="res://Objects/Witch/textures/SoraBullet.png" id="1_wga83"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ois0p"]
+size = Vector3(3, 1.5, 1.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r8evr"]
+transparency = 1
+albedo_texture = ExtResource("1_wga83")
+billboard_mode = 1
+grow_amount = 0.7
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_p2wg3"]
+material = SubResource("StandardMaterial3D_r8evr")
+size = Vector2(3, 1.5)
+orientation = 2
+
+[node name="RigidBody3D" type="RigidBody3D"]
+gravity_scale = 0.0
+script = ExtResource("1_vidhp")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_ois0p")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_p2wg3")
