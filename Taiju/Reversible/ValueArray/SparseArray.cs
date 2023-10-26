@@ -124,7 +124,6 @@ public struct SparseArray<T> : IValueArray<T> where T : struct {
 
   public Span<T> Mut {
     get {
-      //Console.WriteLine($"current = {clock_.CurrentTick} beg = {entriesBeg_} len = {entriesLen_}, ticks[{entriesLen_ - 1}] = {ticks_[(entriesBeg_ + entriesLen_ - 1) % Clock.HistoryLength]}");
       var currentTick = clock_.CurrentTick;
       var currentLeap = clock_.CurrentLeap;
       if (currentLeap == lastTouchedLeap_ && currentTick == lastTouchedTick_) {
