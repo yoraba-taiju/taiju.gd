@@ -18,6 +18,7 @@ public partial class Brain : EnemyBase {
   private Node3D body_;
   private AnimationPlayer animPlayer_;
   private Dense<Record> record_;
+  private RandomNumberGenerator rand_ = new();
 
   private record struct Record {
     public State State;
@@ -71,7 +72,7 @@ public partial class Brain : EnemyBase {
         if (delta.Length() < escapeDistance_) {
           var sign = Mathf.Sign(delta.Y);
           if (sign == 0) {
-            sign = Math.Sign(Random.Shared.Next());
+            sign = (rand_.Randi() % 2) == 0 ? -1 : 1;
           }
 
           if (delta.Length() > escapeDistance_ * 2.0f) {

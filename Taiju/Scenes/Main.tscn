@@ -60,7 +60,7 @@ fov = 45.0
 script = ExtResource("2_2tbfw")
 
 [node name="Mesh" type="MeshInstance3D" parent="Background/Forest"]
-transform = Transform3D(160, 0, 0, 0, 154.548, -41.4112, 0, 41.4112, 154.548, 0, -50, -250)
+transform = Transform3D(160, 0, 0, 0, 149.4, -57.2686, 0, 57.2686, 149.4, 0, -50, -250)
 layers = 16
 material_overlay = SubResource("ShaderMaterial_vj3aa")
 mesh = SubResource("PlaneMesh_17g3q")
