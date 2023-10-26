@@ -114,14 +114,11 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
       var attitude = bullet.Param.AttitudeAt(integrateTime - bullet.SpawnAt);
       var pos = attitude.Position;
       var angle = attitude.Angle;
-      if (forward) {
-        if (Mathf.Abs(pos.X) >= 25.0f || Mathf.Abs(pos.Y) >= 15.0f) {
-          bullets_.Mut[i].Living = false;
-          meshes.SetInstanceColor(i, Colors.White);
-          continue;
-        }
+      if (forward && Mathf.Abs(pos.X) >= 25.0f || Mathf.Abs(pos.Y) >= 15.0f) {
+        bullets_.Mut[i].Living = false;
+        meshes.SetInstanceColor(i, Colors.White);
+        continue;
       }
-      
       meshes.SetInstanceTransform2D(i, ident.TranslatedLocal(pos).RotatedLocal(Mathf.Atan2(angle.Y, angle.X)));
     }
   }
