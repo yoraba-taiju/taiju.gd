@@ -150,6 +150,14 @@ public struct Sparse<T> : IValue<T> where T : struct {
       var idx = rawIdx % Clock.HistoryLength;
       if (idx == entriesBeg_) {
         if (entriesLen_ == Clock.HistoryLength) {
+          if (clonerFn_ == null) {
+            entries_[idx].Value = entries_[(entriesBeg_ + Clock.HistoryLength - 1) % Clock.HistoryLength].Value;
+          } else {
+            clonerFn_(
+              ref entries_[idx].Value,
+              in entries_[(entriesBeg_ + Clock.HistoryLength - 1) % Clock.HistoryLength].Value
+            );
+          }
           entriesBeg_ = (entriesBeg_ + 1) % Clock.HistoryLength;
         } else {
           if (currentTick < entries_[idx].Tick) {
@@ -159,6 +167,7 @@ public struct Sparse<T> : IValue<T> where T : struct {
 
           entriesLen_ = (rawIdx - entriesBeg_) + 1;
         }
+        
       } else {
         entriesLen_ = (rawIdx - entriesBeg_) + 1;
       }
