@@ -119,7 +119,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
         meshes.SetInstanceColor(i, Colors.White);
         continue;
       }
-      meshes.SetInstanceTransform2D(i, ident.TranslatedLocal(pos).RotatedLocal(Mathf.Atan2(angle.Y, angle.X)));
+      meshes.SetInstanceTransform2D(i, ident.RotatedLocal(Mathf.Atan2(angle.Y, angle.X)).TranslatedLocal(pos));
     }
   }
 
