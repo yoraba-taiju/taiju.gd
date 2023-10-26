@@ -47,13 +47,13 @@ public abstract class AbstractValueTest<T>
     var v = Create(clock, 0);
     for (var i = 0; i < Clock.HistoryLength * 2; ++i) {
       clock.Tick();
-      v.Mut = i;
+      v.Mut = i + 1;
     }
 
     var backCount = 0;
     for (var i = Clock.HistoryLength * 2 - 1; i >= Clock.HistoryLength; --i) {
-      Assert.That(v.Ref, Is.EqualTo(i));
-      Assert.That(v.Ref + 4, Is.EqualTo(clock.CurrentTick));
+      Assert.That(v.Ref , Is.EqualTo(i + 1));
+      Assert.That(v.Ref + 4, Is.EqualTo(clock.CurrentTick + 1));
       clock.Back();
       backCount++;
     }
