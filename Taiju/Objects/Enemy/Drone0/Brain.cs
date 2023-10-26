@@ -72,7 +72,7 @@ public partial class Brain : EnemyBase {
         if (delta.Length() < escapeDistance_) {
           var sign = Mathf.Sign(delta.Y);
           if (sign == 0) {
-            sign = (rand_.Randi() % 2) == 0 ? -1 : 1;
+            sign = 1;
           }
 
           if (delta.Length() > escapeDistance_ * 2.0f) {
