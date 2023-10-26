@@ -123,7 +123,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
     }
   }
 
-  public void Spawn(TParam item) {
+  protected void Spawn(TParam item) {
     spawnQueue_.Enqueue(item);
   }
 }
