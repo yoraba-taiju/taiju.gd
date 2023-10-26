@@ -47,14 +47,18 @@ public abstract class AbstractValueArrayTest<T>
     clock.Tick();
     clock.Tick();
     var v = Create(clock, 0);
-    for (var i = 0; i < Clock.HistoryLength * 2; ++i) {
-      clock.Tick();
-      Assert.That(v.Ref[0], Is.EqualTo(i));
-      Assert.That(v.Mut[0], Is.EqualTo(i));
-      v.Mut[0] = i + 1;
-    }
+    for (var i = 0; i < Clock.HistoryLength * 2; ++i)
+        {
+            clock.Tick();
+            Assert.Multiple(() =>
+            {
+                Assert.That(v.Ref[0], Is.EqualTo(i));
+                Assert.That(v.Mut[0], Is.EqualTo(i));
+            });
+            v.Mut[0] = i + 1;
+        }
 
-    var backCount = 0;
+        var backCount = 0;
     for (var i = Clock.HistoryLength * 2 - 1; i >= Clock.HistoryLength; --i) {
       Assert.That(v.Ref[0], Is.EqualTo(i + 1));
       clock.Back();

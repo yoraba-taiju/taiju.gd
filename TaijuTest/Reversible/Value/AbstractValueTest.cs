@@ -47,6 +47,11 @@ public abstract class AbstractValueTest<T>
     var v = Create(clock, 0);
     for (var i = 0; i < Clock.HistoryLength * 2; ++i) {
       clock.Tick();
+      Assert.Multiple(() =>
+      {
+        Assert.That(v.Ref, Is.EqualTo(i));
+        Assert.That(v.Mut, Is.EqualTo(i));
+      });
       v.Mut = i + 1;
     }
 
