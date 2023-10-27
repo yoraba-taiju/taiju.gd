@@ -32,6 +32,10 @@ public partial class ReversibleExplosion : ReversibleOneShotParticle3D {
     }
   }
 
+  protected override double Lifetime() {
+    return MaxSpeed * LifeTimeScale;
+  }
+
   protected override void _Emit(ref Item[] items) {
     var rand = new RandomNumberGenerator();
     var zero = Transform2D.Identity;

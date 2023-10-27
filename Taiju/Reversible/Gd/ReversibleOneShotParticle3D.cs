@@ -71,10 +71,13 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
       ref var recMut = ref record_.Mut;
       recMut.Emitted = true;
       recMut.InitialTime = integrateTime;
-      Destroy();
       _Update(ref items_, 0.0);
     } else {
-      _Update(ref items_, integrateTime - rec.InitialTime);
+      var time = integrateTime - rec.InitialTime;
+      _Update(ref items_, time);
+      if (time > Lifetime()) {
+        Destroy();
+      }
     }
     return true;
   }
@@ -99,5 +102,7 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
   protected abstract void _Emit(ref Item[] items);
 
   protected abstract void _Update(ref Item[] items, double integrateTime);
+
+  protected abstract double Lifetime();
 }
 
