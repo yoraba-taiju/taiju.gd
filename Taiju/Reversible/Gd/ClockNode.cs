@@ -98,7 +98,7 @@ public partial class ClockNode : Node3D {
   private void ProcessRescue() {
     while (!graveyard_.IsEmpty) {
       ref readonly var it = ref graveyard_.Last;
-      if (it.DestroyedAt <= Clock.CurrentTick) {
+      if (it.DestroyedAt == Clock.CurrentTick) {
         (it.Node as IReversibleNode)?.Rescue();
         graveyard_.RemoveLast();
       } else {
