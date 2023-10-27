@@ -18,6 +18,8 @@ public struct ReversibleCompanion<T>
 
   /// This object
   private double bornAt_;
+
+  private uint bornAtTick_;
   
   /**
    * Impls
@@ -27,10 +29,14 @@ public struct ReversibleCompanion<T>
     ClockNode = self.GetNode<ClockNode>("/root/Root/Clock");
     Clock = ClockNode.Clock;
     bornAt_ = ClockIntegrateTime;
+    bornAtTick_ = Clock.CurrentTick;
   }
 
-  public void Process(T node, double delta) {
-    var self = (IReversibleNode)node;
+  public void Process(T self, double delta) {
+    if (Clock.CurrentTick < bornAtTick_) {
+      self.QueueFree();
+      return;
+    }
     var integrateTime = ClockIntegrateTime - bornAt_;
     switch (Direction) {
       case ClockNode.TimeDirection.Stop:
@@ -58,13 +64,13 @@ public struct ReversibleCompanion<T>
     }
   }
 
-  public void Destroy(Node3D self) {
+  public void Destroy(T self) {
     ClockNode.Destroy(self);
     self.Visible = false;
     self.SetDeferred("process_mode", (int)Node.ProcessModeEnum.Disabled);
   }
 
-  public void Rescue(Node3D self) {
+  public void Rescue(T self) {
     self.Visible = true;
     self.SetDeferred("process_mode", (int)Node.ProcessModeEnum.Inherit);
   }
