@@ -17,9 +17,8 @@ public struct ReversibleCompanion<T>
   private bool Leap => ClockNode.Leaped;
 
   /// This object
+  private uint bornTick_;
   private double bornAt_;
-
-  private uint bornAtTick_;
   
   /**
    * Impls
@@ -28,12 +27,12 @@ public struct ReversibleCompanion<T>
   public void Ready(Node3D self) {
     ClockNode = self.GetNode<ClockNode>("/root/Root/Clock");
     Clock = ClockNode.Clock;
+    bornTick_ = Clock.CurrentTick;
     bornAt_ = ClockIntegrateTime;
-    bornAtTick_ = Clock.CurrentTick;
   }
 
   public void Process(T self, double delta) {
-    if (Clock.CurrentTick < bornAtTick_) {
+    if (Clock.CurrentTick < bornTick_) {
       self.QueueFree();
       return;
     }
