@@ -8,8 +8,8 @@ namespace Taiju.Objects.Witch;
 public partial class SoraBullet : ReversibleRigidBody3D {
   private Vector3 spawnPoint_;
   private Area3D area_;
-  private Dense<State> state_;
-  private struct State {
+  private Dense<Record> state_;
+  private struct Record {
     public Vector3 Position;
   }
   public override void _Ready() {
@@ -17,7 +17,7 @@ public partial class SoraBullet : ReversibleRigidBody3D {
     spawnPoint_ = Position;
     area_ = GetNode<Area3D>("Collider");
     area_.BodyEntered += OnCollide;
-    state_ = new Dense<State>(Clock, new State {
+    state_ = new Dense<Record>(Clock, new Record {
       Position = Position,
     });
   }
