@@ -38,7 +38,7 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
     public double InitialTime;
   }
 
-  private Sparse<Record> rec_;
+  private Sparse<Record> record_;
 
   public override void _Ready() {
     base._Ready();
@@ -54,7 +54,7 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
     multiMeshInstance_.Multimesh = Meshes;
     items_ = new Item[MeshCount];
     bornAt_ = clockNode_.IntegrateTime;
-    rec_ = new Sparse<Record>(Clock, new Record {
+    record_ = new Sparse<Record>(Clock, new Record {
       Emitted = false,
       InitialTime = 0.0,
     });
@@ -65,10 +65,10 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
    */
 
   public override bool _ProcessForward(double integrateTime, double dt) {
-    ref readonly var rec = ref rec_.Ref;
-    if (!rec_.Ref.Emitted) {
+    ref readonly var rec = ref record_.Ref;
+    if (!record_.Ref.Emitted) {
       _Emit(ref items_);
-      ref var recMut = ref rec_.Mut;
+      ref var recMut = ref record_.Mut;
       recMut.Emitted = true;
       recMut.InitialTime = integrateTime;
       Destroy();
@@ -80,14 +80,14 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
   }
 
   public override bool _ProcessBack(double integrateTime) {
-    ref readonly var rec = ref rec_.Ref;
+    ref readonly var rec = ref record_.Ref;
     integrateTime -= rec.InitialTime;
     _Update(ref items_, integrateTime);
     return false;
   }
 
   public override bool _ProcessLeap(double integrateTime) {
-    ref readonly var rec = ref rec_.Ref;
+    ref readonly var rec = ref record_.Ref;
     integrateTime -= rec.InitialTime;
     _Update(ref items_, integrateTime);
     return true;
