@@ -79,8 +79,10 @@ public partial class Sora : ReversibleNode3D {
 
   private bool LoadCurrentStatus() {
     ref readonly var state = ref state_.Ref;
-    Position = state.Position;
-    spirit_.Rotation = new Vector3(0.0f, (float)state.SpiritRot, 0.0f);
+    ref readonly var pos = ref state.Position;
+    ref readonly var rot = ref state.SpiritRot;
+    Position = pos;
+    spirit_.Rotation = new Vector3(0.0f, (float)rot, 0.0f);
     return true;
   }
 }
