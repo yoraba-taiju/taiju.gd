@@ -52,6 +52,7 @@ public struct ReversibleCompanion<T>
           if (destroyedAt_ < currentTick) {
             lifeStatus_ = LifeStatus.Destroyed;
             self.Visible = false;
+            self.SetDeferred("process_mode", (int)Node.ProcessModeEnum.Disabled);
             return;
           }
           if (currentTick <= destroyQueuedAt_) {
@@ -59,6 +60,7 @@ public struct ReversibleCompanion<T>
             destroyQueuedAt_ = uint.MaxValue;
             destroyedAt_ = uint.MaxValue;
             self.Visible = true;
+            self.SetDeferred("process_mode", (int)Node.ProcessModeEnum.Inherit);
           }
           break;
         case LifeStatus.Destroyed:
@@ -72,11 +74,13 @@ public struct ReversibleCompanion<T>
             destroyQueuedAt_ = uint.MaxValue;
             destroyedAt_ = uint.MaxValue;
             self.Visible = true;
+            self.SetDeferred("process_mode", (int)Node.ProcessModeEnum.Inherit);
             break;
           }
           if (currentTick <= destroyQueuedAt_) {
             lifeStatus_ = LifeStatus.DestroyQueued;
             self.Visible = true;
+            self.SetDeferred("process_mode", (int)Node.ProcessModeEnum.Inherit);
             return;
           }
           return;
@@ -116,14 +120,19 @@ public struct ReversibleCompanion<T>
   }
 
   public void Destroy(Node3D self, uint after) {
+    if (lifeStatus_ != LifeStatus.Living) {
+      return;
+    }
     destroyQueuedAt_ = Clock.CurrentTick;
     destroyedAt_ = Clock.CurrentTick + after;
     if (after == 0) {
       lifeStatus_ = LifeStatus.Destroyed;
       self.Visible = false;
+      self.SetDeferred("process_mode", (int)Node.ProcessModeEnum.Disabled);
     } else {
       lifeStatus_ = LifeStatus.DestroyQueued;
       self.Visible = true;
+      self.SetDeferred("process_mode", (int)Node.ProcessModeEnum.Inherit);
     }
   }
 }
