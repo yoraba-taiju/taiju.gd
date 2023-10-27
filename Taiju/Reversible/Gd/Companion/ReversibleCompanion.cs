@@ -16,16 +16,6 @@ public struct ReversibleCompanion<T>
   private bool Ticked => ClockNode.Ticked;
   private bool Leap => ClockNode.Leaped;
 
-  /// Lifetime
-  private enum LifeStatus {
-    Living,
-    DestroyQueued,
-    Destroyed,
-  }
-  private LifeStatus lifeStatus_;
-  private uint destroyQueuedAt_;
-  private uint destroyedAt_;
-
   /// This object
   private double bornAt_;
   
@@ -37,102 +27,45 @@ public struct ReversibleCompanion<T>
     ClockNode = self.GetNode<ClockNode>("/root/Root/Clock");
     Clock = ClockNode.Clock;
     bornAt_ = ClockIntegrateTime;
-    lifeStatus_ = LifeStatus.Living;
-    destroyedAt_ = uint.MaxValue;
   }
 
   public void Process(T node, double delta) {
-    {
-      var self = (Node3D)node;
-      var currentTick = Clock.CurrentTick;
-      switch (lifeStatus_) {
-        case LifeStatus.Living:
-          break;
-        case LifeStatus.DestroyQueued:
-          if (destroyedAt_ < currentTick) {
-            lifeStatus_ = LifeStatus.Destroyed;
-            self.Visible = false;
-            self.SetDeferred("process_mode", (int)Node.ProcessModeEnum.Disabled);
+    var self = (IReversibleNode)node;
+    var integrateTime = ClockIntegrateTime - bornAt_;
+    switch (Direction) {
+      case ClockNode.TimeDirection.Stop:
+        if (Leap) {
+          if (self._ProcessLeap(integrateTime)) {
             return;
           }
-          if (currentTick <= destroyQueuedAt_) {
-            lifeStatus_ = LifeStatus.Living;
-            destroyQueuedAt_ = uint.MaxValue;
-            destroyedAt_ = uint.MaxValue;
-            self.Visible = true;
-            self.SetDeferred("process_mode", (int)Node.ProcessModeEnum.Inherit);
-          }
-          break;
-        case LifeStatus.Destroyed:
-          if (destroyedAt_ + Clock.HistoryLength < currentTick) {
-            // Vanish self.
-            self.QueueFree();
-            return;
-          }
-          if (currentTick < destroyedAt_) {
-            lifeStatus_ = LifeStatus.Living;
-            destroyQueuedAt_ = uint.MaxValue;
-            destroyedAt_ = uint.MaxValue;
-            self.Visible = true;
-            self.SetDeferred("process_mode", (int)Node.ProcessModeEnum.Inherit);
-            break;
-          }
-          if (currentTick <= destroyQueuedAt_) {
-            lifeStatus_ = LifeStatus.DestroyQueued;
-            self.Visible = true;
-            self.SetDeferred("process_mode", (int)Node.ProcessModeEnum.Inherit);
-            return;
-          }
+          self._ProcessRaw(integrateTime);
+        }
+        break;
+      case ClockNode.TimeDirection.Forward:
+        if (self._ProcessForward(integrateTime, delta)) {
           return;
-        default:
-          throw new ArgumentOutOfRangeException();
-      }
-    }
-
-    {
-      var self = (IReversibleNode)node;
-      var integrateTime = ClockIntegrateTime - bornAt_;
-      switch (Direction) {
-        case ClockNode.TimeDirection.Stop:
-          if (Leap) {
-            if (self._ProcessLeap(integrateTime)) {
-              return;
-            }
-            self._ProcessRaw(integrateTime);
-          }
-          break;
-        case ClockNode.TimeDirection.Forward:
-          if (self._ProcessForward(integrateTime, delta)) {
-            return;
-          }
-          self._ProcessRaw(integrateTime);
-          break;
-        case ClockNode.TimeDirection.Back:
-          if (self._ProcessBack(integrateTime)) {
-            return;
-          }
-          self._ProcessRaw(integrateTime);
-          break;
-        default:
-          throw new ArgumentOutOfRangeException();
-      }
+        }
+        self._ProcessRaw(integrateTime);
+        break;
+      case ClockNode.TimeDirection.Back:
+        if (self._ProcessBack(integrateTime)) {
+          return;
+        }
+        self._ProcessRaw(integrateTime);
+        break;
+      default:
+        throw new ArgumentOutOfRangeException();
     }
   }
 
-  public void Destroy(Node3D self, uint after) {
-    if (lifeStatus_ != LifeStatus.Living) {
-      return;
-    }
-    destroyQueuedAt_ = Clock.CurrentTick;
-    destroyedAt_ = Clock.CurrentTick + after;
-    if (after == 0) {
-      lifeStatus_ = LifeStatus.Destroyed;
-      self.Visible = false;
-      self.SetDeferred("process_mode", (int)Node.ProcessModeEnum.Disabled);
-    } else {
-      lifeStatus_ = LifeStatus.DestroyQueued;
-      self.Visible = true;
-      self.SetDeferred("process_mode", (int)Node.ProcessModeEnum.Inherit);
-    }
+  public void Destroy(Node3D self) {
+    ClockNode.Destroy(self);
+    self.Visible = false;
+    self.SetDeferred("process_mode", (int)Node.ProcessModeEnum.Disabled);
+  }
+
+  public void Rescue(Node3D self) {
+    self.Visible = true;
+    self.SetDeferred("process_mode", (int)Node.ProcessModeEnum.Inherit);
   }
 }

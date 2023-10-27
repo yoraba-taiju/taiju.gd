@@ -27,12 +27,12 @@ public abstract partial class ReversibleRigidBody3D : RigidBody3D, IReversibleNo
    * Helpers
    */
 
-  protected void Destroy(double after) {
-    comp_.Destroy(this, (uint)Math.Ceiling(after / ClockNode.TickTime));
+  public void Destroy() {
+    comp_.Destroy(this);
   }
 
-  protected void Destroy() {
-    comp_.Destroy(this, 0);
+  public void Rescue() {
+    comp_.Rescue(this);
   }
 
   /*
