@@ -3,7 +3,9 @@ using Godot;
 
 namespace Taiju.Reversible.Gd.Companion;
 
-public struct ReversibleCompanion {
+public struct ReversibleCompanion<T>
+  where T: Node3D, IReversibleNode
+{
   /// Accessors
   public ClockNode ClockNode { get; private set; }
   public Clock Clock { get; private set; }
@@ -39,72 +41,77 @@ public struct ReversibleCompanion {
     destroyedAt_ = uint.MaxValue;
   }
 
-  public void Process(Node3D selfAsNode3D, double delta) {
-    var currentTick = Clock.CurrentTick;
-    switch (lifeStatus_) {
-      case LifeStatus.Living:
-        break;
-      case LifeStatus.DestroyQueued:
-        if (destroyedAt_ < currentTick) {
-          lifeStatus_ = LifeStatus.Destroyed;
-          selfAsNode3D.Visible = false;
-          return;
-        }
-        if (currentTick <= destroyQueuedAt_) {
-          lifeStatus_ = LifeStatus.Living;
-          destroyQueuedAt_ = uint.MaxValue;
-          destroyedAt_ = uint.MaxValue;
-          selfAsNode3D.Visible = true;
-        }
-        break;
-      case LifeStatus.Destroyed:
-        if (destroyedAt_ + Clock.HistoryLength < currentTick) {
-          // Vanish self.
-          selfAsNode3D.QueueFree();
-          return;
-        }
-        if (currentTick < destroyedAt_) {
-          lifeStatus_ = LifeStatus.Living;
-          destroyQueuedAt_ = uint.MaxValue;
-          destroyedAt_ = uint.MaxValue;
-          selfAsNode3D.Visible = true;
+  public void Process(T node, double delta) {
+    {
+      var self = (Node3D)node;
+      var currentTick = Clock.CurrentTick;
+      switch (lifeStatus_) {
+        case LifeStatus.Living:
           break;
-        }
-        if (currentTick <= destroyQueuedAt_) {
-          lifeStatus_ = LifeStatus.DestroyQueued;
-          selfAsNode3D.Visible = true;
+        case LifeStatus.DestroyQueued:
+          if (destroyedAt_ < currentTick) {
+            lifeStatus_ = LifeStatus.Destroyed;
+            self.Visible = false;
+            return;
+          }
+          if (currentTick <= destroyQueuedAt_) {
+            lifeStatus_ = LifeStatus.Living;
+            destroyQueuedAt_ = uint.MaxValue;
+            destroyedAt_ = uint.MaxValue;
+            self.Visible = true;
+          }
+          break;
+        case LifeStatus.Destroyed:
+          if (destroyedAt_ + Clock.HistoryLength < currentTick) {
+            // Vanish self.
+            self.QueueFree();
+            return;
+          }
+          if (currentTick < destroyedAt_) {
+            lifeStatus_ = LifeStatus.Living;
+            destroyQueuedAt_ = uint.MaxValue;
+            destroyedAt_ = uint.MaxValue;
+            self.Visible = true;
+            break;
+          }
+          if (currentTick <= destroyQueuedAt_) {
+            lifeStatus_ = LifeStatus.DestroyQueued;
+            self.Visible = true;
+            return;
+          }
           return;
-        }
-        return;
-      default:
-        throw new ArgumentOutOfRangeException();
+        default:
+          throw new ArgumentOutOfRangeException();
+      }
     }
 
-    var self = (IReversibleNode) selfAsNode3D;
-    var integrateTime = ClockIntegrateTime - bornAt_;
-    switch (Direction) {
-      case ClockNode.TimeDirection.Stop:
-        if (Leap) {
-          if (self._ProcessLeap(integrateTime)) {
+    {
+      var self = (IReversibleNode)node;
+      var integrateTime = ClockIntegrateTime - bornAt_;
+      switch (Direction) {
+        case ClockNode.TimeDirection.Stop:
+          if (Leap) {
+            if (self._ProcessLeap(integrateTime)) {
+              return;
+            }
+            self._ProcessRaw(integrateTime);
+          }
+          break;
+        case ClockNode.TimeDirection.Forward:
+          if (self._ProcessForward(integrateTime, delta)) {
             return;
           }
           self._ProcessRaw(integrateTime);
-        }
-        break;
-      case ClockNode.TimeDirection.Forward:
-        if (self._ProcessForward(integrateTime, delta)) {
-          return;
-        }
-        self._ProcessRaw(integrateTime);
-        break;
-      case ClockNode.TimeDirection.Back:
-        if (self._ProcessBack(integrateTime)) {
-          return;
-        }
-        self._ProcessRaw(integrateTime);
-        break;
-      default:
-        throw new ArgumentOutOfRangeException();
+          break;
+        case ClockNode.TimeDirection.Back:
+          if (self._ProcessBack(integrateTime)) {
+            return;
+          }
+          self._ProcessRaw(integrateTime);
+          break;
+        default:
+          throw new ArgumentOutOfRangeException();
+      }
     }
   }
 

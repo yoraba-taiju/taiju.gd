@@ -5,7 +5,7 @@ using Taiju.Reversible.Gd.Companion;
 namespace Taiju.Reversible.Gd;
 
 public abstract partial class ReversibleNode3D : Node3D, IReversibleNode {
-  private ReversibleCompanion comp_;
+  private ReversibleCompanion<ReversibleNode3D> comp_;
 
   /*
    * Members
