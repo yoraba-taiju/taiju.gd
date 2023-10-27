@@ -16,7 +16,7 @@ public abstract partial class EnemyBase : ReversibleRigidBody3D {
 
   public void Hit() {
     Shield -= 1;
-    if (Shield < 0) {
+    if (Shield <= 0) {
       Destroy();
     }
   }

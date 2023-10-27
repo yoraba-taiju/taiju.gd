@@ -11,13 +11,19 @@ public partial class SoraBullet : ReversibleRigidBody3D {
     base._Ready();
     spawnPoint_ = Position;
     area_ = GetNode<Area3D>("Collider");
-    area_.BodyEntered += area => {
-      if (area is EnemyBase) {
-        var enemy = (EnemyBase)area;
-        enemy.Hit();
-        Destroy();
-      }
-    };
+    area_.BodyEntered += OnCollide;
+  }
+
+  private void OnCollide(Node3D node) {
+    if (node is EnemyBase) {
+      var enemy = (EnemyBase)node;
+      enemy.Hit();
+      Destroy();
+    }
+  }
+
+  public override void _IntegrateForces(PhysicsDirectBodyState3D state) {
+    state.LinearVelocity = Vector3.Right * 20.0f;
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
