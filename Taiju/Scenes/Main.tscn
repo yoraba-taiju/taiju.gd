@@ -82,6 +82,8 @@ bulletScene_ = ExtResource("5_kp850")
 
 [node name="Drone0" parent="Field/Enemy" instance=ExtResource("6_j7xnn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.745, 0, 0)
+collision_layer = 3
+collision_mask = 3
 
 [node name="EnemyBulet" type="Node3D" parent="Field"]
 

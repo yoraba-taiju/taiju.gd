@@ -47,6 +47,7 @@ public partial class Brain : EnemyBase {
     animPlayer_.PlaybackActive = true;
     animPlayer_.Play("Rotate");
     defaultEscapeDirection_ = ((int)(rand_.Randi() % 2) * 2) - 1;
+    Shield = 1;
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {

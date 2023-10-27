@@ -1,10 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://dulu3o8yh1dam"]
+[gd_scene load_steps=7 format=3 uid="uid://dulu3o8yh1dam"]
 
 [ext_resource type="Script" path="res://Objects/Witch/SoraBullet.cs" id="1_vidhp"]
 [ext_resource type="Texture2D" uid="uid://df45t0qdvgo6u" path="res://Objects/Witch/textures/SoraBullet.png" id="1_wga83"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_ois0p"]
-size = Vector3(3, 1.5, 1.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r8evr"]
 transparency = 1
@@ -17,12 +14,31 @@ material = SubResource("StandardMaterial3D_r8evr")
 size = Vector2(3, 1.5)
 orientation = 2
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_ois0p"]
+size = Vector3(3, 1.5, 1.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_13fpm"]
+size = Vector3(3, 1.5, 1.5)
+
 [node name="RigidBody3D" type="RigidBody3D"]
+collision_layer = 4
+collision_mask = 4
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
 gravity_scale = 0.0
 script = ExtResource("1_vidhp")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="Sprite" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_p2wg3")
+
+[node name="RigidShape" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_ois0p")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("PlaneMesh_p2wg3")
+[node name="Collider" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="Shape" type="CollisionShape3D" parent="Collider"]
+shape = SubResource("BoxShape3D_13fpm")
