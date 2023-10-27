@@ -32,7 +32,7 @@ public partial class ReversibleExplosion : ReversibleOneShotParticle3D {
     }
   }
 
-  protected override double Lifetime() {
+  protected override double _Lifetime() {
     return MaxSpeed * LifeTimeScale;
   }
 

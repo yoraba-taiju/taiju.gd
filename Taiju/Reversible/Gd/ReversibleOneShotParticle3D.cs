@@ -13,6 +13,9 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
   // https://docs.godotengine.org/en/stable/classes/class_multimesh.html
   private MultiMeshInstance3D multiMeshInstance_;
   
+  // Lifetime
+  private double lifeTime_;
+  
   // MeshData
   private double bornAt_;
   protected MultiMesh Meshes { get; private set; }
@@ -42,6 +45,7 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
 
   public override void _Ready() {
     base._Ready();
+    lifeTime_ = _Lifetime();
     Meshes = new MultiMesh();
     clockNode_ = GetNode<ClockNode>("/root/Root/Clock");
     multiMeshInstance_ = new MultiMeshInstance3D();
@@ -75,7 +79,7 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
     } else {
       var time = integrateTime - rec.InitialTime;
       _Update(ref items_, time);
-      if (time > Lifetime()) {
+      if (time > lifeTime_) {
         Destroy();
       }
     }
@@ -99,10 +103,10 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
   /*
    * Overrides
    */
+  protected abstract double _Lifetime();
+
   protected abstract void _Emit(ref Item[] items);
 
   protected abstract void _Update(ref Item[] items, double integrateTime);
-
-  protected abstract double Lifetime();
 }
 
