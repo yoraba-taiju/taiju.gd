@@ -12,6 +12,7 @@ public partial class Sora : ReversibleNode3D {
   private record struct Record {
     public Vector3 Position;
     public double SpiritRot;
+    public double AfterFire;
   }
   private Dense<Record> state_;
   
@@ -23,6 +24,7 @@ public partial class Sora : ReversibleNode3D {
     state_ = new Dense<Record>(Clock, new Record {
       Position = Position,
       SpiritRot = 0.0,
+      AfterFire = 0.0,
     });
     spirit_ = GetNode<Node3D>("Spirit/Spirit");
   }
@@ -63,8 +65,18 @@ public partial class Sora : ReversibleNode3D {
     rot += dt;
 
     // Handle shot
+    ref var afterFire = ref state.AfterFire;
     if (Input.IsActionJustPressed("fire")) {
       bulletServer_.Spawn(pos);
+      afterFire = 0.0;
+    } else if (Input.IsActionPressed("fire")) {
+      afterFire += dt;
+      if (afterFire > 0.10) {
+        bulletServer_.SpawnDouble(pos);
+        afterFire -= 0.10;
+      }
+    } else {
+      afterFire = 0.0;
     }
     
     // Update using current value.

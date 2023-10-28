@@ -18,4 +18,18 @@ public partial class SoraBulletServer : ReversibleNode3D {
     bullet.Position = pos;
     AddChild(bullet);
   }
+
+  public void SpawnDouble(Vector3 pos) {
+    {
+      var bullet = bulletScene_.Instantiate<SoraBullet>();
+      bullet.Position = pos + Vector3.Up / 2.0f;
+      AddChild(bullet);
+    }
+    {
+      var bullet = bulletScene_.Instantiate<SoraBullet>();
+      bullet.Position = pos + Vector3.Down / 2.0f;
+      AddChild(bullet);
+    }
+  }
+
 }
