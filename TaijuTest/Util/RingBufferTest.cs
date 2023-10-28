@@ -6,35 +6,49 @@ public class RingBufferTest {
   [Test]
   public void BasicTest() {
     var buff = new RingBuffer<int>(8192);
-    Assert.That(buff.IsEmpty, Is.True);
-    Assert.That(buff.IsFull, Is.False);
+    Assert.Multiple(() => {
+      Assert.That(buff.IsEmpty, Is.True);
+      Assert.That(buff.IsFull, Is.False);
+    });
     buff.AddLast(1);
-    Assert.That(buff.IsEmpty, Is.False);
-    Assert.That(buff.IsFull, Is.False);
-    Assert.That(buff.First, Is.EqualTo(1));
-    Assert.That(buff.Last, Is.EqualTo(1));
+    Assert.Multiple(() => {
+      Assert.That(buff.IsEmpty, Is.False);
+      Assert.That(buff.IsFull, Is.False);
+      Assert.That(buff.First, Is.EqualTo(1));
+      Assert.That(buff.Last, Is.EqualTo(1));
+    });
     buff.AddLast(2);
-    Assert.That(buff.First, Is.EqualTo(1));
-    Assert.That(buff.Last, Is.EqualTo(2));
+    Assert.Multiple(() => {
+      Assert.That(buff.First, Is.EqualTo(1));
+      Assert.That(buff.Last, Is.EqualTo(2));
+    });
     buff.AddFirst(0);
-    Assert.That(buff.First, Is.EqualTo(0));
-      
-    Assert.That(buff[0], Is.EqualTo(0));
-    Assert.That(buff[1], Is.EqualTo(1));
-    Assert.That(buff[2], Is.EqualTo(2));
-  }
-  [Test]
+    Assert.Multiple(() => {
+      Assert.That(buff.First, Is.EqualTo(0));
+      Assert.That(buff[0], Is.EqualTo(0));
+      Assert.That(buff[1], Is.EqualTo(1));
+      Assert.That(buff[2], Is.EqualTo(2));
+    });
+    }
+
+    [Test]
   public void EmptyTest() {
     var buff = new RingBuffer<int>(1);
-    Assert.IsFalse(buff.IsFull);
+    Assert.Multiple(() => {
+      Assert.That(buff.IsFull, Is.False);
+      Assert.That(buff.IsEmpty, Is.True);
+   });
     buff.AddLast(1);
-    Assert.IsTrue(buff.IsFull);
+    Assert.Multiple(() => {
+      Assert.That(buff.IsFull, Is.True);
+      Assert.That(buff.IsEmpty, Is.False);
+    });
     Assert.Throws<InvalidOperationException>(() => {
       buff.AddLast(2);
     });
   }
 
-  [Test]
+    [Test]
   public void RingTest() {
     var buff = new RingBuffer<int>(256);
     Assert.That(buff.IsFull, Is.False);
