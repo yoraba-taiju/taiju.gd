@@ -6,7 +6,7 @@ using Vector3 = Godot.Vector3;
 
 namespace Taiju.Objects.Witch;
 
-public partial class Sora : ReversibleNode3D {
+public partial class Sora : ReversibleRigidBody3D {
   [Export] private SoraBulletServer bulletServer_;
   private const double MoveDelta = 16.0;
   private record struct Record {
