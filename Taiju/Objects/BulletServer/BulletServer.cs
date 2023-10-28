@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Godot;
+using Taiju.Objects.Witch;
 using Taiju.Reversible.Gd;
 using Taiju.Reversible.ValueArray;
 
@@ -23,6 +24,8 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
   [Export] private uint bulletCount_ = 64;
 
   private SparseArray<Bullet> bullets_;
+
+  protected Sora Sora;
   public override void _Ready() {
     base._Ready();
     multiMeshInstance_ = new MultiMeshInstance3D();
@@ -41,6 +44,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
       Param = new TParam(),
     });
     spawnQueue_ = new Queue<TParam>();
+    Sora = GetNode<Sora>("/root/Root/Field/Witch/Sora");
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
