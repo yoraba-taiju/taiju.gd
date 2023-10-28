@@ -53,7 +53,7 @@ fov = 45.0
 script = ExtResource("2_2tbfw")
 
 [node name="Mesh" type="MeshInstance3D" parent="Background/Forest"]
-transform = Transform3D(160, 0, 0, 0, 149.4, -57.2686, 0, 57.2686, 149.4, 0, -50, -250)
+transform = Transform3D(160, 0, 0, 0, 149.373, -57.3389, 0, 57.3389, 149.373, 0, -50, -250)
 layers = 16
 material_overlay = SubResource("ShaderMaterial_vj3aa")
 mesh = SubResource("PlaneMesh_17g3q")
@@ -82,8 +82,6 @@ bulletScene_ = ExtResource("5_kp850")
 
 [node name="Drone0" parent="Field/Enemy" instance=ExtResource("6_j7xnn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.745, 0, 0)
-collision_layer = 3
-collision_mask = 3
 
 [node name="EnemyBulet" type="Node3D" parent="Field"]
 
