@@ -71,9 +71,9 @@ public partial class Sora : ReversibleNode3D {
       afterFire = 0.0;
     } else if (Input.IsActionPressed("fire")) {
       afterFire += dt;
-      if (afterFire > 0.10) {
+      if (afterFire > 0.08) {
         bulletServer_.SpawnDouble(pos);
-        afterFire -= 0.10;
+        afterFire -= 0.08;
       }
     } else {
       afterFire = 0.0;
