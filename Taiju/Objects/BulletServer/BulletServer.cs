@@ -10,10 +10,10 @@ namespace Taiju.Objects.BulletServer;
 public abstract partial class BulletServer<TParam> : ReversibleNode3D
   where TParam: struct, IBullet
 {
-  [Export] private Mesh mesh_;
+  [Export] protected Mesh Mesh;
   private MultiMeshInstance3D multiMeshInstance_;
   private MultiMesh multiMesh_;
-  private struct Bullet {
+  protected struct Bullet {
     public bool Living;
     public double SpawnAt;
     public TParam Param;
@@ -23,7 +23,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
 
   [Export] private uint bulletCount_ = 64;
 
-  private SparseArray<Bullet> bullets_;
+  protected SparseArray<Bullet> Bullets;
 
   protected Sora Sora;
   public override void _Ready() {
@@ -31,14 +31,14 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
     multiMeshInstance_ = new MultiMeshInstance3D();
     multiMeshInstance_.Name = "SpritesNode";
     multiMesh_ = new MultiMesh();
-    multiMesh_.Mesh = mesh_;
+    multiMesh_.Mesh = Mesh;
     multiMesh_.TransformFormat = MultiMesh.TransformFormatEnum.Transform2D;
     multiMesh_.UseColors = true;
     multiMesh_.UseCustomData = false;
     multiMesh_.InstanceCount = (int)bulletCount_;
     multiMeshInstance_.Multimesh = multiMesh_;
     AddChild(multiMeshInstance_);
-    bullets_ = new SparseArray<Bullet>(Clock, bulletCount_, new Bullet {
+    Bullets = new SparseArray<Bullet>(Clock, bulletCount_, new Bullet {
       Living = false,
       SpawnAt = 0.0,
       Param = new TParam(),
@@ -78,10 +78,11 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
     if (spawnQueue_.Count == 0) {
       return;
     }
-    var bullets = bullets_.Mut;
+    var bullets = Bullets.Mut;
     var meshes = multiMesh_;
     for (var i = 0; i < bulletCount_; ++i) {
-      if (bullets[i].Living) {
+      ref var bullet = ref bullets[i];
+      if (bullet.Living) {
         continue;
       }
 
@@ -89,7 +90,8 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
       if (!found) {
         break;
       }
-      bullets[i] = new Bullet {
+
+      bullet = new Bullet {
         Living = true,
         SpawnAt = integrateTime,
         Param = param,
@@ -105,29 +107,30 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
   }
   
   private void ProcessBullets(bool forward, double integrateTime) {
-    var bullets = bullets_.Ref;
+    var bullets = Bullets.Mut;
     var meshes = multiMesh_;
     var ident = Transform2D.Identity;
     for (var i = 0; i < bulletCount_; ++i) {
-      ref readonly var bullet = ref bullets[i];
+      ref var bullet = ref bullets[i];
       if (!bullet.Living) {
-        meshes.SetInstanceColor(i, Colors.Transparent);
         continue;
       }
 
       var attitude = bullet.Param.AttitudeAt(integrateTime - bullet.SpawnAt);
       var pos = attitude.Position;
       var angle = attitude.Angle;
-      if (forward && Mathf.Abs(pos.X) >= 25.0f || Mathf.Abs(pos.Y) >= 15.0f) {
-        bullets_.Mut[i].Living = false;
-        meshes.SetInstanceColor(i, Colors.White);
+      if (forward && (Mathf.Abs(pos.X) >= 25.0f || Mathf.Abs(pos.Y) >= 15.0f || OnBulletMove(attitude))) {
+        bullet.Living = false;
+        meshes.SetInstanceColor(i, Colors.Transparent);
         continue;
       }
-      meshes.SetInstanceTransform2D(i, ident.RotatedLocal(Mathf.Atan2(angle.Y, angle.X)).TranslatedLocal(pos));
+      meshes.SetInstanceTransform2D(i, ident.RotatedLocal(angle.Angle()).TranslatedLocal(pos));
     }
   }
 
   protected void Spawn(TParam item) {
     spawnQueue_.Enqueue(item);
   }
+
+  protected abstract bool OnBulletMove(IBullet.Attitude attitude);
 }

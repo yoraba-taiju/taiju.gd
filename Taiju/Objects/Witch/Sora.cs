@@ -97,4 +97,8 @@ public partial class Sora : ReversibleRigidBody3D {
     spirit_.Rotation = new Vector3(0.0f, (float)rot, 0.0f);
     return true;
   }
+
+  public void Hit() {
+    
+  }
 }
