@@ -35,19 +35,19 @@ public partial class Sora : ReversibleNode3D {
     var deltaPos = new Vector3();
     var moved = false;
     if (Input.IsActionPressed("move_right")) {
-      deltaPos.X += 1;
+      deltaPos.X += 1.0f;
       moved = true;
     }
     if (Input.IsActionPressed("move_left")) {
-      deltaPos.X -= 1;
+      deltaPos.X -= 1.0f;
       moved = true;
     }
     if (Input.IsActionPressed("move_up")) {
-      deltaPos.Y += 1;
+      deltaPos.Y += 1.0f;
       moved = true;
     }
     if (Input.IsActionPressed("move_down")) {
-      deltaPos.Y -= 1;
+      deltaPos.Y -= 1.0f;
       moved = true;
     }
 
