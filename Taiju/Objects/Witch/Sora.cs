@@ -99,6 +99,6 @@ public partial class Sora : ReversibleRigidBody3D {
   }
 
   public void Hit() {
-    
+    Console.WriteLine("Hit");
   }
 }

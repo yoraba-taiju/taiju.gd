@@ -3,8 +3,8 @@ using Taiju.Objects.BulletServer.Bullets;
 
 namespace Taiju.Objects.BulletServer.Servers; 
 
-public class CircleBulletServer : LinearBulletServer {
-  [Export] private double size_;
+public partial class CircleBulletServer : LinearBulletServer {
+  [Export] private double size_ = 1.0;
   private double sizeSquared_;
   public override void _Ready() {
     base._Ready();
