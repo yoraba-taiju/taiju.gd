@@ -37,6 +37,12 @@ public partial class SoraBullet : ReversibleRigidBody3D {
   private void OnForward() {
     ref var state = ref record_.Mut;
     ref var pos = ref state.Position;
+    
+    if (Mathf.Abs(pos.X) >= 21.00001f || Mathf.Abs(pos.Y) >= 11.50001f) {
+      Destroy();
+    }
+
+    // Record
     pos = Position;
   }
 

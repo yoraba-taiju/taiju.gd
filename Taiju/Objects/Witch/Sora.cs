@@ -54,8 +54,8 @@ public partial class Sora : ReversibleNode3D {
     if (moved) {
       deltaPos = deltaPos.Normalized() * (float)(dt * MoveDelta);
       pos += deltaPos;
-      pos.X = Math.Clamp(pos.X, -21.0f, 21.0f);
-      pos.Y = Math.Clamp(pos.Y, -11.5f, 11.5f);
+      pos.X = Mathf.Clamp(pos.X, -21.0f, 21.0f);
+      pos.Y = Mathf.Clamp(pos.Y, -11.5f, 11.5f);
     }
 
     // Spirit rot
