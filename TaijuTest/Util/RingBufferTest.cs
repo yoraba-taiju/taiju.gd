@@ -6,11 +6,11 @@ public class RingBufferTest {
   [Test]
   public void BasicTest() {
     var buff = new RingBuffer<int>(8192);
-    Assert.IsTrue(buff.IsEmpty);
-    Assert.IsFalse(buff.IsFull);
+    Assert.That(buff.IsEmpty, Is.True);
+    Assert.That(buff.IsFull, Is.False);
     buff.AddLast(1);
-    Assert.IsFalse(buff.IsEmpty);
-    Assert.IsFalse(buff.IsFull);
+    Assert.That(buff.IsEmpty, Is.False);
+    Assert.That(buff.IsFull, Is.False);
     Assert.That(buff.First, Is.EqualTo(1));
     Assert.That(buff.Last, Is.EqualTo(1));
     buff.AddLast(2);
@@ -33,20 +33,47 @@ public class RingBufferTest {
       buff.AddLast(2);
     });
   }
+
+  [Test]
+  public void RingTest() {
+    var buff = new RingBuffer<int>(256);
+    Assert.That(buff.IsFull, Is.False);
+    Assert.That(buff.IsEmpty, Is.True);
+    for (var i = 0; i < buff.Capacity; ++i) {
+      buff.AddLast(i);
+      Assert.That(buff.Last, Is.EqualTo(i));
+      Assert.That(buff.First, Is.EqualTo(0));
+    }
+    Assert.That(buff.IsFull, Is.True);
+    Assert.That(buff.IsEmpty, Is.False);
+    for (var i = 0; i < buff.Capacity; ++i) {
+      var first = buff.RemoveFirst();
+      Assert.That(buff.IsFull, Is.False);
+      Assert.That(first, Is.EqualTo(i));
+      if (!buff.IsEmpty) {
+        Assert.That(buff.First, Is.EqualTo(i + 1));
+        Assert.That(buff.Last, Is.EqualTo(buff.Capacity - 1));
+      }
+    }
+    Assert.That(buff.IsFull, Is.False);
+    Assert.That(buff.IsEmpty, Is.True);
+  }
+  
   [Test]
   public void LongTest() {
     var buff = new RingBuffer<int>(256);
-    Assert.IsFalse(buff.IsFull);
+    Assert.That(buff.IsFull, Is.False);
     for (var i = 0; i < buff.Capacity; ++i) {
       buff.AddLast(i);
+      Assert.That(buff.Last, Is.EqualTo(i));
     }
-    Assert.IsTrue(buff.IsFull);
+    Assert.That(buff.IsFull, Is.True);
     for (var i = 256; i < 8192; ++i) {
       var last = buff.RemoveFirst();
-      Assert.IsFalse(buff.IsFull);
+      Assert.That(buff.IsFull, Is.False);
       Assert.That(last, Is.EqualTo(i - 256));
       buff.AddLast(i);
-      Assert.IsTrue(buff.IsFull);
+      Assert.That(buff.IsFull, Is.True);
     }
     Assert.That(buff.Last, Is.EqualTo(8191));
   }
