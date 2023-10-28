@@ -31,7 +31,7 @@ public partial class SoraBullet : ReversibleRigidBody3D {
   }
 
   public override void _IntegrateForces(PhysicsDirectBodyState3D state) {
-    state.LinearVelocity = Vector3.Right * 30.0f;
+    state.LinearVelocity = Vector3.Right * 60.0f;
   }
 
   private void OnForward() {
