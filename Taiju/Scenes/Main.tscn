@@ -1,10 +1,9 @@
-[gd_scene load_steps=16 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=14 format=3 uid="uid://ceqv14au1y2ag"]
 
 [ext_resource type="Script" path="res://Reversible/Gd/ClockNode.cs" id="1_alw2w"]
 [ext_resource type="Material" uid="uid://dxb0h08vdwfrl" path="res://Background/Forest/Forest.tres" id="1_bmh26"]
 [ext_resource type="Script" path="res://Background/Forest/Forest.cs" id="2_2tbfw"]
-[ext_resource type="Script" path="res://Objects/Witch/Sora.cs" id="3_6q3cx"]
-[ext_resource type="PackedScene" uid="uid://qa808tl8icr3" path="res://Objects/Witch/Spirit.blend" id="3_ad04p"]
+[ext_resource type="PackedScene" uid="uid://dpaqnt3ddpiub" path="res://Objects/Sora.tscn" id="4_h45ke"]
 [ext_resource type="PackedScene" uid="uid://dulu3o8yh1dam" path="res://Objects/Witch/SoraBullet.tscn" id="5_kp850"]
 [ext_resource type="PackedScene" uid="uid://dj3ie2qhiow02" path="res://Objects/Enemy/Drone0/Drone0.tscn" id="6_j7xnn"]
 [ext_resource type="Script" path="res://Objects/Witch/SoraBulletServer.cs" id="7_hxyi1"]
@@ -28,9 +27,6 @@ ambient_light_source = 3
 [sub_resource type="PlaneMesh" id="PlaneMesh_17g3q"]
 material = ExtResource("1_bmh26")
 size = Vector2(4, 2)
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_efil6"]
-radius = 0.2
 
 [node name="Root" type="Node3D"]
 
@@ -66,22 +62,7 @@ skeleton = NodePath("../..")
 
 [node name="Witch" type="Node3D" parent="Field"]
 
-[node name="Sora" type="RigidBody3D" parent="Field/Witch" node_paths=PackedStringArray("bulletServer_")]
-collision_layer = 10
-collision_mask = 10
-axis_lock_linear_z = true
-axis_lock_angular_x = true
-axis_lock_angular_y = true
-axis_lock_angular_z = true
-gravity_scale = 0.0
-script = ExtResource("3_6q3cx")
-bulletServer_ = NodePath("../../WitchBullet/SoraBulletServer")
-
-[node name="Shape" type="CollisionShape3D" parent="Field/Witch/Sora"]
-shape = SubResource("SphereShape3D_efil6")
-
-[node name="Spirit" parent="Field/Witch/Sora" instance=ExtResource("3_ad04p")]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+[node name="Sora" parent="Field/Witch" instance=ExtResource("4_h45ke")]
 
 [node name="WitchBullet" type="Node3D" parent="Field"]
 

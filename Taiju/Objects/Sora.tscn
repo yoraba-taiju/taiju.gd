@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://dpaqnt3ddpiub"]
+
+[ext_resource type="Script" path="res://Objects/Witch/Sora.cs" id="1_bfo5d"]
+[ext_resource type="PackedScene" uid="uid://qa808tl8icr3" path="res://Objects/Witch/Spirit.blend" id="2_nb8p0"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_efil6"]
+radius = 0.2
+
+[node name="Sora" type="RigidBody3D"]
+collision_layer = 10
+collision_mask = 10
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+gravity_scale = 0.0
+script = ExtResource("1_bfo5d")
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_efil6")
+
+[node name="Spirit" parent="." instance=ExtResource("2_nb8p0")]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
