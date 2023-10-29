@@ -125,17 +125,13 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
       var pos = attitude.Position;
       var angle = attitude.Angle;
       var resp = OnBulletMove(attitude);
+      if (resp == Response.HitToSora) {
+        Sora.Hit();
+      }
       if (forward && (Mathf.Abs(pos.X) >= 25.0f || Mathf.Abs(pos.Y) >= 15.0f || resp != Response.None)) {
         bullet.Living = false;
         meshes.SetInstanceTransform2D(i, ident.TranslatedLocal(Vector2.One * float.NaN));
         continue;
-      }
-      switch (resp) {
-        case Response.None:
-          break;
-        case Response.HitToSora:
-          Sora.Hit();
-          break;
       }
       meshes.SetInstanceTransform2D(i, ident.TranslatedLocal(pos).RotatedLocal(angle.Angle()));
     }
