@@ -26,7 +26,7 @@ public partial class Sora : ReversibleRigidBody3D {
       SpiritRot = 0.0,
       AfterFire = 0.0,
     });
-    spirit_ = GetNode<Node3D>("Mesh");
+    spirit_ = GetNode<Node3D>("Spirit");
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
