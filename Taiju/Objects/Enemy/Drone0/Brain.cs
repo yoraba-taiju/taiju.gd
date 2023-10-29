@@ -70,7 +70,7 @@ public partial class Brain : EnemyBase {
         }
         else {
           state = State.Escape;
-          circleBulletServer_.SpawnToSora(pos, 10.0);
+          circleBulletServer_.SpawnToSora(pos, 15.0);
         }
       }
         break;

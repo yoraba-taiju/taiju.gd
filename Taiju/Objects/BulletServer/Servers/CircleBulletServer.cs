@@ -8,7 +8,7 @@ public partial class CircleBulletServer : LinearBulletServer {
   private double sizeSquared_;
   public override void _Ready() {
     base._Ready();
-    size_ = 0.5;
+    size_ = 0.2;
     sizeSquared_ = size_ * size_;
   }
 

@@ -43,6 +43,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
     multiMesh_.InstanceCount = (int)bulletCount_;
     multiMeshInstance_.Multimesh = multiMesh_;
     AddChild(multiMeshInstance_);
+    // Initialize
     Bullets = new SparseArray<Bullet>(Clock, bulletCount_, new Bullet {
       Living = false,
       SpawnAt = 0.0,
@@ -84,7 +85,6 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
       return;
     }
     var bullets = Bullets.Mut;
-    var meshes = multiMesh_;
     for (var i = 0; i < bulletCount_; ++i) {
       ref var bullet = ref bullets[i];
       if (bullet.Living) {
@@ -101,7 +101,6 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
         SpawnAt = integrateTime,
         Param = param,
       };
-      meshes.SetInstanceColor(i, Colors.White);
     }
     var leftBullets = spawnQueue_.Count;
     if (leftBullets <= 0) {
@@ -112,12 +111,14 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
   }
   
   private void ProcessBullets(bool forward, double integrateTime) {
-    var bullets = Bullets.Mut;
+    var bullets = Bullets.Ref;
     var meshes = multiMesh_;
     var ident = Transform2D.Identity;
+    var nan = ident.ScaledLocal(new Vector2(float.NaN, float.NaN));
     for (var i = 0; i < bulletCount_; ++i) {
-      ref var bullet = ref bullets[i];
+      ref readonly var bullet = ref bullets[i];
       if (!bullet.Living) {
+        meshes.SetInstanceTransform2D(i, nan);
         continue;
       }
 
@@ -125,12 +126,17 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
       var pos = attitude.Position;
       var angle = attitude.Angle;
       var resp = OnBulletMove(attitude);
+
       if (resp == Response.HitToSora) {
         Sora.Hit();
       }
-      if (forward && (Mathf.Abs(pos.X) >= 25.0f || Mathf.Abs(pos.Y) >= 15.0f || resp != Response.None)) {
-        bullet.Living = false;
-        meshes.SetInstanceTransform2D(i, ident.TranslatedLocal(Vector2.One * float.NaN));
+
+      // Live/Dead
+      var forwardCond = Mathf.Abs(pos.X) >= 25.0f || Mathf.Abs(pos.Y) >= 15.0f || resp != Response.None;
+      var backCond = integrateTime <= bullet.SpawnAt;
+      if ((forward && forwardCond) || (!forward && backCond)) {
+        Bullets.Mut[i].Living = false;
+        meshes.SetInstanceTransform2D(i, nan);
         continue;
       }
       meshes.SetInstanceTransform2D(i, ident.TranslatedLocal(pos).RotatedLocal(angle.Angle()));
