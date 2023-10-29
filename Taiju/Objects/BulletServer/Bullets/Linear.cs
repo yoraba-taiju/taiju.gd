@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.Contracts;
 using Godot;
-using Vector3 = System.Numerics.Vector3;
 
 namespace Taiju.Objects.BulletServer.Bullets; 
 

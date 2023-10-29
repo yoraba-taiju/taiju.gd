@@ -11,15 +11,14 @@ public partial class CircleBulletServer : LinearBulletServer {
     sizeSquared_ = size_ * size_;
   }
 
-  protected override bool OnBulletMove(IBullet.Attitude attitude) {
+  protected override Response OnBulletMove(IBullet.Attitude attitude) {
     var soraPos = new Vector2(Sora.Position.X, Sora.Position.Y);
     var pos = attitude.Position;
 
-    if ((pos - soraPos).LengthSquared() > sizeSquared_) {
-      return false;
+    if ((pos - soraPos).LengthSquared() <= sizeSquared_) {
+      return Response.HitToSora;
     }
 
-    Sora.Hit();
-    return true;
+    return Response.None;
   }
 }

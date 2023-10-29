@@ -19,6 +19,11 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
     public TParam Param;
   }
 
+  protected enum Response {
+    None,
+    HitToSora,
+  }
+
   private Queue<TParam> spawnQueue_;
 
   [Export] private uint bulletCount_ = 64;
@@ -119,10 +124,18 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
       var attitude = bullet.Param.AttitudeAt(integrateTime - bullet.SpawnAt);
       var pos = attitude.Position;
       var angle = attitude.Angle;
-      if (forward && (Mathf.Abs(pos.X) >= 25.0f || Mathf.Abs(pos.Y) >= 15.0f || OnBulletMove(attitude))) {
+      var resp = OnBulletMove(attitude);
+      if (forward && (Mathf.Abs(pos.X) >= 25.0f || Mathf.Abs(pos.Y) >= 15.0f || resp != Response.None)) {
         bullet.Living = false;
         meshes.SetInstanceColor(i, Colors.Transparent);
         continue;
+      }
+      switch (resp) {
+        case Response.None:
+          break;
+        case Response.HitToSora:
+          Sora.Hit();
+          break;
       }
       meshes.SetInstanceTransform2D(i, ident.RotatedLocal(angle.Angle()).TranslatedLocal(pos));
     }
@@ -132,5 +145,5 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
     spawnQueue_.Enqueue(item);
   }
 
-  protected abstract bool OnBulletMove(IBullet.Attitude attitude);
+  protected abstract Response OnBulletMove(IBullet.Attitude attitude);
 }
