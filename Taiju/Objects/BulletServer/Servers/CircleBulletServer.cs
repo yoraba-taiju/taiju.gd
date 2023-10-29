@@ -4,10 +4,11 @@ using Taiju.Objects.BulletServer.Bullets;
 namespace Taiju.Objects.BulletServer.Servers; 
 
 public partial class CircleBulletServer : LinearBulletServer {
-  [Export] private double size_ = 1.0;
+  [Export] private double size_;
   private double sizeSquared_;
   public override void _Ready() {
     base._Ready();
+    size_ = 0.5;
     sizeSquared_ = size_ * size_;
   }
 

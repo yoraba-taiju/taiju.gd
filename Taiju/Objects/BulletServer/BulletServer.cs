@@ -38,7 +38,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
     multiMesh_ = new MultiMesh();
     multiMesh_.Mesh = Mesh;
     multiMesh_.TransformFormat = MultiMesh.TransformFormatEnum.Transform2D;
-    multiMesh_.UseColors = true;
+    multiMesh_.UseColors = false;
     multiMesh_.UseCustomData = false;
     multiMesh_.InstanceCount = (int)bulletCount_;
     multiMeshInstance_.Multimesh = multiMesh_;
@@ -127,7 +127,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
       var resp = OnBulletMove(attitude);
       if (forward && (Mathf.Abs(pos.X) >= 25.0f || Mathf.Abs(pos.Y) >= 15.0f || resp != Response.None)) {
         bullet.Living = false;
-        meshes.SetInstanceColor(i, Colors.Transparent);
+        meshes.SetInstanceTransform2D(i, ident.TranslatedLocal(Vector2.One * float.NaN));
         continue;
       }
       switch (resp) {
@@ -137,7 +137,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
           Sora.Hit();
           break;
       }
-      meshes.SetInstanceTransform2D(i, ident.RotatedLocal(angle.Angle()).TranslatedLocal(pos));
+      meshes.SetInstanceTransform2D(i, ident.TranslatedLocal(pos).RotatedLocal(angle.Angle()));
     }
   }
 

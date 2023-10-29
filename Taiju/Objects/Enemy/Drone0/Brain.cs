@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using Taiju.Objects.BulletServer.Servers;
 using Taiju.Reversible.Value;
 using Taiju.Util.Gd;
 
@@ -8,6 +9,7 @@ namespace Taiju.Objects.Enemy.Drone0;
 public partial class Brain : EnemyBase {
   [Export(PropertyHint.Range, "0,180,")] private float maxRotateDegreePerSec_ = 60.0f;
   [Export(PropertyHint.Range, "0,20,")] private float escapeDistance_ = 12.0f;
+  private CircleBulletServer circleBulletServer_;
 
   //
   private enum State {
@@ -47,6 +49,7 @@ public partial class Brain : EnemyBase {
     animPlayer_.PlaybackActive = true;
     animPlayer_.Play("Rotate");
     defaultEscapeDirection_ = ((int)(rand_.Randi() % 2) * 2) - 1;
+    circleBulletServer_ = GetNode<CircleBulletServer>("/root/Root/Field/EnemyBullet/CircleBulletServer");
     Shield = 1;
   }
 
@@ -67,6 +70,7 @@ public partial class Brain : EnemyBase {
         }
         else {
           state = State.Escape;
+          circleBulletServer_.SpawnToSora(pos, 10.0);
         }
       }
         break;
