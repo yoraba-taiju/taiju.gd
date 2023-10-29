@@ -7,7 +7,7 @@
 radius = 0.2
 
 [node name="Sora" type="RigidBody3D"]
-collision_layer = 10
+collision_layer = 2
 collision_mask = 10
 axis_lock_linear_z = true
 axis_lock_angular_x = true
