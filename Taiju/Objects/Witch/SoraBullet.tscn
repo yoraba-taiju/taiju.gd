@@ -32,6 +32,7 @@ gravity_scale = 0.0
 script = ExtResource("1_vidhp")
 
 [node name="Sprite" type="MeshInstance3D" parent="."]
+layers = 2
 mesh = SubResource("PlaneMesh_p2wg3")
 
 [node name="RigidShape" type="CollisionShape3D" parent="."]

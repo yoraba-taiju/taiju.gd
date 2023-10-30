@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://er71mb5nj1vl"]
+
+[ext_resource type="PackedScene" uid="uid://qa808tl8icr3" path="res://Objects/Witch/Spirit.blend" id="1_s0sld"]
+
+[node name="Spirit" instance=ExtResource("1_s0sld")]
+
+[node name="Spirit" parent="." index="0"]
+layers = 2

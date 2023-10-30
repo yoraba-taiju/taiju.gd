@@ -1,8 +1,10 @@
-[gd_scene load_steps=18 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=20 format=3 uid="uid://ceqv14au1y2ag"]
 
 [ext_resource type="Script" path="res://Reversible/Gd/ClockNode.cs" id="1_alw2w"]
 [ext_resource type="Material" uid="uid://dxb0h08vdwfrl" path="res://Background/Forest/Forest.tres" id="1_bmh26"]
 [ext_resource type="Script" path="res://Background/Forest/Forest.cs" id="2_2tbfw"]
+[ext_resource type="Script" path="res://Util/GdCamera/StretchedSubViewportContainer.cs" id="2_fx8hw"]
+[ext_resource type="Script" path="res://Util/GdCamera/StretchedControl.cs" id="2_gkihw"]
 [ext_resource type="PackedScene" uid="uid://dpaqnt3ddpiub" path="res://Objects/Sora.tscn" id="4_h45ke"]
 [ext_resource type="PackedScene" uid="uid://dulu3o8yh1dam" path="res://Objects/Witch/SoraBullet.tscn" id="5_kp850"]
 [ext_resource type="Texture2D" uid="uid://byt2kh2w5jhox" path="res://Objects/Effect/textures/red_bullet.png" id="6_bwfd2"]
@@ -24,6 +26,12 @@ ambient_light_source = 3
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_y7npk"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vj3aa"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_17g3q"]
+material = ExtResource("1_bmh26")
+size = Vector2(4, 2)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jlq0k"]
 transparency = 1
 albedo_texture = ExtResource("6_bwfd2")
@@ -33,12 +41,6 @@ billboard_keep_scale = true
 [sub_resource type="PlaneMesh" id="PlaneMesh_hhw22"]
 material = SubResource("StandardMaterial3D_jlq0k")
 orientation = 2
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vj3aa"]
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_17g3q"]
-material = ExtResource("1_bmh26")
-size = Vector2(4, 2)
 
 [node name="Root" type="Node3D"]
 
@@ -53,10 +55,17 @@ camera_attributes = SubResource("CameraAttributesPractical_y7npk")
 transform = Transform3D(0.707107, -0.353553, 0.612372, 0, 0.866025, 0.5, -0.707107, -0.353553, 0.612372, 0, 100, 0)
 light_energy = 2.0
 
-[node name="MainCamera" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
-current = true
-fov = 45.0
+[node name="Background" type="Node3D" parent="."]
+
+[node name="Forest" type="Node3D" parent="Background"]
+script = ExtResource("2_2tbfw")
+
+[node name="Mesh" type="MeshInstance3D" parent="Background/Forest"]
+transform = Transform3D(160, 0, 0, 0, 149.373, -57.3389, 0, 57.3389, 149.373, 0, -50, -250)
+layers = 16
+material_overlay = SubResource("ShaderMaterial_vj3aa")
+mesh = SubResource("PlaneMesh_17g3q")
+skeleton = NodePath("../..")
 
 [node name="Field" type="Node3D" parent="."]
 
@@ -86,14 +95,50 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.745, 0, 0)
 script = ExtResource("8_qfb4r")
 Mesh = SubResource("PlaneMesh_hhw22")
 
-[node name="Background" type="Node3D" parent="."]
+[node name="Screen" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("2_gkihw")
 
-[node name="Forest" type="Node3D" parent="Background"]
-script = ExtResource("2_2tbfw")
+[node name="Normal" type="SubViewportContainer" parent="Screen"]
+clip_contents = true
+layout_mode = 2
+offset_right = 1280.0
+offset_bottom = 720.0
+stretch = true
+script = ExtResource("2_fx8hw")
 
-[node name="Mesh" type="MeshInstance3D" parent="Background/Forest"]
-transform = Transform3D(160, 0, 0, 0, 149.373, -57.3389, 0, 57.3389, 149.373, 0, -50, -250)
-layers = 16
-material_overlay = SubResource("ShaderMaterial_vj3aa")
-mesh = SubResource("PlaneMesh_17g3q")
-skeleton = NodePath("../..")
+[node name="Noormal" type="SubViewport" parent="Screen/Normal"]
+handle_input_locally = false
+size = Vector2i(1280, 720)
+render_target_update_mode = 4
+
+[node name="MainCamera" type="Camera3D" parent="Screen/Normal/Noormal"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
+cull_mask = 1048573
+current = true
+fov = 45.0
+
+[node name="Foreground" type="SubViewportContainer" parent="Screen"]
+clip_contents = true
+layout_mode = 2
+offset_right = 1280.0
+offset_bottom = 720.0
+stretch = true
+script = ExtResource("2_fx8hw")
+
+[node name="Foreground" type="SubViewport" parent="Screen/Foreground"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1280, 720)
+render_target_update_mode = 4
+
+[node name="MainCamera" type="Camera3D" parent="Screen/Foreground/Foreground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
+cull_mask = 2
+current = true
+fov = 45.0

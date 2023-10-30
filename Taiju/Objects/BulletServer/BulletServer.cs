@@ -42,6 +42,10 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
     multiMesh_.UseCustomData = false;
     multiMesh_.InstanceCount = (int)bulletCount_;
     multiMeshInstance_.Multimesh = multiMesh_;
+    for (var i = 1; i <= 20; ++i) {
+      multiMeshInstance_.SetLayerMaskValue(i, false);
+    }
+    multiMeshInstance_.SetLayerMaskValue(2, true);
     AddChild(multiMeshInstance_);
     // Initialize
     Bullets = new SparseArray<Bullet>(Clock, bulletCount_, new Bullet {
