@@ -30,7 +30,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
 
   protected SparseArray<Bullet> Bullets;
 
-  [Export] protected Sora Sora;
+  protected Sora Sora;
   public override void _Ready() {
     base._Ready();
     multiMeshInstance_ = new MultiMeshInstance3D();
@@ -50,6 +50,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
       Param = new TParam(),
     });
     spawnQueue_ = new Queue<TParam>();
+    Sora = GetNode<Sora>("/root/Root/Field/Witch/Sora");
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
