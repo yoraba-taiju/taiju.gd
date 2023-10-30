@@ -1,5 +1,4 @@
-﻿using System;
-using Godot;
+﻿using Godot;
 using Taiju.Objects.Enemy;
 using Taiju.Reversible.Gd;
 using Taiju.Reversible.Value;
