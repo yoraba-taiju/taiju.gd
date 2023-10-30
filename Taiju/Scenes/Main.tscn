@@ -60,6 +60,11 @@ fov = 45.0
 
 [node name="Field" type="Node3D" parent="."]
 
+[node name="Witch" type="Node3D" parent="Field"]
+
+[node name="Sora" parent="Field/Witch" node_paths=PackedStringArray("bulletServer_") instance=ExtResource("4_h45ke")]
+bulletServer_ = NodePath("../../WitchBullet/SoraBulletServer")
+
 [node name="WitchEffect" type="Node3D" parent="Field"]
 
 [node name="WitchBullet" type="Node3D" parent="Field"]
@@ -68,23 +73,19 @@ fov = 45.0
 script = ExtResource("7_hxyi1")
 bulletScene_ = ExtResource("5_kp850")
 
-[node name="Witch" type="Node3D" parent="Field"]
+[node name="Enemy" type="Node3D" parent="Field"]
 
-[node name="Sora" parent="Field/Witch" node_paths=PackedStringArray("bulletServer_") instance=ExtResource("4_h45ke")]
-bulletServer_ = NodePath("../../WitchBullet/SoraBulletServer")
+[node name="Drone0" parent="Field/Enemy" instance=ExtResource("6_j7xnn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.745, 0, 0)
 
 [node name="EnemyEffect" type="Node3D" parent="Field"]
 
 [node name="EnemyBullet" type="Node3D" parent="Field"]
 
-[node name="CircleBulletServer" type="Node3D" parent="Field/EnemyBullet"]
+[node name="CircleBulletServer" type="Node3D" parent="Field/EnemyBullet" node_paths=PackedStringArray("Sora")]
 script = ExtResource("8_qfb4r")
 Mesh = SubResource("PlaneMesh_hhw22")
-
-[node name="Enemy" type="Node3D" parent="Field"]
-
-[node name="Drone0" parent="Field/Enemy" instance=ExtResource("6_j7xnn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.745, 0, 0)
+Sora = NodePath("../../Witch/Sora")
 
 [node name="Background" type="Node3D" parent="."]
 
