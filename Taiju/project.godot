@@ -64,7 +64,7 @@ fire={
 [layer_names]
 
 3d_render/layer_1="Normal"
-3d_render/layer_2="Bullet"
+3d_render/layer_20="Overlay"
 3d_physics/layer_1="Default"
 3d_physics/layer_2="Terrain"
 3d_physics/layer_3="WitchBullet"
