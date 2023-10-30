@@ -23,7 +23,7 @@ size = Vector3(3, 1.5, 1.5)
 
 [node name="SoraBullet" type="RigidBody3D"]
 collision_layer = 4
-collision_mask = 0
+collision_mask = 2
 axis_lock_linear_z = true
 axis_lock_angular_x = true
 axis_lock_angular_y = true
@@ -39,7 +39,7 @@ mesh = SubResource("PlaneMesh_p2wg3")
 shape = SubResource("BoxShape3D_ois0p")
 
 [node name="Collider" type="Area3D" parent="."]
-collision_layer = 2
+collision_layer = 4
 collision_mask = 2
 
 [node name="Shape" type="CollisionShape3D" parent="Collider"]
