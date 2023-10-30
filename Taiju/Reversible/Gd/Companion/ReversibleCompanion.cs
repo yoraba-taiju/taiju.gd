@@ -64,7 +64,7 @@ public struct ReversibleCompanion<T>
   }
 
   public void Destroy(T self) {
-    ClockNode.Destroy(self);
+    ClockNode.QueueDestroy(self);
     self.Visible = false;
     self.SetDeferred("process_mode", (int)Node.ProcessModeEnum.Disabled);
   }

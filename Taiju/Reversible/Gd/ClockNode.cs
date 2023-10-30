@@ -105,7 +105,7 @@ public partial class ClockNode : Node3D {
     }
   }
 
-  public void Destroy(Node3D node) {
+  public void QueueDestroy(Node3D node) {
     graveyard_.AddLast(new Grave {
       DestroyedAt = Clock.CurrentTick,
       Node = node,
