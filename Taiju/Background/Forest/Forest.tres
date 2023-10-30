@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://c5np0vurlcgyp" path="res://Background/Forest/Image/forest1_roughness.png" id="5_gcgyy"]
 
 [resource]
+albedo_color = Color(0.67451, 0.67451, 0.67451, 1)
 albedo_texture = ExtResource("1_fmcoc")
 metallic = 1.0
 metallic_texture = ExtResource("3_nrah8")

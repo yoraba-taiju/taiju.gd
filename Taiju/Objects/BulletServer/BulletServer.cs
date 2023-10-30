@@ -135,7 +135,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
       var forwardCond = Mathf.Abs(pos.X) >= 25.0f || Mathf.Abs(pos.Y) >= 15.0f || resp != Response.None;
       var backCond = integrateTime <= bullet.SpawnAt;
       if ((forward && forwardCond) || (!forward && backCond)) {
-        Bullets.Mut[i].Living = false;
+        Bullets.Mut[i].Living = false; // State changed!
         meshes.SetInstanceTransform2D(i, nan);
         continue;
       }
