@@ -97,7 +97,8 @@ public partial class ClockNode : Node3D {
     while (!graveyard_.IsEmpty) {
       ref readonly var it = ref graveyard_.Last;
       if (it.DestroyedAt >= Clock.CurrentTick) {
-        (it.Node as IReversibleNode)?.Rescue();
+        var rev = (IReversibleNode)it.Node;
+        rev.Rescue();
         graveyard_.RemoveLast();
       } else {
         break;
@@ -105,7 +106,7 @@ public partial class ClockNode : Node3D {
     }
   }
 
-  public void QueueDestroy(Node3D node) {
+  public void QueueDestroy<T>(T node) where T: Node3D, IReversibleNode {
     graveyard_.AddLast(new Grave {
       DestroyedAt = Clock.CurrentTick,
       Node = node,
