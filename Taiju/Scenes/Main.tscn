@@ -82,10 +82,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.745, 0, 0)
 
 [node name="EnemyBullet" type="Node3D" parent="Field"]
 
-[node name="CircleBulletServer" type="Node3D" parent="Field/EnemyBullet" node_paths=PackedStringArray("Sora")]
+[node name="CircleBulletServer" type="Node3D" parent="Field/EnemyBullet"]
 script = ExtResource("8_qfb4r")
 Mesh = SubResource("PlaneMesh_hhw22")
-Sora = NodePath("../../Witch/Sora")
 
 [node name="Background" type="Node3D" parent="."]
 
