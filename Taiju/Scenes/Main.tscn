@@ -44,6 +44,12 @@ orientation = 2
 
 [node name="Root" type="Node3D"]
 
+[node name="MainCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
+cull_mask = 524287
+current = true
+fov = 45.0
+
 [node name="Clock" type="Node3D" parent="."]
 script = ExtResource("1_alw2w")
 
@@ -95,7 +101,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.745, 0, 0)
 script = ExtResource("8_qfb4r")
 Mesh = SubResource("PlaneMesh_hhw22")
 
-[node name="Screen" type="Control" parent="."]
+[node name="OverlayScreen" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1280.0
@@ -104,7 +110,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("2_gkihw")
 
-[node name="Normal" type="SubViewportContainer" parent="Screen"]
+[node name="Overlay" type="SubViewportContainer" parent="OverlayScreen"]
 clip_contents = true
 layout_mode = 2
 offset_right = 1280.0
@@ -112,33 +118,14 @@ offset_bottom = 720.0
 stretch = true
 script = ExtResource("2_fx8hw")
 
-[node name="Noormal" type="SubViewport" parent="Screen/Normal"]
-handle_input_locally = false
-size = Vector2i(1280, 720)
-render_target_update_mode = 4
-
-[node name="MainCamera" type="Camera3D" parent="Screen/Normal/Noormal"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
-cull_mask = 1048573
-current = true
-fov = 45.0
-
-[node name="Foreground" type="SubViewportContainer" parent="Screen"]
-clip_contents = true
-layout_mode = 2
-offset_right = 1280.0
-offset_bottom = 720.0
-stretch = true
-script = ExtResource("2_fx8hw")
-
-[node name="Foreground" type="SubViewport" parent="Screen/Foreground"]
+[node name="Overlay" type="SubViewport" parent="OverlayScreen/Overlay"]
 transparent_bg = true
 handle_input_locally = false
 size = Vector2i(1280, 720)
 render_target_update_mode = 4
 
-[node name="MainCamera" type="Camera3D" parent="Screen/Foreground/Foreground"]
+[node name="OverlayCamera" type="Camera3D" parent="OverlayScreen/Overlay/Overlay"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
-cull_mask = 2
+cull_mask = 524288
 current = true
 fov = 45.0

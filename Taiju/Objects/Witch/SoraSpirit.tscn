@@ -5,4 +5,4 @@
 [node name="Spirit" instance=ExtResource("1_64jwb")]
 
 [node name="Spirit" parent="." index="0"]
-layers = 2
+layers = 524288
