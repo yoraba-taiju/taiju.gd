@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using Taiju.Objects.Enemy;
 using Taiju.Reversible.Gd;
 using Taiju.Reversible.Value;
 using Vector3 = Godot.Vector3;
@@ -27,6 +28,16 @@ public partial class Sora : ReversibleRigidBody3D {
       AfterFire = 0.0,
     });
     spirit_ = GetNode<Node3D>("Spirit");
+    ContactMonitor = true;
+    MaxContactsReported = 1;
+    BodyEntered += OnBodyEntered;
+  }
+
+  private void OnBodyEntered(Node node) {
+    if (node is not EnemyBase) {
+      return;
+    }
+    Hit();
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
