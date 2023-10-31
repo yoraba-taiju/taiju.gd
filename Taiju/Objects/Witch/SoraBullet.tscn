@@ -32,5 +32,5 @@ script = ExtResource("1_vidhp")
 layers = 524288
 mesh = SubResource("PlaneMesh_p2wg3")
 
-[node name="RigidShape" type="CollisionShape3D" parent="."]
+[node name="Shape" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_ois0p")
