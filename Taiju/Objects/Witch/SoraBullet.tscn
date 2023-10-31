@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dulu3o8yh1dam"]
+[gd_scene load_steps=6 format=3 uid="uid://dulu3o8yh1dam"]
 
 [ext_resource type="Script" path="res://Objects/Witch/SoraBullet.cs" id="1_vidhp"]
 [ext_resource type="Texture2D" uid="uid://df45t0qdvgo6u" path="res://Objects/Witch/textures/SoraBullet.png" id="1_wga83"]
@@ -18,9 +18,6 @@ orientation = 2
 [sub_resource type="BoxShape3D" id="BoxShape3D_ois0p"]
 size = Vector3(3, 1.5, 1.5)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_13fpm"]
-size = Vector3(3, 1.5, 1.5)
-
 [node name="SoraBullet" type="RigidBody3D"]
 collision_layer = 8
 collision_mask = 18
@@ -37,10 +34,3 @@ mesh = SubResource("PlaneMesh_p2wg3")
 
 [node name="RigidShape" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_ois0p")
-
-[node name="Collider" type="Area3D" parent="."]
-collision_layer = 8
-collision_mask = 18
-
-[node name="Shape" type="CollisionShape3D" parent="Collider"]
-shape = SubResource("BoxShape3D_13fpm")

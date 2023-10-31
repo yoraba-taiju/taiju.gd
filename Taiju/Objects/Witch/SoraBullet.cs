@@ -15,6 +15,7 @@ public partial class SoraBullet : ReversibleRigidBody3D {
   public override void _Ready() {
     base._Ready();
     spawnPoint_ = Position;
+    // Enable signal emission
     MaxContactsReported = 1;
     ContactMonitor = true;
     BodyEntered += OnBodyEntered;
