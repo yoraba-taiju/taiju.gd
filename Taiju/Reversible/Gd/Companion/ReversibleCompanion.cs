@@ -65,12 +65,12 @@ public struct ReversibleCompanion<T>
 
   public void Destroy(T self) {
     ClockNode.QueueDestroy(self);
-    self.Visible = false;
+    self.SetDeferred(Node3D.PropertyName.Visible, false);
     self.SetDeferred(Node.PropertyName.ProcessMode, (int)Node.ProcessModeEnum.Disabled);
   }
 
   public void Rescue(T self) {
-    self.Visible = true;
+    self.SetDeferred(Node3D.PropertyName.Visible, true);
     self.SetDeferred(Node.PropertyName.ProcessMode, (int)Node.ProcessModeEnum.Inherit);
   }
 }
