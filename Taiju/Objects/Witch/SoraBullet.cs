@@ -1,4 +1,5 @@
-﻿using Godot;
+﻿using System;
+using Godot;
 using Taiju.Objects.Enemy;
 using Taiju.Reversible.Gd;
 using Taiju.Reversible.Value;
@@ -7,7 +8,6 @@ namespace Taiju.Objects.Witch;
 
 public partial class SoraBullet : ReversibleRigidBody3D {
   private Vector3 spawnPoint_;
-  private Area3D area_;
   private Dense<Record> record_;
   private struct Record {
     public Vector3 Position;
@@ -15,14 +15,15 @@ public partial class SoraBullet : ReversibleRigidBody3D {
   public override void _Ready() {
     base._Ready();
     spawnPoint_ = Position;
-    area_ = GetNode<Area3D>("Collider");
-    area_.BodyEntered += OnCollide;
+    MaxContactsReported = 1;
+    ContactMonitor = true;
+    BodyEntered += OnBodyEntered;
     record_ = new Dense<Record>(Clock, new Record {
       Position = Position,
     });
   }
 
-  private void OnCollide(Node3D node) {
+  private void OnBodyEntered(Node node) {
     if (node is not EnemyBase enemy) {
       return;
     }
