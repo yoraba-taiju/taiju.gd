@@ -45,6 +45,9 @@ orientation = 2
 
 [node name="Root" type="Node3D"]
 
+[node name="Clock" type="Node3D" parent="."]
+script = ExtResource("1_alw2w")
+
 [node name="MainCamera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
 cull_mask = 524287
@@ -79,9 +82,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
 cull_mask = 524288
 current = true
 fov = 45.0
-
-[node name="Clock" type="Node3D" parent="."]
-script = ExtResource("1_alw2w")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_t1wdw")
