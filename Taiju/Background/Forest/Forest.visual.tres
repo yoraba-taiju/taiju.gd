@@ -13,6 +13,7 @@ render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_s
 
 
 "
+graph_offset = Vector2(-605.2, 97.901)
 nodes/fragment/0/position = Vector2(1620, 380)
 nodes/fragment/2/node = SubResource("VisualShaderNodeInput_t2cwu")
 nodes/fragment/2/position = Vector2(-780, 340)
