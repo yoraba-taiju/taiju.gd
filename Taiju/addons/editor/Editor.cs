@@ -1,3 +1,5 @@
+using System;
+
 #if TOOLS
 namespace Taiju.addons.editor;
 
@@ -8,9 +10,7 @@ public partial class Editor : EditorPlugin {
   public override void _EnterTree() {
   }
 
-  public override void _ExitTree()
-  {
-  // Clean-up of the plugin goes here.
+  public override void _ExitTree() {
   }
 }
 #endif
