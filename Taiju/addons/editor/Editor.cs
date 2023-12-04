@@ -1,5 +1,3 @@
-using System;
-
 #if TOOLS
 namespace Taiju.addons.editor;
 
