@@ -1,5 +1,5 @@
 #if TOOLS
-namespace Taiju.addons.editor;
+namespace Taiju.Addons.Editor;
 
 using Godot;
 

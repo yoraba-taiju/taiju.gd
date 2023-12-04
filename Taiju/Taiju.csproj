@@ -4,6 +4,6 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="addons\" />
+    <Folder Include="Addons\" />
   </ItemGroup>
 </Project>
