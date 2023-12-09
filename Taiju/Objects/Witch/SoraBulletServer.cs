@@ -22,12 +22,12 @@ public partial class SoraBulletServer : ReversibleNode3D {
   public void SpawnDouble(Vector3 pos) {
     {
       var bullet = bulletScene_.Instantiate<SoraBullet>();
-      bullet.Position = pos + Vector3.Up / 2.0f;
+      bullet.Position = pos + Vector3.Up / 3f;
       AddChild(bullet);
     }
     {
       var bullet = bulletScene_.Instantiate<SoraBullet>();
-      bullet.Position = pos + Vector3.Down / 2.0f;
+      bullet.Position = pos + Vector3.Down / 3f;
       AddChild(bullet);
     }
   }
