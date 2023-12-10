@@ -109,4 +109,3 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
 
   protected abstract void _Update(ref Item[] items, double integrateTime);
 }
-

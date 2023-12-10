@@ -1,10 +1,10 @@
 [gd_scene load_steps=20 format=3 uid="uid://ceqv14au1y2ag"]
 
-[ext_resource type="Script" path="res://Reversible/Gd/ClockNode.cs" id="1_alw2w"]
+[ext_resource type="Script" path="res://Objects/Reversible/Godot/ClockNode.cs" id="1_alw2w"]
 [ext_resource type="Material" uid="uid://dxb0h08vdwfrl" path="res://Background/Forest/Forest.tres" id="1_bmh26"]
 [ext_resource type="Script" path="res://Background/Forest/Forest.cs" id="2_2tbfw"]
-[ext_resource type="Script" path="res://Util/Gd/Overlay/StretchedSubViewportContainer.cs" id="2_fx8hw"]
-[ext_resource type="Script" path="res://Util/Gd/Overlay/StretchedControl.cs" id="2_gkihw"]
+[ext_resource type="Script" path="res://Util/Godot/Overlay/StretchedSubViewportContainer.cs" id="2_fx8hw"]
+[ext_resource type="Script" path="res://Util/Godot/Overlay/StretchedControl.cs" id="2_gkihw"]
 [ext_resource type="PackedScene" uid="uid://dpaqnt3ddpiub" path="res://Objects/Sora.tscn" id="4_h45ke"]
 [ext_resource type="PackedScene" uid="uid://dulu3o8yh1dam" path="res://Objects/Witch/SoraBullet.tscn" id="5_kp850"]
 [ext_resource type="Texture2D" uid="uid://byt2kh2w5jhox" path="res://Objects/Effect/textures/red_bullet.png" id="6_bwfd2"]

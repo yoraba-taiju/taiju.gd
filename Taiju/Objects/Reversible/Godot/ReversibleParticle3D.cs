@@ -29,7 +29,7 @@ public abstract partial class ReversibleParticle3D : ReversibleNode3D {
 
   // Storages
   private ClockNode clockNode_;
-  private SparseArray<Item> items_;
+  private DenseArray<Item> items_;
   private double leftToEmit_;
 
   public override void _Ready() {
@@ -42,36 +42,48 @@ public abstract partial class ReversibleParticle3D : ReversibleNode3D {
     Meshes.UseColors = true;
     Meshes.InstanceCount = MeshCount;
     multiMesh_.Multimesh = Meshes;
-    items_ = new SparseArray<Item>(Clock, (uint)MeshCount, new Item());
+    items_ = new DenseArray<Item>(Clock, (uint)MeshCount, new Item());
     bornAt_ = clockNode_.IntegrateTime;
     var span = items_.Mut;
-    _Emit(ref span, 0.0);
+    _EmitOne(ref span[0], 0.0);
   }
   
   public override bool _ProcessForward(double integrateTime, double dt) {
+    var span = items_.Mut;
     leftToEmit_ -= dt;
     if (leftToEmit_ <= 0) {
-      leftToEmit_ += EmitPerSecond;
-      var spanMut = items_.Mut;
-      _Emit(ref spanMut, integrateTime);
+      leftToEmit_ += 1.0 / EmitPerSecond;
+      foreach (ref var item in span) {
+        if (item.Living) {
+          continue;
+        }
+        _EmitOne(ref item, integrateTime);
+        break;
+      }
     }
-
-    var span = items_.Ref;
-    _Update(ref span, integrateTime);
+    _Update(span, integrateTime);
+    Update(span, integrateTime);
     return true;
   }
 
   public override bool _ProcessBack(double integrateTime) {
+    var span = items_.Ref;
+    Update(span, integrateTime);
     return true;
   }
 
   public override bool _ProcessLeap(double integrateTime) {
-    // Do nothing.
+    var span = items_.Ref;
+    Update(span, integrateTime);
     return true;
   }
 
-  protected abstract void _Emit(ref Span<Item> items, double integrateTime);
+  private void Update(ReadOnlySpan<Item> items, double integrateTime) {
+    
+  }
 
-  protected abstract void _Update(ref ReadOnlySpan<Item> items, double integrateTime);
+  protected abstract void _EmitOne(ref Item item, double integrateTime);
+
+  protected abstract void _Update(Span<Item> items, double integrateTime);
 }
 
