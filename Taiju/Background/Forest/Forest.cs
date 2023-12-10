@@ -1,6 +1,5 @@
 using Godot;
-using Taiju.Reversible.Gd;
-using Taiju.Reversible.Value;
+using Taiju.Objects.Reversible.Godot;
 
 namespace Taiju.Background.Forest;
 

@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace Taiju.Util.Gd;
+namespace Taiju.Util.Godot;
 
 public static class Mover {
   public static Vector3 Follow(in Vector3 delta, in Vector3 velocity) {

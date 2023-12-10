@@ -1,7 +1,7 @@
 ﻿using Godot;
 using Taiju.Objects.Effect;
 using Taiju.Objects.Witch;
-using Taiju.Reversible.Gd;
+using Taiju.Objects.Reversible.Godot;
 
 namespace Taiju.Objects.Enemy; 
 

@@ -1,8 +1,8 @@
 using System;
 using Godot;
 using Taiju.Objects.Enemy;
-using Taiju.Reversible.Gd;
-using Taiju.Reversible.Value;
+using Taiju.Objects.Reversible.Godot;
+using Taiju.Objects.Reversible.Value;
 using Vector3 = Godot.Vector3;
 
 namespace Taiju.Objects.Witch;

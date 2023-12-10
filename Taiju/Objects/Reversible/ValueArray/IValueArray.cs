@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Taiju.Reversible.ValueArray; 
+namespace Taiju.Objects.Reversible.ValueArray; 
 
 public interface IValueArray<T> where T : struct {
   public ReadOnlySpan<T> Ref { get; }

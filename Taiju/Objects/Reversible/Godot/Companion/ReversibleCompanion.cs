@@ -1,7 +1,7 @@
 ﻿using System;
 using Godot;
 
-namespace Taiju.Reversible.Gd.Companion;
+namespace Taiju.Objects.Reversible.Godot.Companion;
 
 public struct ReversibleCompanion<T>
   where T: Node3D, IReversibleNode

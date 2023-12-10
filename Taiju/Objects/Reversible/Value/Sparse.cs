@@ -1,7 +1,7 @@
 ﻿#nullable enable
 using System;
 
-namespace Taiju.Reversible.Value;
+namespace Taiju.Objects.Reversible.Value;
 
 public struct Sparse<T> : IValue<T> where T : struct {
   private struct Entry {

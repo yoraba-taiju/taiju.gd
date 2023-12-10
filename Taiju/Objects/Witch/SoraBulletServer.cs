@@ -1,5 +1,5 @@
 ﻿using Godot;
-using Taiju.Reversible.Gd;
+using Taiju.Objects.Reversible.Godot;
 
 namespace Taiju.Objects.Witch; 
 

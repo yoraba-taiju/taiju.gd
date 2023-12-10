@@ -1,4 +1,4 @@
-﻿namespace Taiju.Reversible.Gd; 
+﻿namespace Taiju.Objects.Reversible.Godot;
 
 public interface IReversibleNode {
   public void Destroy();

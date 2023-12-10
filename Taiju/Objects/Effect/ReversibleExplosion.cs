@@ -1,6 +1,6 @@
 using System;
 using Godot;
-using Taiju.Reversible.Gd;
+using Taiju.Objects.Reversible.Godot;
 
 namespace Taiju.Objects.Effect;
 
@@ -9,7 +9,7 @@ public partial class ReversibleExplosion : ReversibleOneShotParticle3D {
   [Export] private bool replaceHueWithRandomAngle_;
   private const double LifeTimeScale = 1.0 / 20.0;
 
-  protected override void _Update(ref Item[] items, double integrateTime) {
+  protected override void _SetInstances(ref readonly Item[] items, double integrateTime) {
     var meshes = Meshes;
     var transform = Transform2D.Identity;
     var nan = new Transform2D().TranslatedLocal(new Vector2(Single.NaN, Single.NaN));

@@ -1,7 +1,7 @@
 ﻿namespace TaijuTest.Reversible.ValueArray;
 
-using Taiju.Reversible;
-using Taiju.Reversible.ValueArray;
+using Taiju.Objects.Reversible;
+using Taiju.Objects.Reversible.ValueArray;
 
 public abstract class AbstractValueArrayTest<T>
   where T : IValueArray<int> {

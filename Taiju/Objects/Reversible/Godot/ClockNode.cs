@@ -1,8 +1,8 @@
 ﻿using Godot;
-using Taiju.Reversible.Value;
+using Taiju.Objects.Reversible.Value;
 using Taiju.Util;
 
-namespace Taiju.Reversible.Gd; 
+namespace Taiju.Objects.Reversible.Godot;
 
 public partial class ClockNode : Node3D {
   public Clock Clock { get; private set; }

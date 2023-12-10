@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Taiju.Reversible.ValueArray;
+namespace Taiju.Objects.Reversible.ValueArray;
 
 public struct DenseArray<T> : IValueArray<T> where T : struct {
   private readonly Clock clock_;

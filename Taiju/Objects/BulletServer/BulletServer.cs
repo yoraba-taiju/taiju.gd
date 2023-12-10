@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using Godot;
 using Taiju.Objects.Witch;
-using Taiju.Reversible.Gd;
-using Taiju.Reversible.ValueArray;
+using Taiju.Objects.Reversible.Godot;
+using Taiju.Objects.Reversible.ValueArray;
 
 namespace Taiju.Objects.BulletServer;
 

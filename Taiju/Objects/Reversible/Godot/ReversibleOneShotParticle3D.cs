@@ -1,8 +1,8 @@
 ﻿using System;
 using Godot;
-using Taiju.Reversible.Value;
+using Taiju.Objects.Reversible.Value;
 
-namespace Taiju.Reversible.Gd;
+namespace Taiju.Objects.Reversible.Godot;
 
 // https://docs.godotengine.org/en/stable/tutorials/performance/vertex_animation/controlling_thousands_of_fish.html
 public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
@@ -75,10 +75,10 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
       ref var recMut = ref record_.Mut;
       recMut.Emitted = true;
       recMut.InitialTime = integrateTime;
-      _Update(ref items_, 0.0);
+      _SetInstances(ref items_, 0.0);
     } else {
       var time = integrateTime - rec.InitialTime;
-      _Update(ref items_, time);
+      _SetInstances(ref items_, time);
       if (time > lifeTime_) {
         Destroy();
       }
@@ -89,14 +89,14 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
   public override bool _ProcessBack(double integrateTime) {
     ref readonly var rec = ref record_.Ref;
     integrateTime -= rec.InitialTime;
-    _Update(ref items_, integrateTime);
+    _SetInstances(ref items_, integrateTime);
     return false;
   }
 
   public override bool _ProcessLeap(double integrateTime) {
     ref readonly var rec = ref record_.Ref;
     integrateTime -= rec.InitialTime;
-    _Update(ref items_, integrateTime);
+    _SetInstances(ref items_, integrateTime);
     return true;
   }
 
@@ -107,5 +107,5 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
 
   protected abstract void _Emit(ref Item[] items);
 
-  protected abstract void _Update(ref Item[] items, double integrateTime);
+  protected abstract void _SetInstances(ref readonly Item[] items, double integrateTime);
 }

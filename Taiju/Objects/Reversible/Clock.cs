@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Taiju.Reversible;
+namespace Taiju.Objects.Reversible;
 
 public class Clock {
   public const uint HistoryLength = 128;
@@ -48,7 +48,7 @@ public class Clock {
     for (var i = (CurrentLeap >= HistoryLength) ? (CurrentLeap - HistoryLength) : 0; i <= CurrentLeap; ++i) {
       branches += $"(i={historyBranches_[i % HistoryLength]}), ";
     }
-    Godot.GD.Print($"Leaping {CurrentLeap} at {CurrentTick}. branches: [{branches}]");
+    Console.WriteLine($"Leaping {CurrentLeap} at {CurrentTick}. branches: [{branches}]");
   }
   
   public uint AdjustTick(uint lastTouchLeap, uint tick) {

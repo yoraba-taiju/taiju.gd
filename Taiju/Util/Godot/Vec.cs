@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace Taiju.Util.Gd; 
+namespace Taiju.Util.Godot; 
 
 public static class Vec {
     public static Vector3 Rotate(in Vector3 direction, float angleToRotate) {

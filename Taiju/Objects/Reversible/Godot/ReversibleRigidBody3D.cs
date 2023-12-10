@@ -1,8 +1,8 @@
 ﻿using System;
 using Godot;
-using Taiju.Reversible.Gd.Companion;
+using Taiju.Objects.Reversible.Godot.Companion;
 
-namespace Taiju.Reversible.Gd;
+namespace Taiju.Objects.Reversible.Godot;
 
 public abstract partial class ReversibleRigidBody3D : RigidBody3D, IReversibleNode {
   private ReversibleCompanion<ReversibleRigidBody3D> comp_;

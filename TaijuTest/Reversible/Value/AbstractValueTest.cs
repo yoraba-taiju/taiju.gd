@@ -1,7 +1,7 @@
 ﻿namespace TaijuTest.Reversible.Value;
 
-using Taiju.Reversible;
-using Taiju.Reversible.Value;
+using Taiju.Objects.Reversible;
+using Taiju.Objects.Reversible.Value;
 
 public abstract class AbstractValueTest<T>
   where T : IValue<int> {

@@ -1,8 +1,8 @@
 ﻿using System;
 using Godot;
-using Taiju.Reversible.ValueArray;
+using Taiju.Objects.Reversible.ValueArray;
 
-namespace Taiju.Reversible.Gd;
+namespace Taiju.Objects.Reversible.Godot;
 
 // https://docs.godotengine.org/en/stable/tutorials/performance/vertex_animation/controlling_thousands_of_fish.html
 public abstract partial class ReversibleParticle3D : ReversibleNode3D {
@@ -62,28 +62,37 @@ public abstract partial class ReversibleParticle3D : ReversibleNode3D {
       }
     }
     _Update(span, integrateTime);
-    Update(span, integrateTime);
+    SetInstances(span, integrateTime);
     return true;
   }
 
   public override bool _ProcessBack(double integrateTime) {
     var span = items_.Ref;
-    Update(span, integrateTime);
+    SetInstances(span, integrateTime);
     return true;
   }
 
   public override bool _ProcessLeap(double integrateTime) {
     var span = items_.Ref;
-    Update(span, integrateTime);
+    SetInstances(span, integrateTime);
     return true;
   }
 
-  private void Update(ReadOnlySpan<Item> items, double integrateTime) {
-    
+  private void SetInstances(ReadOnlySpan<Item> items, double integrateTime) {
+    var nan = new Transform2D(float.NaN, new Vector2(float.NaN, float.NaN));
+    for (var i = 0; i < MeshCount; ++i) {
+      ref readonly var item = ref items[i];
+      if (!item.Living) {
+        Meshes.SetInstanceTransform2D(i, nan);
+        continue;
+      }
+      _SetInstance(i, in item, integrateTime);
+    }
   }
 
   protected abstract void _EmitOne(ref Item item, double integrateTime);
 
   protected abstract void _Update(Span<Item> items, double integrateTime);
+  protected abstract void _SetInstance(int i, ref readonly Item item, double integrateTime);
 }
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using Godot;
 
-namespace Taiju.Util.Gd.Overlay;
+namespace Taiju.Util.Godot.Overlay;
 
 public partial class StretchedControl : Control {
   public override void _Ready() {
