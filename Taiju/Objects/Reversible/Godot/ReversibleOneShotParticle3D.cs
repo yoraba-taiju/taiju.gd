@@ -75,10 +75,10 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
       ref var recMut = ref record_.Mut;
       recMut.Emitted = true;
       recMut.InitialTime = integrateTime;
-      _SetInstances(ref items_, 0.0);
+      SetInstances(integrateTime);
     } else {
       var time = integrateTime - rec.InitialTime;
-      _SetInstances(ref items_, time);
+      SetInstances(integrateTime);
       if (time > lifeTime_) {
         Destroy();
       }
@@ -89,15 +89,22 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
   public override bool _ProcessBack(double integrateTime) {
     ref readonly var rec = ref record_.Ref;
     integrateTime -= rec.InitialTime;
-    _SetInstances(ref items_, integrateTime);
+    SetInstances(integrateTime);
     return false;
   }
 
   public override bool _ProcessLeap(double integrateTime) {
     ref readonly var rec = ref record_.Ref;
     integrateTime -= rec.InitialTime;
-    _SetInstances(ref items_, integrateTime);
+    SetInstances(integrateTime);
     return true;
+  }
+
+  private void SetInstances(double integrateTime) {
+    for (var i = 0; i < MeshCount; ++i) {
+      ref readonly var item = ref items_[i];
+      _SetInstance(i, in item, integrateTime);
+    }
   }
 
   /*
@@ -107,5 +114,5 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
 
   protected abstract void _Emit(ref Item[] items);
 
-  protected abstract void _SetInstances(ref readonly Item[] items, double integrateTime);
+  protected abstract void _SetInstance(int i, ref readonly Item item, double integrateTime);
 }
