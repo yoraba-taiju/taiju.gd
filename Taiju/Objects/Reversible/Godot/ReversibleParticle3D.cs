@@ -64,7 +64,7 @@ public abstract partial class ReversibleParticle3D : ReversibleNode3D {
     }
     foreach (ref var item in span) {
       if (item.Living) {
-        _Update(ref item, integrateTime);
+        item.Living = _Update(ref item, integrateTime);
       }
     }
     SetInstances(span, integrateTime);
@@ -96,7 +96,7 @@ public abstract partial class ReversibleParticle3D : ReversibleNode3D {
 
   protected abstract void _EmitOne(ref Item item, double integrateTime);
 
-  protected abstract void _Update(ref Item item, double integrateTime);
+  protected abstract bool _Update(ref Item item, double integrateTime);
   protected abstract void _SetInstance(int i, ref readonly Item item, double integrateTime);
 }
 
