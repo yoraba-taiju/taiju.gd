@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://dpaqnt3ddpiub"]
+[gd_scene load_steps=5 format=3 uid="uid://dpaqnt3ddpiub"]
 
 [ext_resource type="Script" path="res://Objects/Witch/Sora.cs" id="1_bfo5d"]
 [ext_resource type="PackedScene" uid="uid://bjnxwcakwbepo" path="res://Objects/Witch/SoraSpirit.tscn" id="2_ats51"]
+[ext_resource type="PackedScene" uid="uid://75mmd78wqdld" path="res://Objects/Effect/StarDust.tscn" id="3_34uag"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_efil6"]
 radius = 0.2
@@ -21,3 +22,5 @@ shape = SubResource("SphereShape3D_efil6")
 
 [node name="Spirit" parent="." instance=ExtResource("2_ats51")]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+
+[node name="StarDust" parent="." instance=ExtResource("3_34uag")]

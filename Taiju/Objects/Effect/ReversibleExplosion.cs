@@ -10,7 +10,7 @@ public partial class ReversibleExplosion : ReversibleOneShotParticle3D {
   private const double LifeTimeScale = 1.0 / 20.0;
   private static readonly Transform2D TransNaN = new Transform2D().TranslatedLocal(new Vector2(Single.NaN, Single.NaN));
 
-  protected override void _SetInstance(int i, ref readonly Item item, double integrateTime) {
+  protected override void UpdateItem(int i, ref readonly Item item, double integrateTime) {
     var trans = Transform2D.Identity;
     if (item.LifeTime <= integrateTime) {
       Meshes.SetInstanceTransform2D(i, TransNaN);
@@ -19,7 +19,7 @@ public partial class ReversibleExplosion : ReversibleOneShotParticle3D {
     var v = item.Velocity;
     var lifeTime = item.LifeTime;
     var leftTime = lifeTime - integrateTime;
-    var offset = item.Angle * (float)(v * integrateTime - integrateTime * integrateTime * v * 0.2f);
+    var offset = item.Direction * (float)(v * integrateTime - integrateTime * integrateTime * v * 0.2f);
     trans = trans.TranslatedLocal(offset);
     if (leftTime < lifeTime / 2.0f) {
       trans = trans.ScaledLocal(Vector2.One * (float)(leftTime / (lifeTime * 0.5f)));
@@ -41,7 +41,7 @@ public partial class ReversibleExplosion : ReversibleOneShotParticle3D {
       ref var item = ref items[i];
       item.Color = replaceHueWithRandomAngle_ ? Color.FromHsv(rand.Randf() * 360.0f, saturation, value) : color_;
       item.Velocity = maxSpeed * (rand.Randf() / 2.0f + 0.5f);
-      item.Angle = new Vector2(rand.Randf() * 2.0f - 1.0f, rand.Randf() * 2.0f - 1.0f).Normalized();
+      item.Direction = new Vector2(rand.Randf() * 2.0f - 1.0f, rand.Randf() * 2.0f - 1.0f).Normalized();
       item.LifeTime = item.Velocity * LifeTimeScale;
       meshes.SetInstanceColor(i, item.Color);
       meshes.SetInstanceTransform2D(i, zero);

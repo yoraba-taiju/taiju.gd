@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=21 format=3 uid="uid://ceqv14au1y2ag"]
 
 [ext_resource type="Script" path="res://Objects/Reversible/Godot/ClockNode.cs" id="1_alw2w"]
 [ext_resource type="Material" uid="uid://dxb0h08vdwfrl" path="res://Background/Forest/Forest.tres" id="1_bmh26"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://byt2kh2w5jhox" path="res://Objects/Effect/textures/red_bullet.png" id="6_bwfd2"]
 [ext_resource type="PackedScene" uid="uid://dj3ie2qhiow02" path="res://Objects/Enemy/Drone0/Drone0.tscn" id="6_j7xnn"]
 [ext_resource type="Script" path="res://Objects/Witch/SoraBulletServer.cs" id="7_hxyi1"]
+[ext_resource type="PackedScene" uid="uid://75mmd78wqdld" path="res://Objects/Effect/StarDust.tscn" id="7_rqoy0"]
 [ext_resource type="Script" path="res://Objects/BulletServer/Servers/CircleBulletServer.cs" id="8_qfb4r"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_aadso"]
@@ -112,6 +113,8 @@ bulletServer_ = NodePath("../../WitchBullet/SoraBulletServer")
 
 [node name="WitchEffect" type="Node3D" parent="Field"]
 
+[node name="StarDust" parent="Field/WitchEffect" instance=ExtResource("7_rqoy0")]
+
 [node name="WitchBullet" type="Node3D" parent="Field"]
 
 [node name="SoraBulletServer" type="Node3D" parent="Field/WitchBullet"]
@@ -122,6 +125,8 @@ bulletScene_ = ExtResource("5_kp850")
 
 [node name="Drone0" parent="Field/Enemy" instance=ExtResource("6_j7xnn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.745, 0, 0)
+maxRotateDegreePerSec_ = null
+escapeDistance_ = null
 
 [node name="EnemyEffect" type="Node3D" parent="Field"]
 
@@ -129,4 +134,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.745, 0, 0)
 
 [node name="CircleBulletServer" type="Node3D" parent="Field/EnemyBullet"]
 script = ExtResource("8_qfb4r")
+size_ = null
 Mesh = SubResource("PlaneMesh_hhw22")
+bulletCount_ = null

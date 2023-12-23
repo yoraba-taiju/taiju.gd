@@ -23,7 +23,7 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
   protected struct Item {
     public Color Color;
     public float Velocity;
-    public Vector2 Angle;
+    public Vector2 Direction;
     public double LifeTime;
   }
 
@@ -70,15 +70,15 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
 
   public override bool _ProcessForward(double integrateTime, double dt) {
     ref readonly var rec = ref record_.Ref;
-    if (!record_.Ref.Emitted) {
+    if (!rec.Emitted) {
       _Emit(ref items_);
       ref var recMut = ref record_.Mut;
       recMut.Emitted = true;
       recMut.InitialTime = integrateTime;
-      SetInstances(integrateTime);
+      UpdateItem(integrateTime);
     } else {
       var time = integrateTime - rec.InitialTime;
-      SetInstances(integrateTime);
+      UpdateItem(integrateTime);
       if (time > lifeTime_) {
         Destroy();
       }
@@ -89,21 +89,21 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
   public override bool _ProcessBack(double integrateTime) {
     ref readonly var rec = ref record_.Ref;
     integrateTime -= rec.InitialTime;
-    SetInstances(integrateTime);
+    UpdateItem(integrateTime);
     return false;
   }
 
   public override bool _ProcessLeap(double integrateTime) {
     ref readonly var rec = ref record_.Ref;
     integrateTime -= rec.InitialTime;
-    SetInstances(integrateTime);
+    UpdateItem(integrateTime);
     return true;
   }
 
-  private void SetInstances(double integrateTime) {
+  private void UpdateItem(double integrateTime) {
     for (var i = 0; i < MeshCount; ++i) {
       ref readonly var item = ref items_[i];
-      _SetInstance(i, in item, integrateTime);
+      UpdateItem(i, in item, integrateTime);
     }
   }
 
@@ -114,5 +114,5 @@ public abstract partial class ReversibleOneShotParticle3D : ReversibleNode3D {
 
   protected abstract void _Emit(ref Item[] items);
 
-  protected abstract void _SetInstance(int i, ref readonly Item item, double integrateTime);
+  protected abstract void UpdateItem(int i, ref readonly Item item, double integrateTime);
 }
