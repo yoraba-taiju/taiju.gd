@@ -18,14 +18,14 @@ public partial class StarDust : ReversibleParticle3D<StarDust.Item> {
   [Export] protected double DecayRate = 0.9;
 
   private RandomNumberGenerator rand_ = new();
-  protected override void _EmitOne(ref Item itemHolder) {
-    itemHolder.EmitPosition = new Vector2(GlobalPosition.X, GlobalPosition.Y);
+  protected override void _EmitOne(ref Item item) {
+    item.EmitPosition = new Vector2(GlobalPosition.X, GlobalPosition.Y);
     BaseColor.ToHsv(out _, out var saturation, out var value);
-    itemHolder.Color = Color.FromHsv(rand_.Randf() * 360.0f, saturation, value);
-    itemHolder.Velocity = MaxSpeed * (rand_.Randf() / 2.0f + 0.5f);
+    item.Color = Color.FromHsv(rand_.Randf() * 360.0f, saturation, value);
+    item.Velocity = MaxSpeed * (rand_.Randf() / 2.0f + 0.5f);
     var angle = Mathf.DegToRad(Angle - Range / 2 + rand_.Randf() * Range);
-    itemHolder.Direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-    itemHolder.LifeTime = 1.0;
+    item.Direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+    item.LifeTime = 1.0;
   }
 
   protected override bool _Update(ref readonly Item item, double t) {
