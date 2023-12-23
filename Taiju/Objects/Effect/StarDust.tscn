@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://75mmd78wqdld"]
+
+[ext_resource type="Script" path="res://Objects/Effect/StarDust.cs" id="1_8qo7t"]
+[ext_resource type="Texture2D" uid="uid://lfrcr5gyqpq1" path="res://Objects/Effect/textures/魔素.png" id="2_njpbs"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7pnr7"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("2_njpbs")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_olmy5"]
+material = SubResource("StandardMaterial3D_7pnr7")
+size = Vector2(1, 1)
+orientation = 2
+
+[node name="StarDust" type="Node3D"]
+script = ExtResource("1_8qo7t")
+BaseColor = Color(1, 0.709804, 0.713726, 1)
+Angle = 180.0
+Range = 60.0
+Mesh = SubResource("PlaneMesh_olmy5")

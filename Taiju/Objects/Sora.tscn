@@ -24,3 +24,5 @@ shape = SubResource("SphereShape3D_efil6")
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
 
 [node name="StarDust" parent="." instance=ExtResource("3_34uag")]
+DecayRate = 0.9
+EmitPerSecond = 15.0
