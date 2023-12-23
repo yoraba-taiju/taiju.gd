@@ -19,13 +19,18 @@ public partial class StarDust : ReversibleParticle3D {
     item.LifeTime = Mathf.Log(0.1 / item.Velocity) / Mathf.Log(DecayRate);
   }
 
-  protected override bool _Update(ref Item item, double integrateTime) {
+  protected override bool _Update(ref Item item, double
+    integrateTime) {
     var t = integrateTime - item.EmitAt;
     return t <= item.LifeTime;
   }
 
   protected override void _SetInstance(int i, ref readonly Item item, double integrateTime) {
     var t = integrateTime - item.EmitAt;
-    
+    var rate = t / item.LifeTime;
+    var alpha = (float)Mathf.Sqrt(rate);
+    var color = item.Color;
+    color.A *= alpha;
+    Meshes.SetInstanceColor(i, color);
   }
 }
