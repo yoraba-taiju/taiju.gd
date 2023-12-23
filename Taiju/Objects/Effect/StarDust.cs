@@ -5,6 +5,11 @@ using Taiju.Objects.Reversible.Godot;
 namespace Taiju.Objects.Effect;
 
 public partial class StarDust : ReversibleParticle3D<StarDust.Item> {
+  [Export] protected Color BaseColor = Colors.White;
+  [Export(PropertyHint.Range, "0,360,")] protected float Angle;
+  [Export(PropertyHint.Range, "0,180,")] protected float Range = 45;
+  [Export] protected double DecayRate = 0.9;
+
   public struct Item {
     public Vector2 EmitPosition;
     public Color Color;
@@ -12,10 +17,6 @@ public partial class StarDust : ReversibleParticle3D<StarDust.Item> {
     public Vector2 Direction;
     public double LifeTime;
   }
-  [Export] protected Color BaseColor = Colors.White;
-  [Export(PropertyHint.Range, "0,360,")] protected float Angle;
-  [Export(PropertyHint.Range, "0,180,")] protected float Range = 45;
-  [Export] protected double DecayRate = 0.9;
 
   private RandomNumberGenerator rand_ = new();
   protected override void _EmitOne(ref Item item) {
@@ -39,8 +40,8 @@ public partial class StarDust : ReversibleParticle3D<StarDust.Item> {
     var color = item.Color;
     color.A *= alpha;
     Meshes.SetInstanceColor(i, color);
-    var delta = item.EmitPosition - new Vector2(currentGlobalPosition.X, currentGlobalPosition.Y);
-    var trans = Transform2D.Identity.Translated(delta + item.Direction * item.Velocity * (float)t);
+    var baseDelta = item.EmitPosition - new Vector2(currentGlobalPosition.X, currentGlobalPosition.Y);
+    var trans = Transform2D.Identity.Translated(baseDelta + item.Direction * item.Velocity * (float)t);
     Meshes.SetInstanceTransform2D(i, trans);
   }
 }
