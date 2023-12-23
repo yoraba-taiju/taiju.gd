@@ -6,7 +6,7 @@ namespace Taiju.Objects.Reversible.Godot;
 
 // https://docs.godotengine.org/en/stable/tutorials/performance/vertex_animation/controlling_thousands_of_fish.html
 public abstract partial class ReversibleParticle3D<T> : ReversibleNode3D
-  where T: struct
+  where T : struct
 {
   [Export] protected Mesh Mesh;
   [Export] protected int MeshCount = 16;
@@ -20,7 +20,7 @@ public abstract partial class ReversibleParticle3D<T> : ReversibleNode3D
   // MeshData
   protected MultiMesh Meshes { get; private set; }
 
-  struct ItemHolder {
+  struct Holder {
     public bool Living;
     public double EmitAt;
     public T Item;
@@ -28,7 +28,7 @@ public abstract partial class ReversibleParticle3D<T> : ReversibleNode3D
 
   // Storages
   private ClockNode clockNode_;
-  private SparseArray<ItemHolder> items_;
+  private SparseArray<Holder> holders_;
   private double leftToEmit_;
 
   public override void _Ready() {
@@ -43,16 +43,16 @@ public abstract partial class ReversibleParticle3D<T> : ReversibleNode3D
     Meshes.InstanceCount = MeshCount;
     multiMeshInstance_.Multimesh = Meshes;
     multiMeshInstance_.Name = "SpritesNode";
-    items_ = new SparseArray<ItemHolder>(Clock, (uint)MeshCount, new ItemHolder());
-    var span = items_.Mut;
+    holders_ = new SparseArray<Holder>(Clock, (uint)MeshCount, new Holder());
+    var span = holders_.Mut;
     _EmitOne(ref span[0].Item);
     span[0].Living = true;
     span[0].EmitAt = 0.0;
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
-    ReadOnlySpan<ItemHolder> span = items_.Ref;
-    Span<ItemHolder> spanMut = null;
+    ReadOnlySpan<Holder> span = holders_.Ref;
+    Span<Holder> spanMut = null;
     leftToEmit_ -= dt;
     if (leftToEmit_ <= 0) {
       leftToEmit_ += 1.0 / EmitPerSecond;
@@ -61,12 +61,12 @@ public abstract partial class ReversibleParticle3D<T> : ReversibleNode3D
         if (item.Living) {
           continue;
         }
-        spanMut = spanMut != null ? spanMut : items_.Mut;
+        spanMut = spanMut != null ? spanMut : holders_.Mut;
         ref var itemMut = ref spanMut[i];
         _EmitOne(ref itemMut.Item);
         itemMut.Living = true;
         itemMut.EmitAt = integrateTime;
-        span = items_.Ref;
+        span = holders_.Ref;
         break;
       }
     }
@@ -76,37 +76,37 @@ public abstract partial class ReversibleParticle3D<T> : ReversibleNode3D
       if (!item.Living || _Update(in item.Item, integrateTime - item.EmitAt)) {
         continue;
       }
-      spanMut = spanMut != null ? spanMut : items_.Mut;
-      ref var itemMut = ref spanMut[i];
-      itemMut.Living = false;
-      span = items_.Ref;
+      spanMut = spanMut != null ? spanMut : holders_.Mut;
+      ref var holderMut = ref spanMut[i];
+      holderMut.Living = false;
+      span = holders_.Ref;
     }
 
-    SetInstances(items_.Ref, integrateTime);
+    SetInstances(holders_.Ref, integrateTime);
     return true;
   }
 
   public override bool _ProcessBack(double integrateTime) {
-    var span = items_.Ref;
+    var span = holders_.Ref;
     SetInstances(span, integrateTime);
     return true;
   }
 
   public override bool _ProcessLeap(double integrateTime) {
-    var span = items_.Ref;
+    var span = holders_.Ref;
     SetInstances(span, integrateTime);
     return true;
   }
 
-  private void SetInstances(ReadOnlySpan<ItemHolder> items, double integrateTime) {
+  private void SetInstances(ReadOnlySpan<Holder> holders, double integrateTime) {
     var globalPosition = GlobalPosition;
     for (var i = 0; i < MeshCount; ++i) {
-      ref readonly var item = ref items[i];
-      if (!item.Living) {
+      ref readonly var holder = ref holders[i];
+      if (!holder.Living) {
         Meshes.SetInstanceTransform2D(i, transNaN_);
         continue;
       }
-      _SetInstance(i, in item.Item, integrateTime - item.EmitAt, globalPosition);
+      _SetInstance(i, in holder.Item, integrateTime - holder.EmitAt, globalPosition);
     }
   }
 
