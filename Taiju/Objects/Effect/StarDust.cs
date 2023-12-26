@@ -39,7 +39,7 @@ public partial class StarDust : ReversibleParticle3D<StarDust.Item> {
     return t <= item.LifeTime;
   }
 
-  protected override void _SetInstance(int i, ref readonly Item item, double t, Vector3 currentGlobalPosition) {
+  protected override void _SetInstance(int i, ref readonly Item item, double t) {
     var rate = t / item.LifeTime;
     var alpha = 1.0f - (float)rate;
 
