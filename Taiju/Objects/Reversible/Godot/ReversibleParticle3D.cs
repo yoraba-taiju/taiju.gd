@@ -13,6 +13,7 @@ public abstract partial class ReversibleParticle3D<T> : ReversibleNode3D
   [Export] protected float MaxSpeed = 10.0f;
   [Export(PropertyHint.Range, "1.0, 60.0")] protected double EmitPerSecond = 10;
 
+  private readonly Transform2D transZero_ = Transform2D.Identity.Scaled(Vector2.Zero);
   // https://docs.godotengine.org/en/stable/classes/class_multimesh.html
   private MultiMeshInstance3D multiMeshInstance_;
   
@@ -102,6 +103,7 @@ public abstract partial class ReversibleParticle3D<T> : ReversibleNode3D
       ref readonly var holder = ref holders[i];
       if (!holder.Living) {
         Meshes.SetInstanceColor(i, Colors.Transparent);
+        Meshes.SetInstanceTransform2D(i, transZero_);
         continue;
       }
       _SetInstance(i, in holder.Item, integrateTime - holder.EmitAt);
