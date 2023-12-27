@@ -11,11 +11,11 @@ public partial class Spawner : Node3D {
 
   private void PlayRush(PackedScene packedScene) {
     var scene = packedScene.Instantiate<Node3D>();
+    scene.QueueFree();
     var all = scene.GetChildren();
     foreach (var child in all) {
       scene.RemoveChild(child);
       field_.AddChild(child);
     }
-    scene.QueueFree();
   }
 }
