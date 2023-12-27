@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://75mmd78wqdld"]
+[gd_scene load_steps=5 format=3 uid="uid://581jt6ajonyu"]
 
 [ext_resource type="Script" path="res://Objects/Effect/StarDust.cs" id="1_8qo7t"]
 [ext_resource type="Texture2D" uid="uid://lfrcr5gyqpq1" path="res://Objects/Effect/textures/魔素.png" id="2_njpbs"]

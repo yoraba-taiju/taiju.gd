@@ -13,7 +13,7 @@ public partial class ClockNode : Node3D {
   
   private struct Grave {
     public uint DestroyedAt;
-    public Node3D Node;
+    public Node Node;
   }
 
   private RingBuffer<Grave> graveyard_ = new(16384);
@@ -106,7 +106,7 @@ public partial class ClockNode : Node3D {
     }
   }
 
-  public void QueueDestroy(Node3D node) {
+  public void QueueDestroy(Node node) {
     graveyard_.AddLast(new Grave {
       DestroyedAt = Clock.CurrentTick,
       Node = node,

@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=25 format=3 uid="uid://ceqv14au1y2ag"]
 
 [ext_resource type="Script" path="res://Objects/Reversible/Godot/ClockNode.cs" id="1_alw2w"]
 [ext_resource type="Material" uid="uid://dxb0h08vdwfrl" path="res://Background/Forest/Forest.tres" id="1_bmh26"]
@@ -8,9 +8,11 @@
 [ext_resource type="PackedScene" uid="uid://dpaqnt3ddpiub" path="res://Objects/Sora.tscn" id="4_h45ke"]
 [ext_resource type="PackedScene" uid="uid://dulu3o8yh1dam" path="res://Objects/Witch/SoraBullet.tscn" id="5_kp850"]
 [ext_resource type="Texture2D" uid="uid://byt2kh2w5jhox" path="res://Objects/Effect/textures/red_bullet.png" id="6_bwfd2"]
-[ext_resource type="PackedScene" uid="uid://dj3ie2qhiow02" path="res://Objects/Enemy/Drone0/Drone0.tscn" id="6_j7xnn"]
 [ext_resource type="Script" path="res://Objects/Witch/SoraBulletServer.cs" id="7_hxyi1"]
 [ext_resource type="Script" path="res://Objects/BulletServer/Servers/CircleBulletServer.cs" id="8_qfb4r"]
+[ext_resource type="PackedScene" uid="uid://bathkgjpqulyc" path="res://Scenes/Rush/rush1.tscn" id="11_cdnnw"]
+[ext_resource type="Script" path="res://Scenes/Spawner.cs" id="12_kg1q4"]
+[ext_resource type="Script" path="res://Scenes/Dolly.cs" id="12_mgcli"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_aadso"]
 energy_multiplier = 2.0
@@ -42,6 +44,33 @@ billboard_keep_scale = true
 [sub_resource type="PlaneMesh" id="PlaneMesh_hhw22"]
 material = SubResource("StandardMaterial3D_jlq0k")
 orientation = 2
+
+[sub_resource type="Animation" id="Animation_exb70"]
+resource_name = "RESET"
+
+[sub_resource type="Animation" id="Animation_qjeby"]
+resource_name = "dolly"
+length = 60.0
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DollyPlayer/Spawner")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [ExtResource("11_cdnnw")],
+"method": &"PlayRush"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_flfhp"]
+_data = {
+"RESET": SubResource("Animation_exb70"),
+"dolly": SubResource("Animation_qjeby")
+}
 
 [node name="Root" type="Node3D"]
 
@@ -120,9 +149,6 @@ bulletScene_ = ExtResource("5_kp850")
 
 [node name="Enemy" type="Node3D" parent="Field"]
 
-[node name="Drone0" parent="Field/Enemy" instance=ExtResource("6_j7xnn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.745, 0, 0)
-
 [node name="EnemyEffect" type="Node3D" parent="Field"]
 
 [node name="EnemyBullet" type="Node3D" parent="Field"]
@@ -130,3 +156,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.745, 0, 0)
 [node name="CircleBulletServer" type="Node3D" parent="Field/EnemyBullet"]
 script = ExtResource("8_qfb4r")
 Mesh = SubResource("PlaneMesh_hhw22")
+
+[node name="DollyPlayer" type="AnimationPlayer" parent="."]
+deterministic = true
+libraries = {
+"": SubResource("AnimationLibrary_flfhp")
+}
+script = ExtResource("12_mgcli")
+
+[node name="Spawner" type="Node3D" parent="DollyPlayer"]
+script = ExtResource("12_kg1q4")

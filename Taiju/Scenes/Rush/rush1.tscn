@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bathkgjpqulyc"]
+
+[ext_resource type="PackedScene" uid="uid://dj3ie2qhiow02" path="res://Objects/Enemy/Drone0/Drone0.tscn" id="1_vtw8v"]
+
+[node name="Enemy" type="Node3D"]
+
+[node name="Drone0" parent="." instance=ExtResource("1_vtw8v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.745, 0, 0)

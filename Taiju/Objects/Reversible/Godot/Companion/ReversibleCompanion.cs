@@ -4,7 +4,7 @@ using Godot;
 namespace Taiju.Objects.Reversible.Godot.Companion;
 
 public struct ReversibleCompanion<T>
-  where T: Node3D, IReversibleNode
+  where T: Node, IReversibleNode
 {
   /// Accessors
   public ClockNode ClockNode { get; private set; }
@@ -24,7 +24,7 @@ public struct ReversibleCompanion<T>
    * Impls
    */
 
-  public void Ready(Node3D self) {
+  public void Ready(T self) {
     ClockNode = self.GetNode<ClockNode>("/root/Root/Clock");
     Clock = ClockNode.Clock;
     bornTick_ = Clock.CurrentTick;
