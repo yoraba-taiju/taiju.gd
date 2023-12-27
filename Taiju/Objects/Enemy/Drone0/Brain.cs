@@ -45,7 +45,6 @@ public partial class Brain : EnemyBase {
     animPlayer_ = model.GetNode<AnimationPlayer>("AnimationPlayer");
     var anim = animPlayer_.GetAnimation("Rotate");
     anim.LoopMode = Animation.LoopModeEnum.Linear;
-    anim.RemoveTrack(anim.GetTrackCount() - 1);
     animPlayer_.PlaybackActive = true;
     animPlayer_.Play("Rotate");
     defaultEscapeDirection_ = ((int)(rand_.Randi() % 2) * 2) - 1;
