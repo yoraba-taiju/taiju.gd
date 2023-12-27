@@ -55,7 +55,7 @@ tracks/0/path = NodePath("Dolly/Spawner")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(1),
+"times": PackedFloat32Array(2),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [ExtResource("11_cdnnw")],
