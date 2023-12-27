@@ -44,7 +44,7 @@ public abstract partial class ReversibleAnimationPlayer : AnimationPlayer, IReve
   public abstract bool _ProcessBack(double integrateTime);
 
   public virtual bool _ProcessLeap(double integrateTime) {
-    Seek(integrateTime);
+    Seek(integrateTime, true, true);
     return true;
   }
 

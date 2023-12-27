@@ -14,6 +14,6 @@ public partial class Dolly : ReversibleAnimationPlayer {
   }
 
   public override bool _ProcessBack(double integrateTime) {
-    throw new System.NotImplementedException();
+    return true;
   }
 }
