@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=25 format=3 uid="uid://ceqv14au1y2ag"]
 
 [ext_resource type="Script" path="res://Objects/Reversible/Godot/ClockNode.cs" id="1_alw2w"]
 [ext_resource type="Material" uid="uid://dxb0h08vdwfrl" path="res://Background/Forest/Forest.tres" id="1_bmh26"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://byt2kh2w5jhox" path="res://Objects/Effect/textures/red_bullet.png" id="6_bwfd2"]
 [ext_resource type="Script" path="res://Objects/Witch/SoraBulletServer.cs" id="7_hxyi1"]
 [ext_resource type="Script" path="res://Objects/BulletServer/Servers/CircleBulletServer.cs" id="8_qfb4r"]
+[ext_resource type="PackedScene" uid="uid://bc66k31538av8" path="res://Objects/Enemy/Drone1/Drone1.tscn" id="9_ge6oq"]
 [ext_resource type="PackedScene" uid="uid://dj3ie2qhiow02" path="res://Objects/Enemy/Drone0/Drone0.tscn" id="12_3edtj"]
 [ext_resource type="Script" path="res://Scenes/Spawner.cs" id="12_kg1q4"]
 [ext_resource type="Script" path="res://Scenes/Dolly.cs" id="12_mgcli"]
@@ -97,9 +98,12 @@ tracks/3/path = NodePath("Dolly/Spawner")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(),
-"transitions": PackedFloat32Array(),
-"values": []
+"times": PackedFloat32Array(5.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [ExtResource("9_ge6oq"), Vector2(25, 0)],
+"method": &"Play"
+}]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_flfhp"]
@@ -190,9 +194,7 @@ bulletScene_ = ExtResource("5_kp850")
 
 [node name="CircleBulletServer" type="Node3D" parent="Field/EnemyBullet"]
 script = ExtResource("8_qfb4r")
-size_ = null
 Mesh = SubResource("PlaneMesh_hhw22")
-bulletCount_ = null
 
 [node name="Dolly" type="AnimationPlayer" parent="."]
 deterministic = true

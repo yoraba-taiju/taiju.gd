@@ -1,0 +1,161 @@
+[gd_scene load_steps=14 format=3 uid="uid://bc66k31538av8"]
+
+[ext_resource type="Script" path="res://Objects/Enemy/Drone1/Brain.cs" id="1_70det"]
+[ext_resource type="PackedScene" uid="uid://dft12w80wdko2" path="res://Objects/Enemy/Drone1/Drone1.blend" id="1_jmkx4"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_u27nk"]
+radius = 1.0
+
+[sub_resource type="Animation" id="Animation_yn7gq"]
+resource_name = "羽_RootAction"
+length = 1.5
+tracks/0/type = "rotation_3d"
+tracks/0/imported = true
+tracks/0/enabled = true
+tracks/0/path = NodePath("Root/プロペラ/羽_Root")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, -2.31066e-17, 0.0348995, 3.3341e-17, 0.999391, 0.0333333, 1, -8.22893e-17, 0.0697565, 6.66413e-17, 0.997564, 0.733333, 1, 3.33409e-17, 0.999391, 3.24384e-17, 0.0348994, 0.766667, 1, 3.33409e-17, -0.999391, -3.24384e-17, 0.0348995, 1.46667, 1, -8.22892e-17, -0.0697562, -6.66411e-17, 0.997564, 1.5, 1, -5.29396e-23, 8.74228e-08, 8.35187e-23, 1)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = true
+tracks/1/enabled = true
+tracks/1/path = NodePath("Root/プロペラ/羽_Root/羽A_Root")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
+tracks/2/type = "rotation_3d"
+tracks/2/imported = true
+tracks/2/enabled = true
+tracks/2/path = NodePath("Root/プロペラ/羽_Root/羽B_Root")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_cjrwx"]
+resource_name = "羽A_RootAction"
+length = 1.5
+tracks/0/type = "rotation_3d"
+tracks/0/imported = true
+tracks/0/enabled = true
+tracks/0/path = NodePath("Root/プロペラ/羽_Root/羽A_Root")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 2.17404e-17, -3.72529e-09, 8.9358e-16, 1, 0.0333333, 1, -4.11804e-17, 0.0352915, -8.3934e-16, 0.999377, 0.733333, 1, -4.43713e-17, 0.998599, 2.06079e-16, 0.0529235, 0.766667, 1, -9.07417e-16, -0.999844, 7.58582e-17, 0.0176485, 1.46667, 1, 6.04948e-17, -0.070539, -8.75856e-17, 0.997509, 1.5, 1, -5.29396e-23, 8.74228e-08, 8.35187e-23, 1)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = true
+tracks/1/enabled = true
+tracks/1/path = NodePath("Root/プロペラ/羽_Root/羽B_Root")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
+tracks/2/type = "rotation_3d"
+tracks/2/imported = true
+tracks/2/enabled = true
+tracks/2/path = NodePath("Root/プロペラ/羽_Root")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_qdkw7"]
+resource_name = "羽B_RootAction"
+length = 1.5
+tracks/0/type = "rotation_3d"
+tracks/0/imported = true
+tracks/0/enabled = true
+tracks/0/path = NodePath("Root/プロペラ/羽_Root/羽B_Root")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 1.77011e-17, 0.0348995, 4.39627e-17, 0.999391, 0.0333333, 1, -5.05607e-17, 0.0697565, -8.03606e-16, 0.997564, 0.733333, 1, -9.17222e-16, 0.999391, -1.87822e-17, 0.0348994, 0.766667, 1, -3.62323e-17, -0.999391, -3.73033e-17, 0.0348995, 1.46667, 1, 6.07328e-17, -0.0697562, -9.77089e-16, 0.997564, 1.5, 1, -5.29396e-23, 8.74228e-08, 8.35187e-23, 1)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = true
+tracks/1/enabled = true
+tracks/1/path = NodePath("Root/プロペラ/羽_Root/羽A_Root")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
+tracks/2/type = "rotation_3d"
+tracks/2/imported = true
+tracks/2/enabled = true
+tracks/2/path = NodePath("Root/プロペラ/羽_Root")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_rdvnx"]
+_data = {
+"羽A_RootAction": SubResource("Animation_cjrwx"),
+"羽B_RootAction": SubResource("Animation_qdkw7"),
+"羽_RootAction": SubResource("Animation_yn7gq")
+}
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_1hgs0"]
+filters = ["Root/プロペラ/羽_Root", "Root/プロペラ/羽_Root/羽A_Root", "Root/プロペラ/羽_Root/羽B_Root"]
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_7cta3"]
+filters = ["Root/プロペラ/羽_Root", "Root/プロペラ/羽_Root/羽A_Root", "Root/プロペラ/羽_Root/羽B_Root"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8jv2p"]
+animation = &"羽_RootAction"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_66sb6"]
+animation = &"羽A_RootAction"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_mjfmf"]
+animation = &"羽B_RootAction"
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_3351t"]
+graph_offset = Vector2(-753.209, 91.6801)
+nodes/Blend2/node = SubResource("AnimationNodeBlend2_7cta3")
+nodes/Blend2/position = Vector2(-40, 160)
+"nodes/Blend2 2/node" = SubResource("AnimationNodeBlend2_1hgs0")
+"nodes/Blend2 2/position" = Vector2(220, 200)
+nodes/Root/node = SubResource("AnimationNodeAnimation_8jv2p")
+nodes/Root/position = Vector2(-20, 420)
+nodes/Wing1/node = SubResource("AnimationNodeAnimation_66sb6")
+nodes/Wing1/position = Vector2(-280, 120)
+nodes/Wing2/node = SubResource("AnimationNodeAnimation_mjfmf")
+nodes/Wing2/position = Vector2(-280, 260)
+nodes/output/position = Vector2(520, 180)
+node_connections = [&"Blend2", 0, &"Wing1", &"Blend2", 1, &"Wing2", &"Blend2 2", 0, &"Blend2", &"Blend2 2", 1, &"Root", &"output", 0, &"Blend2 2"]
+
+[node name="Drone1" type="RigidBody3D"]
+collision_layer = 16
+collision_mask = 6
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+mass = 150.0
+gravity_scale = 0.0
+script = ExtResource("1_70det")
+maxRotateDegreePerSec_ = null
+escapeDistance_ = null
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_u27nk")
+
+[node name="Body" type="Node3D" parent="."]
+transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 0, 0, 0)
+
+[node name="Drone1" parent="Body" instance=ExtResource("1_jmkx4")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="羽_Root" parent="Body/Drone1/Root/プロペラ" index="0"]
+transform = Transform3D(1, -8.35187e-23, 8.74228e-08, 8.35187e-23, 1, 5.29396e-23, -8.74228e-08, -5.29396e-23, 1, 0, 0, 0)
+
+[node name="羽A_Root" parent="Body/Drone1/Root/プロペラ/羽_Root" index="0"]
+transform = Transform3D(1, -4.17594e-23, 4.37114e-08, 4.17594e-23, 1, 2.64698e-23, -4.37114e-08, -2.64698e-23, 1, 0, 1.2, -0.75)
+
+[node name="羽B_Root" parent="Body/Drone1/Root/プロペラ/羽_Root" index="1"]
+transform = Transform3D(1, -4.17594e-23, 4.37114e-08, 4.17594e-23, 1, 2.64698e-23, -4.37114e-08, -2.64698e-23, 1, 0, 1.2, 0.75)
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("../Body/Drone1")
+libraries = {
+"": SubResource("AnimationLibrary_rdvnx")
+}
+tree_root = SubResource("AnimationNodeBlendTree_3351t")
+anim_player = NodePath("../Body/Drone1/AnimationPlayer")
+parameters/Blend2/blend_amount = 0.5
+"parameters/Blend2 2/blend_amount" = 0.5
+
+[editable path="Body/Drone1"]
