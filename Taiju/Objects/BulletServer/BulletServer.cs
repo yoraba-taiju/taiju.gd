@@ -109,7 +109,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
     if (leftBullets <= 0) {
       return;
     }
-    Console.WriteLine($"Failed to spawn {leftBullets} / {bulletCount_} bullet. Full.");
+    Console.WriteLine($"Failed to spawn {leftBullets} bullet. Full (of {bulletCount_} bullets).");
     spawnQueue_.Clear();
   }
   
