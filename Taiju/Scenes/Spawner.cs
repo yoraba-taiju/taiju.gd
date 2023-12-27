@@ -16,12 +16,12 @@ public partial class Spawner : Node3D {
     Field.AddChild(node);
   }
 
-  private void PlayRush(PackedScene rushScene) {
-    var scene = rushScene.Instantiate<Node3D>();
-    scene.QueueFree();
-    var children = scene.GetChildren();
+  private void PlayRush(PackedScene packedScene) {
+    var rush = packedScene.Instantiate<Node3D>();
+    rush.QueueFree();
+    var children = rush.GetChildren();
     foreach (var child in children) {
-      scene.RemoveChild(child);
+      rush.RemoveChild(child);
       Field.AddChild(child);
     }
   }
