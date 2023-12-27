@@ -9,13 +9,6 @@ public partial class Dolly : ReversibleAnimationPlayer {
     Play("dolly");
   }
 
-  public override bool _ProcessLeap(double integrateTime) {
-    base._ProcessLeap(integrateTime);
-    Play("dolly");
-    Seek(integrateTime);
-    return true;
-  }
-
   public override bool _ProcessForward(double integrateTime, double dt) {
     return true;
   }
