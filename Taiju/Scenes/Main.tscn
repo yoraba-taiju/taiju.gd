@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=24 format=3 uid="uid://ceqv14au1y2ag"]
 
 [ext_resource type="Script" path="res://Objects/Reversible/Godot/ClockNode.cs" id="1_alw2w"]
 [ext_resource type="Material" uid="uid://dxb0h08vdwfrl" path="res://Background/Forest/Forest.tres" id="1_bmh26"]
@@ -45,16 +45,13 @@ billboard_keep_scale = true
 material = SubResource("StandardMaterial3D_jlq0k")
 orientation = 2
 
-[sub_resource type="Animation" id="Animation_exb70"]
-resource_name = "RESET"
-
 [sub_resource type="Animation" id="Animation_qjeby"]
 resource_name = "dolly"
 length = 60.0
 tracks/0/type = "method"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("DollyPlayer/Spawner")
+tracks/0/path = NodePath("Dolly/Spawner")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -68,7 +65,6 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_flfhp"]
 _data = {
-"RESET": SubResource("Animation_exb70"),
 "dolly": SubResource("Animation_qjeby")
 }
 
@@ -157,12 +153,12 @@ bulletScene_ = ExtResource("5_kp850")
 script = ExtResource("8_qfb4r")
 Mesh = SubResource("PlaneMesh_hhw22")
 
-[node name="DollyPlayer" type="AnimationPlayer" parent="."]
+[node name="Dolly" type="AnimationPlayer" parent="."]
 deterministic = true
 libraries = {
 "": SubResource("AnimationLibrary_flfhp")
 }
 script = ExtResource("12_mgcli")
 
-[node name="Spawner" type="Node3D" parent="DollyPlayer"]
+[node name="Spawner" type="Node3D" parent="Dolly"]
 script = ExtResource("12_kg1q4")

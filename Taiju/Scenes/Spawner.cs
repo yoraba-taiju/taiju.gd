@@ -14,9 +14,8 @@ public partial class Spawner : Node3D {
     var all = scene.GetChildren();
     foreach (var child in all) {
       scene.RemoveChild(child);
-    }
-    foreach (var child in all) {
       field_.AddChild(child);
     }
+    scene.QueueFree();
   }
 }

@@ -109,19 +109,18 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
     if (leftBullets <= 0) {
       return;
     }
-    Console.WriteLine($"Failed to spawn {leftBullets} bullet. Full.");
+    Console.WriteLine($"Failed to spawn {leftBullets} / {bulletCount_} bullet. Full.");
     spawnQueue_.Clear();
   }
   
+  private readonly Transform2D transZero_ = Transform2D.Identity.Scaled(Vector2.Zero);
   private void ProcessBullets(bool forward, double integrateTime) {
     var bullets = Bullets.Ref;
     var meshes = multiMesh_;
-    var ident = Transform2D.Identity;
-    var nan = ident.ScaledLocal(new Vector2(float.NaN, float.NaN));
     for (var i = 0; i < bulletCount_; ++i) {
       ref readonly var bullet = ref bullets[i];
       if (!bullet.Living) {
-        meshes.SetInstanceTransform2D(i, nan);
+        meshes.SetInstanceTransform2D(i, transZero_);
         continue;
       }
 
@@ -139,10 +138,10 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
       var backCond = integrateTime <= bullet.SpawnAt;
       if ((forward && forwardCond) || (!forward && backCond)) {
         Bullets.Mut[i].Living = false; // State changed!
-        meshes.SetInstanceTransform2D(i, nan);
+        meshes.SetInstanceTransform2D(i, transZero_);
         continue;
       }
-      meshes.SetInstanceTransform2D(i, ident.TranslatedLocal(pos).RotatedLocal(angle.Angle()));
+      meshes.SetInstanceTransform2D(i, Transform2D.Identity.TranslatedLocal(pos).RotatedLocal(angle.Angle()));
     }
   }
 
