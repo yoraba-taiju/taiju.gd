@@ -14,6 +14,7 @@ public abstract partial class ReversibleAnimationPlayer : AnimationPlayer, IReve
 
   public override void _Ready() {
     comp_.Ready(this);
+    PlaybackActive = true;
   }
 
   /*
@@ -21,6 +22,7 @@ public abstract partial class ReversibleAnimationPlayer : AnimationPlayer, IReve
    */
   public override void _Process(double delta) {
     comp_.Process(this, delta);
+    PlaybackActive = true;
   }
   
   /*
