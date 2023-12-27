@@ -3,7 +3,20 @@ using Taiju.Objects.Reversible.Godot;
 
 namespace Taiju.Scenes;
 
-public partial class Spawner : ReversibleSpawner {
+public partial class Spawner : Node3D {
+  private Node3D Field { get; set; }
+
+  public override void _Ready() {
+    base._Ready();
+    Field = GetNode<Node3D>("/root/Root/Field/Enemy");
+  }
+
+  private void Play(PackedScene packedScene, Vector2 at) {
+    var node = packedScene.Instantiate<Node3D>();
+    node.Translate(new Vector3(at.X, at.Y, 0.0f));
+    Field.AddChild(node);
+  }
+
   private void PlayRush(PackedScene packedScene) {
     var scene = packedScene.Instantiate<Node3D>();
     scene.QueueFree();

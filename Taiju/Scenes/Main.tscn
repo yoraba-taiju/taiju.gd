@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://byt2kh2w5jhox" path="res://Objects/Effect/textures/red_bullet.png" id="6_bwfd2"]
 [ext_resource type="Script" path="res://Objects/Witch/SoraBulletServer.cs" id="7_hxyi1"]
 [ext_resource type="Script" path="res://Objects/BulletServer/Servers/CircleBulletServer.cs" id="8_qfb4r"]
-[ext_resource type="PackedScene" uid="uid://bathkgjpqulyc" path="res://Scenes/Rush/rush1.tscn" id="11_cdnnw"]
+[ext_resource type="PackedScene" uid="uid://dj3ie2qhiow02" path="res://Objects/Enemy/Drone0/Drone0.tscn" id="12_3edtj"]
 [ext_resource type="Script" path="res://Scenes/Spawner.cs" id="12_kg1q4"]
 [ext_resource type="Script" path="res://Scenes/Dolly.cs" id="12_mgcli"]
 
@@ -58,9 +58,48 @@ tracks/0/keys = {
 "times": PackedFloat32Array(2),
 "transitions": PackedFloat32Array(1),
 "values": [{
-"args": [ExtResource("11_cdnnw")],
-"method": &"PlayRush"
+"args": [ExtResource("12_3edtj"), Vector2(25, 0)],
+"method": &"Play"
 }]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Dolly/Spawner")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(2.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [ExtResource("12_3edtj"), Vector2(25, 5)],
+"method": &"Play"
+}]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Dolly/Spawner")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(3.1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [ExtResource("12_3edtj"), Vector2(25, -5)],
+"method": &"Play"
+}]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Dolly/Spawner")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"values": []
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_flfhp"]
@@ -151,7 +190,9 @@ bulletScene_ = ExtResource("5_kp850")
 
 [node name="CircleBulletServer" type="Node3D" parent="Field/EnemyBullet"]
 script = ExtResource("8_qfb4r")
+size_ = null
 Mesh = SubResource("PlaneMesh_hhw22")
+bulletCount_ = null
 
 [node name="Dolly" type="AnimationPlayer" parent="."]
 deterministic = true
