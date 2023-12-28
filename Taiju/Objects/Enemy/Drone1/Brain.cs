@@ -19,7 +19,6 @@ public partial class Brain : EnemyBase {
 
   private Node3D body_;
   private AnimationTree animationTree_;
-  private AnimationNodeBlendTree treeNode_;
   private Dense<Record> record_;
   private RandomNumberGenerator rand_ = new();
   private int defaultEscapeDirection_;
@@ -28,7 +27,6 @@ public partial class Brain : EnemyBase {
     public State State;
     public Vector3 Position;
     public Vector3 Velocity;
-    public Vector2 Animation;
     public bool Emitted;
   }
 
@@ -38,39 +36,34 @@ public partial class Brain : EnemyBase {
 
     animationTree_ = GetNode<AnimationTree>("AnimationTree");
     animationTree_.Active = true;
-    treeNode_ = (AnimationNodeBlendTree)animationTree_.TreeRoot;
 
     record_ = new Dense<Record>(Clock, new Record {
       State = State.Seek,
       Position = Position,
       Velocity = new Vector3(-10.0f, 0.0f, 0.0f),
-      Animation = treeNode_.GraphOffset,
       Emitted = false,
     });
     defaultEscapeDirection_ = ((int)(rand_.Randi() % 2) * 2) - 1;
     circleBulletServer_ = GetNode<CircleBulletServer>("/root/Root/Field/EnemyBullet/CircleBulletServer");
     Shield = 4;
+    animationTree_.Set("parameters/Seek/seek_request", 0f);
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
     ref var rec = ref record_.Mut;
-    ref var pos = ref rec.Position;
-    ref var state = ref rec.State;
-    ref var velocity = ref rec.Velocity;
-    ref var anim = ref rec.Animation;
     var currentPosition = rec.Position;
     var soraPosition = Sora.Position;
     var maxAngle = (float)(dt * maxRotateDegreePerSec_);
 
-    switch (state) {
+    switch (rec.State) {
       case State.Seek: {
         var delta = soraPosition - currentPosition;
         if (Mathf.Abs(delta.X) > escapeDistance_) {
-          velocity = Mover.Follow(delta, rec.Velocity, maxAngle);
+          rec.Velocity = Mover.Follow(delta, rec.Velocity, maxAngle);
         }
         else {
-          state = State.Escape;
-          circleBulletServer_.SpawnToSora(pos, 15.0f);
+          rec.State = State.Escape;
+          circleBulletServer_.SpawnToSora(rec.Position, 15.0f);
         }
       }
         break;
@@ -89,7 +82,7 @@ public partial class Brain : EnemyBase {
             }
           }
 
-          velocity = Vec.Rotate(rec.Velocity, sign * maxAngle) * Mathf.Exp((float)dt / 2);
+          rec.Velocity = Vec.Rotate(rec.Velocity, sign * maxAngle) * Mathf.Exp((float)dt / 2);
         }
       }
         break;
@@ -98,15 +91,14 @@ public partial class Brain : EnemyBase {
     }
 
     // Update or Record godot states
-    pos = Position;
-    body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-velocity)));
-    anim = treeNode_.GraphOffset;
+    rec.Position = Position;
+    body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity)));
 
     return true;
   }
 
   public override bool _ProcessBack(double integrateTime) {
-    return LoadCurrentStatus();
+    return LoadCurrentStatus(integrateTime);
   }
 
   public override void _IntegrateForces(PhysicsDirectBodyState3D state) {
@@ -114,11 +106,11 @@ public partial class Brain : EnemyBase {
     state.LinearVelocity = rec.Velocity;
   }
 
-  private bool LoadCurrentStatus() {
+  private bool LoadCurrentStatus(double integrateTime) {
     ref readonly var rec = ref record_.Ref;
     Position = rec.Position;
     body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity)));
-    treeNode_.GraphOffset = rec.Animation;
+    animationTree_.Set("parameters/Seek/seek_request", integrateTime);
     return true;
   }
 }
