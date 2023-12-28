@@ -7,14 +7,15 @@ using Taiju.Util.Godot;
 namespace Taiju.Objects.Enemy.Drone1;
 
 public partial class Brain : EnemyBase {
-  [Export(PropertyHint.Range, "0,180,")] private float maxRotateDegreePerSec_ = 60.0f;
+  [Export(PropertyHint.Range, "0,180,")] private float maxRotateDegreePerSec_ = 120.0f;
   [Export(PropertyHint.Range, "0,20,")] private float escapeDistance_ = 12.0f;
+  private const string SeekReq = "parameters/Seek/seek_request";
   private CircleBulletServer circleBulletServer_;
 
   //
   private enum State {
     Seek,
-    Escape,
+    Return,
   }
 
   private Node3D body_;
@@ -43,14 +44,18 @@ public partial class Brain : EnemyBase {
       Velocity = new Vector3(-10.0f, 0.0f, 0.0f),
       Emitted = false,
     });
+
     defaultEscapeDirection_ = ((int)(rand_.Randi() % 2) * 2) - 1;
     circleBulletServer_ = GetNode<CircleBulletServer>("/root/Root/Field/EnemyBullet/CircleBulletServer");
     Shield = 4;
-    animationTree_.Set("parameters/Seek/seek_request", 0f);
+    animationTree_.Set(SeekReq, 0f);
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
     ref var rec = ref record_.Mut;
+    { // Record godot states
+      rec.Position = Position;
+    }
     var currentPosition = rec.Position;
     var soraPosition = Sora.Position;
     var maxAngle = (float)(dt * maxRotateDegreePerSec_);
@@ -62,12 +67,12 @@ public partial class Brain : EnemyBase {
           rec.Velocity = Mover.Follow(delta, rec.Velocity, maxAngle);
         }
         else {
-          rec.State = State.Escape;
+          rec.State = State.Return;
           circleBulletServer_.SpawnToSora(rec.Position, 15.0f);
         }
       }
         break;
-      case State.Escape: {
+      case State.Return: {
         var delta = soraPosition - currentPosition;
         if (delta.Length() < escapeDistance_) {
           var sign = Mathf.Sign(delta.Y);
@@ -90,9 +95,10 @@ public partial class Brain : EnemyBase {
         throw new ArgumentOutOfRangeException();
     }
 
-    // Update or Record godot states
-    rec.Position = Position;
-    body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity)));
+    // Update godot states
+    {
+      body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity)));
+    }
 
     return true;
   }
@@ -110,7 +116,7 @@ public partial class Brain : EnemyBase {
     ref readonly var rec = ref record_.Ref;
     Position = rec.Position;
     body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity)));
-    animationTree_.Set("parameters/Seek/seek_request", integrateTime);
+    animationTree_.Set(SeekReq, integrateTime);
     return true;
   }
 }

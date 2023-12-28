@@ -9,7 +9,6 @@ namespace Taiju.Objects.Enemy.Drone0;
 public partial class Brain : EnemyBase {
   [Export(PropertyHint.Range, "0,180,")] private float maxRotateDegreePerSec_ = 60.0f;
   [Export(PropertyHint.Range, "0,20,")] private float escapeDistance_ = 12.0f;
-  private CircleBulletServer circleBulletServer_;
 
   //
   private enum State {
@@ -28,7 +27,6 @@ public partial class Brain : EnemyBase {
     public Vector3 Position;
     public Vector3 Velocity;
     public double Animation;
-    public bool Emitted;
   }
 
   public override void _Ready() {
@@ -39,7 +37,6 @@ public partial class Brain : EnemyBase {
       Position = Position,
       Velocity = new Vector3(-10.0f, 0.0f, 0.0f),
       Animation = 0.0,
-      Emitted = false,
     });
     var model = body_.GetNode<Node3D>("Model");
     animPlayer_ = model.GetNode<AnimationPlayer>("AnimationPlayer");
@@ -48,28 +45,27 @@ public partial class Brain : EnemyBase {
     animPlayer_.PlaybackActive = true;
     animPlayer_.Play("Rotate");
     defaultEscapeDirection_ = ((int)(rand_.Randi() % 2) * 2) - 1;
-    circleBulletServer_ = GetNode<CircleBulletServer>("/root/Root/Field/EnemyBullet/CircleBulletServer");
     Shield = 1;
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
     ref var rec = ref record_.Mut;
-    ref var pos = ref rec.Position;
-    ref var state = ref rec.State;
-    ref var velocity = ref rec.Velocity;
+    { // Record godot states
+      rec.Position = Position;
+      rec.Animation = animPlayer_.CurrentAnimationPosition;
+    }
     var currentPosition = rec.Position;
     var soraPosition = Sora.Position;
     var maxAngle = (float)(dt * maxRotateDegreePerSec_);
 
-    switch (state) {
+    switch (rec.State) {
       case State.Seek: {
         var delta = soraPosition - currentPosition;
         if (Mathf.Abs(delta.X) > escapeDistance_) {
-          velocity = Mover.Follow(delta, rec.Velocity, maxAngle);
+          rec.Velocity = Mover.Follow(delta, rec.Velocity, maxAngle);
         }
         else {
-          state = State.Escape;
-          circleBulletServer_.SpawnToSora(pos, 15.0f);
+          rec.State = State.Escape;
         }
       }
         break;
@@ -80,26 +76,14 @@ public partial class Brain : EnemyBase {
           if (sign == 0) {
             sign = defaultEscapeDirection_;
           }
-
-          if (delta.Length() > escapeDistance_ * 2.0f) {
-            // shot once
-            if (!rec.Emitted) {
-              rec.Emitted = true;
-            }
-          }
-
-          velocity = Vec.Rotate(rec.Velocity, sign * maxAngle) * Mathf.Exp((float)dt / 2);
+          rec.Velocity = Vec.Rotate(rec.Velocity, sign * maxAngle) * Mathf.Exp((float)dt / 2);
         }
       }
         break;
       default:
         throw new ArgumentOutOfRangeException();
     }
-
-    // Update or Record godot states
-    pos = Position;
-    body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-velocity)));
-    rec.Animation = animPlayer_.CurrentAnimationPosition;
+    body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity)));
 
     return true;
   }
