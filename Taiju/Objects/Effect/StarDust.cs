@@ -17,7 +17,7 @@ public partial class StarDust : ReversibleParticle3D<StarDust.Param> {
     public double LifeTime;
   }
 
-  private Transform2D GetTransform2D() {
+  private Transform2D CalcTransform2D() {
     return new Transform2D(
       GlobalTransform.Basis.X.X, GlobalTransform.Basis.X.Y,
       GlobalTransform.Basis.Y.X, GlobalTransform.Basis.Y.Y,
@@ -26,7 +26,7 @@ public partial class StarDust : ReversibleParticle3D<StarDust.Param> {
 
   private RandomNumberGenerator rand_ = new();
   protected override void _EmitOne(ref Param param) {
-    param.EmitTransform = GetTransform2D();
+    param.EmitTransform = CalcTransform2D();
     BaseColor.ToHsv(out _, out var saturation, out var value);
     param.Color = Color.FromHsv(rand_.Randf() * 360.0f, saturation, value);
     param.Velocity = MaxSpeed * (rand_.Randf() / 2.0f + 0.5f);
@@ -46,7 +46,7 @@ public partial class StarDust : ReversibleParticle3D<StarDust.Param> {
     var color = param.Color;
     color.A *= alpha;
     Meshes.SetInstanceColor(i, color);
-    var trans = (param.EmitTransform * GetTransform2D().Inverse()).Translated(param.Direction * param.Velocity * (float)t);
+    var trans = (param.EmitTransform * CalcTransform2D().Inverse()).Translated(param.Direction * param.Velocity * (float)t);
     Meshes.SetInstanceTransform2D(i, trans);
   }
 }
