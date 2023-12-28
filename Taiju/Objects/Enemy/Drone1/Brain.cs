@@ -92,8 +92,7 @@ public partial class Brain : EnemyBase {
         throw new ArgumentOutOfRangeException();
     }
 
-    // Update godot states
-    {
+    { // Update godot states
       body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity)));
     }
 
