@@ -5,8 +5,8 @@ using Taiju.Objects.Reversible.ValueArray;
 namespace Taiju.Objects.Reversible.Godot;
 
 // https://docs.godotengine.org/en/stable/tutorials/performance/vertex_animation/controlling_thousands_of_fish.html
-public abstract partial class ReversibleParticle3D<T> : ReversibleNode3D
-  where T : struct
+public abstract partial class ReversibleParticle3D<TParam> : ReversibleNode3D
+  where TParam : struct
 {
   [Export] protected Mesh Mesh;
   [Export] protected int MeshCount = 16;
@@ -23,7 +23,7 @@ public abstract partial class ReversibleParticle3D<T> : ReversibleNode3D
   struct Holder {
     public bool Living;
     public double EmitAt;
-    public T Item;
+    public TParam Param;
   }
 
   // Storages
@@ -45,7 +45,7 @@ public abstract partial class ReversibleParticle3D<T> : ReversibleNode3D
     multiMeshInstance_.Name = "SpritesNode";
     holders_ = new SparseArray<Holder>(Clock, (uint)MeshCount, new Holder());
     var span = holders_.Mut;
-    _EmitOne(ref span[0].Item);
+    _EmitOne(ref span[0].Param);
     span[0].Living = true;
     span[0].EmitAt = 0.0;
   }
@@ -63,7 +63,7 @@ public abstract partial class ReversibleParticle3D<T> : ReversibleNode3D
         }
         spanMut = spanMut != null ? spanMut : holders_.Mut;
         ref var itemMut = ref spanMut[i];
-        _EmitOne(ref itemMut.Item);
+        _EmitOne(ref itemMut.Param);
         itemMut.Living = true;
         itemMut.EmitAt = integrateTime;
         span = holders_.Ref;
@@ -73,7 +73,7 @@ public abstract partial class ReversibleParticle3D<T> : ReversibleNode3D
 
     for (var i = 0; i < MeshCount; ++i) {
       ref readonly var item = ref span[i];
-      if (!item.Living || _Update(in item.Item, integrateTime - item.EmitAt)) {
+      if (!item.Living || _Update(in item.Param, integrateTime - item.EmitAt)) {
         continue;
       }
       spanMut = spanMut != null ? spanMut : holders_.Mut;
@@ -106,13 +106,13 @@ public abstract partial class ReversibleParticle3D<T> : ReversibleNode3D
         Meshes.SetInstanceTransform2D(i, transZero_);
         continue;
       }
-      _SetInstance(i, in holder.Item, integrateTime - holder.EmitAt);
+      _SetInstance(i, in holder.Param, integrateTime - holder.EmitAt);
     }
   }
 
-  protected abstract void _EmitOne(ref T item);
+  protected abstract void _EmitOne(ref TParam item);
 
-  protected abstract bool _Update(ref readonly T item, double t);
-  protected abstract void _SetInstance(int i, ref readonly T item, double t);
+  protected abstract bool _Update(ref readonly TParam item, double t);
+  protected abstract void _SetInstance(int i, ref readonly TParam item, double t);
 }
 
