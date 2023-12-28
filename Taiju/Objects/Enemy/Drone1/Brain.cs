@@ -53,6 +53,7 @@ public partial class Brain : EnemyBase {
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
+    base._ProcessForward(integrateTime, dt);
     ref var rec = ref record_.Mut;
     { // Record godot states
       rec.Position = Position;
