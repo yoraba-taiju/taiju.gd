@@ -8,11 +8,10 @@ public static class Mover {
   }
 
   public static Vector3 Follow(Vector3 targetDirection, in Vector3 currentVelocity, float maxAngle) {
-    targetDirection = targetDirection.Normalized();
     var speed = currentVelocity.Length();
-    var direct = targetDirection * speed;
-    var dx = targetDirection.X;
-    var dy = targetDirection.Y;
+    var direct = targetDirection.Normalized() * speed;
+    var dx = currentVelocity.X;
+    var dy = currentVelocity.Y;
     maxAngle = Mathf.DegToRad(maxAngle);
     var c = Mathf.Cos(maxAngle);
     var s = Mathf.Sin(maxAngle);

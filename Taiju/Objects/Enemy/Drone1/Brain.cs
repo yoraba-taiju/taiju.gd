@@ -7,8 +7,8 @@ using Taiju.Util.Godot;
 namespace Taiju.Objects.Enemy.Drone1;
 
 public partial class Brain : EnemyBase {
-  [Export(PropertyHint.Range, "0,180,")] private float maxRotateDegreePerSec_ = 120.0f;
-  [Export(PropertyHint.Range, "0,20,")] private float escapeDistance_ = 12.0f;
+  [Export(PropertyHint.Range, "0,360,")] private float maxRotateDegreePerSec_ = 120.0f;
+  [Export(PropertyHint.Range, "0,20,")] private float returnDistance_ = 12.0f;
   private const string SeekReq = "parameters/Seek/seek_request";
   private CircleBulletServer circleBulletServer_;
 
@@ -16,6 +16,7 @@ public partial class Brain : EnemyBase {
   private enum State {
     Seek,
     Return,
+    Escape,
   }
 
   private Node3D body_;
@@ -63,10 +64,9 @@ public partial class Brain : EnemyBase {
     switch (rec.State) {
       case State.Seek: {
         var delta = soraPosition - currentPosition;
-        if (Mathf.Abs(delta.X) > escapeDistance_) {
+        if (Mathf.Abs(delta.X) > returnDistance_) {
           rec.Velocity = Mover.Follow(delta, rec.Velocity, maxAngle);
-        }
-        else {
+        } else {
           rec.State = State.Return;
           circleBulletServer_.SpawnToSora(rec.Position, 15.0f);
         }
@@ -74,21 +74,18 @@ public partial class Brain : EnemyBase {
         break;
       case State.Return: {
         var delta = soraPosition - currentPosition;
-        if (delta.Length() < escapeDistance_) {
-          var sign = Mathf.Sign(delta.Y);
-          if (sign == 0) {
-            sign = defaultEscapeDirection_;
-          }
-
-          if (delta.Length() > escapeDistance_ * 2.0f) {
-            // shot once
-            if (!rec.Emitted) {
-              rec.Emitted = true;
-            }
-          }
-
-          rec.Velocity = Vec.Rotate(rec.Velocity, sign * maxAngle) * Mathf.Exp((float)dt / 2);
+        var length = delta.Length();
+        if (length < returnDistance_) {
+          rec.Velocity = Mover.Follow(Vector3.Right, rec.Velocity, maxAngle);
+        } else if (length > returnDistance_ * 1.1f) {
+          circleBulletServer_.SpawnToSora(rec.Position, 15.0f);
+          rec.State = State.Escape;
         }
+      }
+        break;
+
+      case State.Escape: {
+        rec.Velocity = Mover.Follow(Vector3.Right, rec.Velocity, maxAngle);
       }
         break;
       default:
