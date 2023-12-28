@@ -20,7 +20,7 @@ public abstract partial class ReversibleParticle3D<TParam> : ReversibleNode3D
   // MeshData
   protected MultiMesh Meshes { get; private set; }
 
-  struct Holder {
+  struct Item {
     public bool Living;
     public double EmitAt;
     public TParam Param;
@@ -28,7 +28,7 @@ public abstract partial class ReversibleParticle3D<TParam> : ReversibleNode3D
 
   // Storages
   private ClockNode clockNode_;
-  private SparseArray<Holder> holders_;
+  private SparseArray<Item> items_;
   private double leftToEmit_;
 
   public override void _Ready() {
@@ -43,16 +43,16 @@ public abstract partial class ReversibleParticle3D<TParam> : ReversibleNode3D
     Meshes.InstanceCount = MeshCount;
     multiMeshInstance_.Multimesh = Meshes;
     multiMeshInstance_.Name = "SpritesNode";
-    holders_ = new SparseArray<Holder>(Clock, (uint)MeshCount, new Holder());
-    var span = holders_.Mut;
+    items_ = new SparseArray<Item>(Clock, (uint)MeshCount, new Item());
+    var span = items_.Mut;
     _EmitOne(ref span[0].Param);
     span[0].Living = true;
     span[0].EmitAt = 0.0;
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
-    ReadOnlySpan<Holder> span = holders_.Ref;
-    Span<Holder> spanMut = null;
+    ReadOnlySpan<Item> span = items_.Ref;
+    Span<Item> spanMut = null;
     leftToEmit_ -= dt;
     if (leftToEmit_ <= 0) {
       leftToEmit_ += 1.0 / EmitPerSecond;
@@ -61,12 +61,12 @@ public abstract partial class ReversibleParticle3D<TParam> : ReversibleNode3D
         if (item.Living) {
           continue;
         }
-        spanMut = spanMut != null ? spanMut : holders_.Mut;
+        spanMut = spanMut != null ? spanMut : items_.Mut;
         ref var itemMut = ref spanMut[i];
         _EmitOne(ref itemMut.Param);
         itemMut.Living = true;
         itemMut.EmitAt = integrateTime;
-        span = holders_.Ref;
+        span = items_.Ref;
         break;
       }
     }
@@ -76,29 +76,29 @@ public abstract partial class ReversibleParticle3D<TParam> : ReversibleNode3D
       if (!item.Living || _Update(in item.Param, integrateTime - item.EmitAt)) {
         continue;
       }
-      spanMut = spanMut != null ? spanMut : holders_.Mut;
+      spanMut = spanMut != null ? spanMut : items_.Mut;
       ref var holderMut = ref spanMut[i];
       holderMut.Living = false;
-      span = holders_.Ref;
+      span = items_.Ref;
     }
 
-    SetInstances(holders_.Ref, integrateTime);
+    SetInstances(items_.Ref, integrateTime);
     return true;
   }
 
   public override bool _ProcessBack(double integrateTime) {
-    var span = holders_.Ref;
+    var span = items_.Ref;
     SetInstances(span, integrateTime);
     return true;
   }
 
   public override bool _ProcessLeap(double integrateTime) {
-    var span = holders_.Ref;
+    var span = items_.Ref;
     SetInstances(span, integrateTime);
     return true;
   }
 
-  private void SetInstances(ReadOnlySpan<Holder> holders, double integrateTime) {
+  private void SetInstances(ReadOnlySpan<Item> holders, double integrateTime) {
     for (var i = 0; i < MeshCount; ++i) {
       ref readonly var holder = ref holders[i];
       if (!holder.Living) {
