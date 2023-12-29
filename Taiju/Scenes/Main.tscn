@@ -198,9 +198,7 @@ bulletScene_ = ExtResource("5_kp850")
 
 [node name="CircleBulletServer" type="Node3D" parent="Field/EnemyBullet"]
 script = ExtResource("8_qfb4r")
-size_ = null
 Mesh = SubResource("PlaneMesh_hhw22")
-bulletCount_ = null
 
 [node name="Dolly" type="AnimationPlayer" parent="."]
 deterministic = true

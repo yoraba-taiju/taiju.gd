@@ -43,6 +43,8 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
 
   public override bool _ProcessForward(double integrateTime, double dt) {
     Render(integrateTime);
+    // Debug purpose
+    Rotation = new Vector3((float)integrateTime, 0, 0);
     return true;
   }
 
@@ -84,6 +86,27 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
         normals_.Add(new Vector3(0, 0, 1));
         normals_.Add(new Vector3(0, 0, 1));
         normals_.Add(new Vector3(0, 0, 1));
+        colors_.Add(color);
+        colors_.Add(color);
+        colors_.Add(color);
+        colors_.Add(color);
+        indexes_.Add(vertexes + 0);
+        indexes_.Add(vertexes + 1);
+        indexes_.Add(vertexes + 2);
+        indexes_.Add(vertexes + 3);
+        indexes_.Add(vertexes + 2);
+        indexes_.Add(vertexes + 1);
+        vertexes += 4;
+      }
+      {
+        vertexes_.Add(pos + new Vector3(-dx, -dy, -dz));
+        vertexes_.Add(pos + new Vector3(+dx, -dy, -dz));
+        vertexes_.Add(pos + new Vector3(-dx, +dy, -dz));
+        vertexes_.Add(pos + new Vector3(+dx, +dy, -dz));
+        normals_.Add(new Vector3(0, 0, -1));
+        normals_.Add(new Vector3(0, 0, -1));
+        normals_.Add(new Vector3(0, 0, -1));
+        normals_.Add(new Vector3(0, 0, -1));
         colors_.Add(color);
         colors_.Add(color);
         colors_.Add(color);
