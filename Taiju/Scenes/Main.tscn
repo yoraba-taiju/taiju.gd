@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=27 format=3 uid="uid://ceqv14au1y2ag"]
 
 [ext_resource type="Script" path="res://Objects/Reversible/Godot/ClockNode.cs" id="1_alw2w"]
 [ext_resource type="Material" uid="uid://dxb0h08vdwfrl" path="res://Background/Forest/Forest.tres" id="1_bmh26"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://dj3ie2qhiow02" path="res://Objects/Enemy/Drone0/Drone0.tscn" id="12_3edtj"]
 [ext_resource type="Script" path="res://Scenes/Spawner.cs" id="12_kg1q4"]
 [ext_resource type="Script" path="res://Scenes/Dolly.cs" id="12_mgcli"]
+[ext_resource type="Script" path="res://Objects/Effect/Arrow.cs" id="15_83evh"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_aadso"]
 energy_multiplier = 2.0
@@ -111,6 +112,9 @@ _data = {
 "dolly": SubResource("Animation_qjeby")
 }
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_driuc"]
+vertex_color_use_as_albedo = true
+
 [node name="Root" type="Node3D"]
 
 [node name="Clock" type="Node3D" parent="."]
@@ -194,7 +198,9 @@ bulletScene_ = ExtResource("5_kp850")
 
 [node name="CircleBulletServer" type="Node3D" parent="Field/EnemyBullet"]
 script = ExtResource("8_qfb4r")
+size_ = null
 Mesh = SubResource("PlaneMesh_hhw22")
+bulletCount_ = null
 
 [node name="Dolly" type="AnimationPlayer" parent="."]
 deterministic = true
@@ -205,3 +211,7 @@ script = ExtResource("12_mgcli")
 
 [node name="Spawner" type="Node3D" parent="Dolly"]
 script = ExtResource("12_kg1q4")
+
+[node name="Arrow" type="Node3D" parent="."]
+script = ExtResource("15_83evh")
+material_ = SubResource("StandardMaterial3D_driuc")
