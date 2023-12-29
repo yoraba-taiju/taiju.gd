@@ -119,6 +119,48 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
         indexes_.Add(vertexes + 1);
         vertexes += 4;
       }
+      {
+        vertexes_.Add(pos + new Vector3(-dx, +dy, -dz));
+        vertexes_.Add(pos + new Vector3(+dx, +dy, -dz));
+        vertexes_.Add(pos + new Vector3(-dx, +dy, +dz));
+        vertexes_.Add(pos + new Vector3(+dx, +dy, +dz));
+        normals_.Add(new Vector3(0, 1, 0));
+        normals_.Add(new Vector3(0, 1, 0));
+        normals_.Add(new Vector3(0, 1, 0));
+        normals_.Add(new Vector3(0, 1, 0));
+        colors_.Add(color);
+        colors_.Add(color);
+        colors_.Add(color);
+        colors_.Add(color);
+        indexes_.Add(vertexes + 0);
+        indexes_.Add(vertexes + 1);
+        indexes_.Add(vertexes + 2);
+        indexes_.Add(vertexes + 3);
+        indexes_.Add(vertexes + 2);
+        indexes_.Add(vertexes + 1);
+        vertexes += 4;
+      }
+      {
+        vertexes_.Add(pos + new Vector3(-dx, -dy, -dz));
+        vertexes_.Add(pos + new Vector3(-dx, -dy, +dz));
+        vertexes_.Add(pos + new Vector3(+dx, -dy, -dz));
+        vertexes_.Add(pos + new Vector3(+dx, -dy, +dz));
+        normals_.Add(new Vector3(0, -1, 0));
+        normals_.Add(new Vector3(0, -1, 0));
+        normals_.Add(new Vector3(0, -1, 0));
+        normals_.Add(new Vector3(0, -1, 0));
+        colors_.Add(color);
+        colors_.Add(color);
+        colors_.Add(color);
+        colors_.Add(color);
+        indexes_.Add(vertexes + 0);
+        indexes_.Add(vertexes + 1);
+        indexes_.Add(vertexes + 2);
+        indexes_.Add(vertexes + 3);
+        indexes_.Add(vertexes + 2);
+        indexes_.Add(vertexes + 1);
+        vertexes += 4;
+      }
       ++points;
     }
     meshData_.Clear();
@@ -127,6 +169,7 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
     meshData_[(int)Mesh.ArrayType.Normal] = normals_.ToArray();
     meshData_[(int)Mesh.ArrayType.Color] = colors_.ToArray();
     meshData_[(int)Mesh.ArrayType.Index] = indexes_.ToArray();
+    arrayMesh_.ClearSurfaces();
     arrayMesh_.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, meshData_);
     var surfCount = arrayMesh_.GetSurfaceCount() - 1;
     arrayMesh_.SurfaceSetMaterial(surfCount, material_);
