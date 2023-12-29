@@ -7,7 +7,8 @@ using Taiju.Objects.Reversible.ValueArray;
 namespace Taiju.Objects.Reversible.Godot;
 
 public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
-  where TParam: struct {
+  where TParam: struct
+{
   private const int BufferSize = 16;
   [Export(PropertyHint.Range, "1, 16")] protected int Length = 8;
   protected Color[] Colors = new Color[8];
