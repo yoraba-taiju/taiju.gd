@@ -65,18 +65,21 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
   private readonly List<Color> colors_ = [];
   private readonly List<int> indexes_ = [];
   private void Render(double integrateTime) {
+    if (Length <= 3) {
+      throw new InvalidOperationException("Invalid Length.");
+    }
+    var items = items_.Ref;
+    ref readonly var currentIdx = ref idx_.Ref;
+    if (currentIdx < 1) {
+      throw new InvalidOperationException("No positions.");
+    }
     vertexes_.Clear();
     colors_.Clear();
     normals_.Clear();
     indexes_.Clear();
-    var items = items_.Ref;
-    ref readonly var currentIdx = ref idx_.Ref;
     var points = 0;
     var vertexes = 0;
     var zero = currentIdx - Math.Min(Length, currentIdx);
-    if (Length <= 3) {
-      throw new InvalidOperationException("Invalid Length");
-    }
     // Triangle caps begin
     {
       var begin = items[zero];
@@ -84,104 +87,30 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
       var end = items[zero + 1];
       var endColor = Colors[1];
       var ring = tubeCurve_.Sample(1.0f / Length);
+      var deltaX = end.Position - begin.Position;
+      var deltaZ = new Vector3(0, 0, ring);
+      var deltaY = deltaZ.Cross(deltaX).Normalized() * ring;
+      var axis = deltaX.Normalized();
+      var tan = Mathf.Tan(Mathf.Pi * 2 / TubeLength / 2);
       for (var tubeIdx = 0; tubeIdx < TubeLength; ++tubeIdx) {
-        
+        var dz = deltaZ.Rotated(axis, Mathf.Pi * 2 * tubeIdx / TubeLength);
+        var dy = deltaY.Rotated(axis, Mathf.Pi * 2 * tubeIdx / TubeLength).Normalized() * (ring * tan);
+        vertexes_.Add(begin.Position);
+        vertexes_.Add(end.Position + dz + dy);
+        vertexes_.Add(end.Position + dz - dy);
+        normals_.Add(dz);
+        normals_.Add(dz);
+        normals_.Add(dz);
+        colors_.Add(beginColor);
+        colors_.Add(endColor);
+        colors_.Add(endColor);
+        indexes_.Add(vertexes + 2);
+        indexes_.Add(vertexes + 1);
+        indexes_.Add(vertexes + 0);
+        vertexes += 3;
       }
     }
     for (var i = zero + 1; i < currentIdx - 1; ++i) {
-      ref readonly var item = ref items[i];
-      var pos = item.Position;
-      var dx = 1.0f;
-      var dy = 1.0f;
-      var dz = 1.0f;
-      var color = Colors[points];
-      for (var t = 0; t < TubeLength; ++t) {
-        
-      }
-      {
-        vertexes_.Add(pos + new Vector3(-dx, -dy, +dz));
-        vertexes_.Add(pos + new Vector3(-dx, +dy, +dz));
-        vertexes_.Add(pos + new Vector3(+dx, -dy, +dz));
-        vertexes_.Add(pos + new Vector3(+dx, +dy, +dz));
-        normals_.Add(new Vector3(0, 0, 1));
-        normals_.Add(new Vector3(0, 0, 1));
-        normals_.Add(new Vector3(0, 0, 1));
-        normals_.Add(new Vector3(0, 0, 1));
-        colors_.Add(color);
-        colors_.Add(color);
-        colors_.Add(color);
-        colors_.Add(color);
-        indexes_.Add(vertexes + 0);
-        indexes_.Add(vertexes + 1);
-        indexes_.Add(vertexes + 2);
-        indexes_.Add(vertexes + 3);
-        indexes_.Add(vertexes + 2);
-        indexes_.Add(vertexes + 1);
-        vertexes += 4;
-      }
-      {
-        vertexes_.Add(pos + new Vector3(-dx, -dy, -dz));
-        vertexes_.Add(pos + new Vector3(+dx, -dy, -dz));
-        vertexes_.Add(pos + new Vector3(-dx, +dy, -dz));
-        vertexes_.Add(pos + new Vector3(+dx, +dy, -dz));
-        normals_.Add(new Vector3(0, 0, -1));
-        normals_.Add(new Vector3(0, 0, -1));
-        normals_.Add(new Vector3(0, 0, -1));
-        normals_.Add(new Vector3(0, 0, -1));
-        colors_.Add(color);
-        colors_.Add(color);
-        colors_.Add(color);
-        colors_.Add(color);
-        indexes_.Add(vertexes + 0);
-        indexes_.Add(vertexes + 1);
-        indexes_.Add(vertexes + 2);
-        indexes_.Add(vertexes + 3);
-        indexes_.Add(vertexes + 2);
-        indexes_.Add(vertexes + 1);
-        vertexes += 4;
-      }
-      {
-        vertexes_.Add(pos + new Vector3(-dx, +dy, -dz));
-        vertexes_.Add(pos + new Vector3(+dx, +dy, -dz));
-        vertexes_.Add(pos + new Vector3(-dx, +dy, +dz));
-        vertexes_.Add(pos + new Vector3(+dx, +dy, +dz));
-        normals_.Add(new Vector3(0, 1, 0));
-        normals_.Add(new Vector3(0, 1, 0));
-        normals_.Add(new Vector3(0, 1, 0));
-        normals_.Add(new Vector3(0, 1, 0));
-        colors_.Add(color);
-        colors_.Add(color);
-        colors_.Add(color);
-        colors_.Add(color);
-        indexes_.Add(vertexes + 0);
-        indexes_.Add(vertexes + 1);
-        indexes_.Add(vertexes + 2);
-        indexes_.Add(vertexes + 3);
-        indexes_.Add(vertexes + 2);
-        indexes_.Add(vertexes + 1);
-        vertexes += 4;
-      }
-      {
-        vertexes_.Add(pos + new Vector3(-dx, -dy, -dz));
-        vertexes_.Add(pos + new Vector3(-dx, -dy, +dz));
-        vertexes_.Add(pos + new Vector3(+dx, -dy, -dz));
-        vertexes_.Add(pos + new Vector3(+dx, -dy, +dz));
-        normals_.Add(new Vector3(0, -1, 0));
-        normals_.Add(new Vector3(0, -1, 0));
-        normals_.Add(new Vector3(0, -1, 0));
-        normals_.Add(new Vector3(0, -1, 0));
-        colors_.Add(color);
-        colors_.Add(color);
-        colors_.Add(color);
-        colors_.Add(color);
-        indexes_.Add(vertexes + 0);
-        indexes_.Add(vertexes + 1);
-        indexes_.Add(vertexes + 2);
-        indexes_.Add(vertexes + 3);
-        indexes_.Add(vertexes + 2);
-        indexes_.Add(vertexes + 1);
-        vertexes += 4;
-      }
       ++points;
     }
     meshData_.Clear();
