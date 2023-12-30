@@ -80,8 +80,7 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
     var points = 0;
     var vertexes = 0;
     var zero = currentIdx - Math.Min(Length, currentIdx);
-    // Triangle caps begin
-    {
+    { // Triangle caps begin
       var begin = items[zero];
       var beginColor = Colors[0];
       var end = items[zero + 1];
