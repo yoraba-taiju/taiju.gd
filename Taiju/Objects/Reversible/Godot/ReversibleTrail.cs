@@ -90,7 +90,7 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
       var deltaZ = new Vector3(0, 0, ring);
       var deltaY = deltaZ.Cross(deltaX).Normalized() * ring;
       var axis = deltaX.Normalized();
-      var tan = Mathf.Tan(Mathf.Pi * 2 / TubeLength / 2);
+      var tan = Mathf.Tan(Mathf.Pi / TubeLength); // ((Pi * 2) / (TubeLength * 2))
       for (var tubeIdx = 0; tubeIdx < TubeLength; ++tubeIdx) {
         var dz = deltaZ.Rotated(axis, Mathf.Pi * 2 * tubeIdx / TubeLength);
         var dy = deltaY.Rotated(axis, Mathf.Pi * 2 * tubeIdx / TubeLength).Normalized() * (ring * tan);
