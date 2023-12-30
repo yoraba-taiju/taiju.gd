@@ -107,7 +107,6 @@ animation = &"羽A_RootAction"
 animation = &"羽B_RootAction"
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_3351t"]
-graph_offset = Vector2(-536, -45)
 nodes/Combined/node = SubResource("AnimationNodeAdd2_y78wp")
 nodes/Combined/position = Vector2(220, 140)
 nodes/Root/node = SubResource("AnimationNodeAnimation_8jv2p")
@@ -129,6 +128,7 @@ collision_mask = 6
 axis_lock_linear_z = true
 axis_lock_angular_x = true
 axis_lock_angular_y = true
+axis_lock_angular_z = true
 mass = 150.0
 gravity_scale = 0.0
 script = ExtResource("1_70det")
@@ -143,13 +143,13 @@ transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 0, 0, 0)
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="羽_Root" parent="Body/Drone1/Root/プロペラ" index="0"]
-transform = Transform3D(-0.709611, -3.7865e-17, 0.704593, 4.22629e-17, 1, 9.63041e-17, -0.704593, 9.81167e-17, -0.709611, 0, 0, 0)
+transform = Transform3D(0.991999, 1.30043e-16, -0.126243, -1.11167e-16, 1, 1.56568e-16, 0.126243, -1.41282e-16, 0.991999, 0, 0, 0)
 
 [node name="羽A_Root" parent="Body/Drone1/Root/プロペラ/羽_Root" index="0"]
-transform = Transform3D(-0.567666, -1.16008e-17, 0.823259, -2.09237e-16, 1, -1.30185e-16, -0.823259, -2.46158e-16, -0.567666, 0, 1.2, -0.75)
+transform = Transform3D(0.963985, 1.51487e-16, -0.265958, -1.77849e-16, 1, -7.50378e-17, 0.265958, 1.19636e-16, 0.963985, 0, 1.2, -0.75)
 
 [node name="羽B_Root" parent="Body/Drone1/Root/プロペラ/羽_Root" index="1"]
-transform = Transform3D(-0.709611, -1.3328e-15, 0.704593, -1.78785e-15, 1, 9.10104e-17, -0.704593, -1.19512e-15, -0.709611, 0, 1.2, 0.75)
+transform = Transform3D(0.991999, 1.76134e-15, -0.126243, -1.77527e-15, 1, 2.15396e-18, 0.126243, 2.21979e-16, 0.991999, 0, 1.2, 0.75)
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 root_node = NodePath("../Body/Drone1")
