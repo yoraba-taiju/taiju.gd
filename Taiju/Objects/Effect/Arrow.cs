@@ -17,7 +17,7 @@ public partial class Arrow : ReversibleTrail<Arrow.Param> {
       Colors[i] = ArrayColor.Darkened(f / Length);
     }
     Push(Vector3.Zero, new Param());
-    Push(Vector3.Right + Vector3.Up, new Param());
+    Push((Vector3.Right + Vector3.Up).Normalized(), new Param());
     Push(Vector3.Right + Vector3.Right, new Param());
   }
 }
