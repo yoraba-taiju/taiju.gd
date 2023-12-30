@@ -10,7 +10,9 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
   where TParam: struct
 {
   private const int BufferSize = 16;
-  [Export(PropertyHint.Range, "1, 16")] protected int Length = 8;
+  [Export(PropertyHint.Range, "3, 16")] protected int Length = 8;
+  [Export] private Curve tubeCurve_;
+  [Export(PropertyHint.Range, "3, 24")] protected int TubeLength = 6;
   protected Color[] Colors = new Color[8];
   private global::Godot.Collections.Array meshData_ = new();
   private struct Item {
@@ -68,16 +70,34 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
     normals_.Clear();
     indexes_.Clear();
     var items = items_.Ref;
-    ref readonly var idx = ref idx_.Ref;
+    ref readonly var currentIdx = ref idx_.Ref;
     var points = 0;
     var vertexes = 0;
-    for (var i = idx - Math.Min(Length, idx); i < idx; ++i) {
+    var zero = currentIdx - Math.Min(Length, currentIdx);
+    if (Length <= 3) {
+      throw new InvalidOperationException("Invalid Length");
+    }
+    // Triangle caps begin
+    {
+      var begin = items[zero];
+      var beginColor = Colors[0];
+      var end = items[zero + 1];
+      var endColor = Colors[1];
+      var ring = tubeCurve_.Sample(1.0f / Length);
+      for (var tubeIdx = 0; tubeIdx < TubeLength; ++tubeIdx) {
+        
+      }
+    }
+    for (var i = zero + 1; i < currentIdx - 1; ++i) {
       ref readonly var item = ref items[i];
       var pos = item.Position;
       var dx = 1.0f;
       var dy = 1.0f;
       var dz = 1.0f;
       var color = Colors[points];
+      for (var t = 0; t < TubeLength; ++t) {
+        
+      }
       {
         vertexes_.Add(pos + new Vector3(-dx, -dy, +dz));
         vertexes_.Add(pos + new Vector3(-dx, +dy, +dz));
