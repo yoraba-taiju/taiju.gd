@@ -91,11 +91,11 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
     float ring0;
     var length = currentIdx - zero;
     { // Triangle caps begin
-      var begin = items[zero % BufferSize];
+      var begin = items[(currentIdx - 1) % BufferSize];
       var beginColor = Colors[0];
-      var end = items[(zero + 1) % BufferSize];
+      var end = items[(currentIdx - 2) % BufferSize];
       var endColor = Colors[1];
-      var ring = tubeCurve_.Sample((float)(length - 1) / length);
+      var ring = tubeCurve_.Sample(1.0f / length);
       var deltaX = end.Position - begin.Position;
       var deltaZ = new Vector3(deltaX.Z / deltaX.X, 0, 1).Normalized() * ring;
       var deltaY = deltaZ.Cross(deltaX).Normalized();
@@ -123,14 +123,14 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
       ring0 = ring;
       ++points;
     }
-    for (var i = zero + 1; i < currentIdx - 2; ++i) {
+    for (var i = currentIdx - 2; i > zero + 1; --i) {
       var beginPoint = items[i % BufferSize].Position;
-      var endPoint = items[(i + 1) % BufferSize].Position;
-      var beginColor = Colors[points - 1];
-      var endColor = Colors[points];
+      var endPoint = items[(i - 1) % BufferSize].Position;
+      var beginColor = Colors[points];
+      var endColor = Colors[points + 1];
       var deltaX = endPoint - beginPoint;
       var axis = deltaX.Normalized();
-      var ring = tubeCurve_.Sample((float)(length - points - 1) / length);
+      var ring = tubeCurve_.Sample((float)(points + 1) / length);
       var deltaZ = new Vector3(deltaX.Z / deltaX.X, 0, 1).Normalized() * ring;
       var deltaY = deltaZ.Cross(deltaX).Normalized();
       for (var tubeIdx = 0; tubeIdx < TubeLength; ++tubeIdx) {
@@ -165,9 +165,9 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
       ++points;
     }
     { // Triangle caps end
-      var begin = items[(currentIdx - 2) % BufferSize];
+      var begin = items[(zero + 1) % BufferSize];
       var beginColor = Colors[points];
-      var end = items[(currentIdx - 1) % BufferSize];
+      var end = items[zero % BufferSize];
       var endColor = Colors[points + 1];
       var deltaX = end.Position - begin.Position;
       var deltaZ = new Vector3(deltaX.Z / deltaX.X, 0, 1).Normalized() * ring0;
