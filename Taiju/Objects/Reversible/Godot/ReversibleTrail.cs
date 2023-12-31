@@ -66,12 +66,16 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
   private readonly List<int> indexes_ = [];
   private void Render(double integrateTime) {
     if (Length <= 3) {
-      throw new InvalidOperationException("Invalid Length.");
+      throw new InvalidOperationException($"Invalid Length. {Length} < 3");
+    }
+
+    if (TubeLength < 3) {
+      throw new InvalidOperationException($"Invalid TubeLength. {TubeLength} < 3");
     }
     var items = items_.Ref;
     ref readonly var currentIdx = ref idx_.Ref;
     if (currentIdx < 1) {
-      throw new InvalidOperationException("No positions.");
+      throw new InvalidOperationException($"No positions: {currentIdx}");
     }
     vertexes_.Clear();
     colors_.Clear();
@@ -108,9 +112,9 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
         colors_.Add(beginColor);
         colors_.Add(endColor);
         colors_.Add(endColor);
-        indexes_.Add(vertexes + 2);
-        indexes_.Add(vertexes + 1);
         indexes_.Add(vertexes + 0);
+        indexes_.Add(vertexes + 1);
+        indexes_.Add(vertexes + 2);
         vertexes += 3;
       }
       deltaY0 = deltaY;
@@ -146,12 +150,12 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
         colors_.Add(beginColor);
         colors_.Add(endColor);
         colors_.Add(endColor);
+        indexes_.Add(vertexes + 2);
+        indexes_.Add(vertexes + 1);
         indexes_.Add(vertexes + 0);
         indexes_.Add(vertexes + 1);
         indexes_.Add(vertexes + 2);
         indexes_.Add(vertexes + 3);
-        indexes_.Add(vertexes + 2);
-        indexes_.Add(vertexes + 1);
         vertexes += 4;
       }
       deltaY0 = deltaY;
@@ -181,9 +185,9 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
         colors_.Add(beginColor);
         colors_.Add(endColor);
         colors_.Add(endColor);
-        indexes_.Add(vertexes + 0);
-        indexes_.Add(vertexes + 1);
         indexes_.Add(vertexes + 2);
+        indexes_.Add(vertexes + 1);
+        indexes_.Add(vertexes + 0);
         vertexes += 3;
       }
       ++points;

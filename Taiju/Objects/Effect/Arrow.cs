@@ -22,6 +22,5 @@ public partial class Arrow : ReversibleTrail<Arrow.Param> {
     Push(Vector3.Right + Vector3.Right + Vector3.Right, new Param());
     Push(Vector3.Right + Vector3.Right + Vector3.Right + Vector3.Right, new Param());
     Push(Vector3.Right + Vector3.Right + Vector3.Right + Vector3.Right + Vector3.Right, new Param());
-    Push(Vector3.Right + Vector3.Right + Vector3.Right + Vector3.Right + Vector3.Right + Vector3.Right, new Param());
   }
 }
