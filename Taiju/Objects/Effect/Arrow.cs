@@ -7,7 +7,6 @@ namespace Taiju.Objects.Effect;
 public partial class Arrow : ReversibleTrail<Arrow.Param> {
   [Export] protected Color ArrayColor = Godot.Colors.DarkRed;
   public struct Param {
-    
   }
 
   public override void _Ready() {

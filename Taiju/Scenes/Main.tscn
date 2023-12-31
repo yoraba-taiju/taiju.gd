@@ -183,8 +183,7 @@ skeleton = NodePath("../..")
 
 [node name="Witch" type="Node3D" parent="Field"]
 
-[node name="Sora" parent="Field/Witch" node_paths=PackedStringArray("bulletServer_") instance=ExtResource("4_h45ke")]
-bulletServer_ = NodePath("")
+[node name="Sora" parent="Field/Witch" instance=ExtResource("4_h45ke")]
 
 [node name="WitchEffect" type="Node3D" parent="Field"]
 
