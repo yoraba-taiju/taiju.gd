@@ -45,18 +45,18 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
-    Render(integrateTime);
+    Render();
     // Debug purpose
     Rotation = new Vector3((float)integrateTime, 0, 0);
     return true;
   }
 
   public override bool _ProcessBack(double integrateTime) {
-    Render(integrateTime);
+    Render();
     return true;
   }
   public override bool _ProcessLeap(double integrateTime) {
-    Render(integrateTime);
+    Render();
     return true;
   }
 
@@ -64,18 +64,18 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
   private readonly List<Vector3> normals_ = [];
   private readonly List<Color> colors_ = [];
   private readonly List<int> indexes_ = [];
-  private void Render(double integrateTime) {
+  private void Render() {
     if (Length <= 3) {
       throw new InvalidOperationException($"Invalid Length. {Length} < 3");
     }
-
     if (TubeLength < 3) {
       throw new InvalidOperationException($"Invalid TubeLength. {TubeLength} < 3");
     }
     var items = items_.Ref;
     ref readonly var currentIdx = ref idx_.Ref;
-    if (currentIdx < 1) {
-      throw new InvalidOperationException($"No positions: {currentIdx}");
+    if (currentIdx < 3) {
+      GD.PrintErr($"Not enough length: {currentIdx} < 3");
+      return;
     }
     vertexes_.Clear();
     colors_.Clear();
