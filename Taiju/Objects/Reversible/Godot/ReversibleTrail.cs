@@ -79,25 +79,30 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
     indexes_.Clear();
     var points = 0;
     var vertexes = 0;
+    var tan = Mathf.Tan(Mathf.Pi / TubeLength); // ((Pi * 2) / (TubeLength * 2))
     var zero = currentIdx - Math.Min(Length, currentIdx);
+    Vector3 deltaY0;
+    Vector3 deltaZ0;
+    Vector3 axis0;
+    float ring0;
+    var length = currentIdx - zero;
     { // Triangle caps begin
       var begin = items[zero];
       var beginColor = Colors[0];
       var end = items[zero + 1];
       var endColor = Colors[1];
-      var ring = tubeCurve_.Sample(1.0f / Length);
+      var ring = tubeCurve_.Sample(1.0f / length);
       var deltaX = end.Position - begin.Position;
       var deltaZ = new Vector3(deltaX.Z / deltaX.X, 0, 1).Normalized() * ring;
       var deltaY = deltaZ.Cross(deltaX).Normalized();
       var axis = deltaX.Normalized();
-      var tan = Mathf.Tan(Mathf.Pi / TubeLength); // ((Pi * 2) / (TubeLength * 2))
       for (var tubeIdx = 0; tubeIdx < TubeLength; ++tubeIdx) {
         var dz = deltaZ.Rotated(axis, Mathf.Pi * 2 * tubeIdx / TubeLength);
         var dy = deltaY.Rotated(axis, Mathf.Pi * 2 * tubeIdx / TubeLength) * (ring * tan);
         vertexes_.Add(begin.Position);
         vertexes_.Add(end.Position + dz + dy);
         vertexes_.Add(end.Position + dz - dy);
-        normals_.Add(dz);
+        normals_.Add(-deltaX);
         normals_.Add(dz + dy);
         normals_.Add(dz - dy);
         colors_.Add(beginColor);
@@ -108,8 +113,80 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
         indexes_.Add(vertexes + 0);
         vertexes += 3;
       }
+      deltaY0 = deltaY;
+      deltaZ0 = deltaZ;
+      axis0 = axis;
+      ring0 = ring;
+      ++points;
     }
-    for (var i = zero + 1; i < currentIdx - 1; ++i) {
+    for (var i = zero + 1; i < currentIdx - 2; ++i) {
+      var f = (float)points;
+      var beginPoint = items[i].Position;
+      var endPoint = items[i + 1].Position;
+      var beginColor = Colors[points - 1];
+      var endColor = Colors[points];
+      var deltaX = endPoint - beginPoint;
+      var axis = deltaX.Normalized();
+      var ring = tubeCurve_.Sample(f / length);
+      var deltaZ = new Vector3(deltaX.Z / deltaX.X, 0, 1).Normalized() * ring;
+      var deltaY = deltaZ.Cross(deltaX).Normalized();
+      for (var tubeIdx = 0; tubeIdx < TubeLength; ++tubeIdx) {
+        var dz0 = deltaZ0.Rotated(axis0, Mathf.Pi * 2 * tubeIdx / TubeLength);
+        var dy0 = deltaY0.Rotated(axis0, Mathf.Pi * 2 * tubeIdx / TubeLength) * (ring0 * tan);
+        var dz = deltaZ.Rotated(axis, Mathf.Pi * 2 * tubeIdx / TubeLength);
+        var dy = deltaY.Rotated(axis, Mathf.Pi * 2 * tubeIdx / TubeLength) * (ring * tan);
+        vertexes_.Add(beginPoint + dz0 + dy0);
+        vertexes_.Add(beginPoint + dz0 - dy0);
+        vertexes_.Add(endPoint + dz + dy);
+        vertexes_.Add(endPoint + dz - dy);
+        normals_.Add(dz0 + dy0);
+        normals_.Add(dz0 - dy0);
+        normals_.Add(dz + dy);
+        normals_.Add(dz - dy);
+        colors_.Add(beginColor);
+        colors_.Add(beginColor);
+        colors_.Add(endColor);
+        colors_.Add(endColor);
+        indexes_.Add(vertexes + 0);
+        indexes_.Add(vertexes + 1);
+        indexes_.Add(vertexes + 2);
+        indexes_.Add(vertexes + 3);
+        indexes_.Add(vertexes + 2);
+        indexes_.Add(vertexes + 1);
+        vertexes += 4;
+      }
+      deltaY0 = deltaY;
+      deltaZ0 = deltaZ;
+      axis0 = axis;
+      ring0 = ring;
+      ++points;
+    }
+    { // Triangle caps end
+      var begin = items[points];
+      var beginColor = Colors[points];
+      var end = items[points + 1];
+      var endColor = Colors[points + 1];
+      var deltaX = end.Position - begin.Position;
+      var deltaZ = new Vector3(deltaX.Z / deltaX.X, 0, 1).Normalized() * ring0;
+      var deltaY = deltaZ.Cross(deltaX).Normalized();
+      var axis = deltaX.Normalized();
+      for (var tubeIdx = 0; tubeIdx < TubeLength; ++tubeIdx) {
+        var dz = deltaZ.Rotated(axis, Mathf.Pi * 2 * tubeIdx / TubeLength);
+        var dy = deltaY.Rotated(axis, Mathf.Pi * 2 * tubeIdx / TubeLength) * (ring0 * tan);
+        vertexes_.Add(begin.Position + dz + dy);
+        vertexes_.Add(begin.Position + dz - dy);
+        vertexes_.Add(end.Position);
+        normals_.Add(dz + dy);
+        normals_.Add(dz - dy);
+        normals_.Add(deltaX);
+        colors_.Add(beginColor);
+        colors_.Add(endColor);
+        colors_.Add(endColor);
+        indexes_.Add(vertexes + 0);
+        indexes_.Add(vertexes + 1);
+        indexes_.Add(vertexes + 2);
+        vertexes += 3;
+      }
       ++points;
     }
     meshData_.Clear();
