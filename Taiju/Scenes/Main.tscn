@@ -113,7 +113,7 @@ _data = {
 }
 
 [sub_resource type="Curve" id="Curve_gwk2b"]
-_data = [Vector2(0, 0), 0.0, 5.82979, 0, 0, Vector2(0.244505, 0.503817), 0.0, 0.0, 0, 0, Vector2(0.596154, 0.142312), -1.35419, -1.35419, 0, 0, Vector2(0.991758, 0.0288986), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 3.94857, 0, 0, Vector2(0.230769, 0.454198), 0.0, 0.0, 0, 0, Vector2(0.596154, 0.142312), -1.35419, -1.35419, 0, 0, Vector2(0.991758, 0.0288986), 0.0, 0.0, 0, 0]
 point_count = 4
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_driuc"]
@@ -184,7 +184,7 @@ skeleton = NodePath("../..")
 [node name="Witch" type="Node3D" parent="Field"]
 
 [node name="Sora" parent="Field/Witch" node_paths=PackedStringArray("bulletServer_") instance=ExtResource("4_h45ke")]
-bulletServer_ = NodePath("../../WitchBullet/SoraBulletServer")
+bulletServer_ = NodePath("")
 
 [node name="WitchEffect" type="Node3D" parent="Field"]
 
