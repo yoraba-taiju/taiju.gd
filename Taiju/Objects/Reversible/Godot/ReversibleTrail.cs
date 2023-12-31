@@ -120,14 +120,13 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
       ++points;
     }
     for (var i = zero + 1; i < currentIdx - 2; ++i) {
-      var f = (float)points;
       var beginPoint = items[i].Position;
       var endPoint = items[i + 1].Position;
       var beginColor = Colors[points - 1];
       var endColor = Colors[points];
       var deltaX = endPoint - beginPoint;
       var axis = deltaX.Normalized();
-      var ring = tubeCurve_.Sample(f / length);
+      var ring = tubeCurve_.Sample(((float)points + 1) / length);
       var deltaZ = new Vector3(deltaX.Z / deltaX.X, 0, 1).Normalized() * ring;
       var deltaY = deltaZ.Cross(deltaX).Normalized();
       for (var tubeIdx = 0; tubeIdx < TubeLength; ++tubeIdx) {
