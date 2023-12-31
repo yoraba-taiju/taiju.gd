@@ -91,11 +91,11 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
     float ring0;
     var length = currentIdx - zero;
     { // Triangle caps begin
-      var begin = items[zero];
+      var begin = items[zero % BufferSize];
       var beginColor = Colors[0];
-      var end = items[zero + 1];
+      var end = items[(zero + 1) % BufferSize];
       var endColor = Colors[1];
-      var ring = tubeCurve_.Sample(1.0f / length);
+      var ring = tubeCurve_.Sample((float)(length - 1) / length);
       var deltaX = end.Position - begin.Position;
       var deltaZ = new Vector3(deltaX.Z / deltaX.X, 0, 1).Normalized() * ring;
       var deltaY = deltaZ.Cross(deltaX).Normalized();
@@ -106,9 +106,9 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
         vertexes_.Add(begin.Position);
         vertexes_.Add(end.Position + dz + dy);
         vertexes_.Add(end.Position + dz - dy);
-        normals_.Add(-deltaX);
-        normals_.Add(dz + dy);
-        normals_.Add(dz - dy);
+        normals_.Add(-axis);
+        normals_.Add((dz + dy).Normalized());
+        normals_.Add((dz - dy).Normalized());
         colors_.Add(beginColor);
         colors_.Add(endColor);
         colors_.Add(endColor);
@@ -124,13 +124,13 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
       ++points;
     }
     for (var i = zero + 1; i < currentIdx - 2; ++i) {
-      var beginPoint = items[i].Position;
-      var endPoint = items[i + 1].Position;
+      var beginPoint = items[i % BufferSize].Position;
+      var endPoint = items[(i + 1) % BufferSize].Position;
       var beginColor = Colors[points - 1];
       var endColor = Colors[points];
       var deltaX = endPoint - beginPoint;
       var axis = deltaX.Normalized();
-      var ring = tubeCurve_.Sample(((float)points + 1) / length);
+      var ring = tubeCurve_.Sample((float)(length - points - 1) / length);
       var deltaZ = new Vector3(deltaX.Z / deltaX.X, 0, 1).Normalized() * ring;
       var deltaY = deltaZ.Cross(deltaX).Normalized();
       for (var tubeIdx = 0; tubeIdx < TubeLength; ++tubeIdx) {
@@ -142,10 +142,10 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
         vertexes_.Add(beginPoint + dz0 - dy0);
         vertexes_.Add(endPoint + dz + dy);
         vertexes_.Add(endPoint + dz - dy);
-        normals_.Add(dz0 + dy0);
-        normals_.Add(dz0 - dy0);
-        normals_.Add(dz + dy);
-        normals_.Add(dz - dy);
+        normals_.Add((dz0 + dy0).Normalized());
+        normals_.Add((dz0 - dy0).Normalized());
+        normals_.Add((dz + dy).Normalized());
+        normals_.Add((dz - dy).Normalized());
         colors_.Add(beginColor);
         colors_.Add(beginColor);
         colors_.Add(endColor);
@@ -165,9 +165,9 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
       ++points;
     }
     { // Triangle caps end
-      var begin = items[points];
+      var begin = items[(currentIdx - 2) % BufferSize];
       var beginColor = Colors[points];
-      var end = items[points + 1];
+      var end = items[(currentIdx - 1) % BufferSize];
       var endColor = Colors[points + 1];
       var deltaX = end.Position - begin.Position;
       var deltaZ = new Vector3(deltaX.Z / deltaX.X, 0, 1).Normalized() * ring0;
@@ -179,9 +179,9 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
         vertexes_.Add(begin.Position + dz + dy);
         vertexes_.Add(begin.Position + dz - dy);
         vertexes_.Add(end.Position);
-        normals_.Add(dz + dy);
-        normals_.Add(dz - dy);
-        normals_.Add(deltaX);
+        normals_.Add((dz + dy).Normalized());
+        normals_.Add((dz - dy).Normalized());
+        normals_.Add(axis);
         colors_.Add(beginColor);
         colors_.Add(endColor);
         colors_.Add(endColor);
