@@ -1,4 +1,5 @@
-﻿using Godot;
+﻿using System;
+using Godot;
 using Taiju.Objects.Reversible.Value;
 using Taiju.Util;
 
@@ -85,6 +86,7 @@ public partial class ClockNode : Node3D {
     while (!graveyard_.IsEmpty) {
       ref readonly var it = ref graveyard_.First;
       if (it.DestroyedAt + Clock.HistoryLength < Clock.CurrentTick) {
+        Console.WriteLine($"Destroyed: {it.Node} ({it.Node.Name})");
         it.Node.QueueFree(); // Vanish
         graveyard_.RemoveFirst();
       } else {

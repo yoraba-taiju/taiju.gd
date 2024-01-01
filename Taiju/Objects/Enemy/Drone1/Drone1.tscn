@@ -143,13 +143,13 @@ transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 0, 0, 0)
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="羽_Root" parent="Body/Drone1/Root/プロペラ" index="0"]
-transform = Transform3D(0.991999, 1.30043e-16, -0.126243, -1.11167e-16, 1, 1.56568e-16, 0.126243, -1.41282e-16, 0.991999, 0, 0, 0)
+transform = Transform3D(-0.89041, 9.14224e-18, 0.455158, 5.08121e-17, 1, 7.93161e-17, -0.455158, 9.37515e-17, -0.89041, 0, 0, 0)
 
 [node name="羽A_Root" parent="Body/Drone1/Root/プロペラ/羽_Root" index="0"]
-transform = Transform3D(0.963985, 1.51487e-16, -0.265958, -1.77849e-16, 1, -7.50378e-17, 0.265958, 1.19636e-16, 0.963985, 0, 1.2, -0.75)
+transform = Transform3D(-0.793443, -1.12777e-16, 0.608646, -7.25891e-17, 1, 9.0664e-17, -0.608646, 2.77556e-17, -0.793443, 0, 1.2, -0.75)
 
 [node name="羽B_Root" parent="Body/Drone1/Root/プロペラ/羽_Root" index="1"]
-transform = Transform3D(0.991999, 1.76134e-15, -0.126243, -1.77527e-15, 1, 2.15396e-18, 0.126243, 2.21979e-16, 0.991999, 0, 1.2, 0.75)
+transform = Transform3D(-0.89041, -1.64563e-15, 0.455158, -1.81381e-15, 1, 6.72039e-17, -0.455158, -7.65732e-16, -0.89041, 0, 1.2, 0.75)
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 root_node = NodePath("../Body/Drone1")

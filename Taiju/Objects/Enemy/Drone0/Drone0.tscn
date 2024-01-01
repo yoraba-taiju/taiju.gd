@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dj3ie2qhiow02"]
 
 [ext_resource type="Script" path="res://Objects/Enemy/Drone0/Brain.cs" id="1_n2amj"]
-[ext_resource type="PackedScene" uid="uid://i1yyamogeby7" path="res://Objects/Enemy/Drone0/model.tscn" id="1_o6p8y"]
+[ext_resource type="PackedScene" uid="uid://dhlhoktunyw64" path="res://Objects/Enemy/Drone0/Drone0.blend" id="2_81ede"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_u58e6"]
 radius = 1.0
@@ -19,7 +19,8 @@ script = ExtResource("1_n2amj")
 
 [node name="Body" type="Node3D" parent="."]
 
-[node name="Model" parent="Body" instance=ExtResource("1_o6p8y")]
+[node name="Model" parent="Body" instance=ExtResource("2_81ede")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
 
 [node name="Shape" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_u58e6")
