@@ -176,10 +176,12 @@ skeleton = NodePath("../..")
 
 [node name="Witch" type="Node3D" parent="Field"]
 
-[node name="Sora" parent="Field/Witch" node_paths=PackedStringArray("bulletServer_", "bulletNode_") instance=ExtResource("4_h45ke")]
-bulletServer_ = NodePath("../../WitchBullet/SoraBulletServer")
-bulletNode_ = NodePath("../../WitchBullet")
+[node name="Sora" parent="Field/Witch" instance=ExtResource("4_h45ke")]
 arrowScene_ = ExtResource("7_iut33")
+bulletServer_ = Object(Node3D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"script":ExtResource("7_hxyi1"),"bulletScene_":ExtResource("5_kp850"))
+
+bulletNode_ = Object(Node3D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","transform":Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0),"rotation_edit_mode":0,"rotation_order":2,"top_level":false,"visible":true,"visibility_parent":NodePath(""),"script":null)
+
 
 [node name="WitchEffect" type="Node3D" parent="Field"]
 
