@@ -65,6 +65,9 @@ public struct ReversibleCompanion<T>
   }
 
   public void Destroy(T self) {
+    if (!IsAlive) {
+      return;
+    }
     ClockNode.QueueDestroy(self);
     IsAlive = false;
     self.SetDeferred(Node3D.PropertyName.Visible, false);
@@ -72,6 +75,9 @@ public struct ReversibleCompanion<T>
   }
 
   public void Rescue(T self) {
+    if (IsAlive) {
+      return;
+    }
     IsAlive = true;
     self.SetDeferred(Node3D.PropertyName.Visible, true);
     self.SetDeferred(Node.PropertyName.ProcessMode, (int)Node.ProcessModeEnum.Inherit);
