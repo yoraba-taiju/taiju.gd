@@ -43,7 +43,7 @@ public partial class Arrow : ReversibleTrail<Arrow.Param> {
       for (var i = 0; i < Length; ++i) {
         var f = (float)i;
         var alpha = 1.0f - f / (Length - 1);
-        Colors[i] = Color.FromHsv(hue, saturation, value, alpha * alpha * alpha * alpha);
+        Colors[i] = Color.FromHsv(hue, saturation, value, alpha * alpha * alpha);
       }
     }
     enemies_ = GetNode<Node3D>("/root/Root/Field/Enemy")!;
