@@ -9,7 +9,7 @@ public abstract partial class EnemyBase : ReversibleRigidBody3D {
   private PackedScene explosionScene_;
   private Node3D effectNode_;
   protected Sora Sora { get; private set; }
-  private bool displayed_ = false;
+  private bool displayed_;
 
   protected int Shield;
   public override void _Ready() {
@@ -18,6 +18,7 @@ public abstract partial class EnemyBase : ReversibleRigidBody3D {
     effectNode_ = GetNode<Node3D>("/root/Root/Field/EnemyEffect");
     Sora = GetNode<Sora>("/root/Root/Field/Witch/Sora");
     Shield = 1;
+    displayed_ = false;
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {

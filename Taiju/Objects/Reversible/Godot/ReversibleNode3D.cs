@@ -12,6 +12,10 @@ public abstract partial class ReversibleNode3D : Node3D, IReversibleNode {
    */
   protected Clock Clock => comp_.Clock;
   protected ClockNode ClockNode => comp_.ClockNode;
+  public bool IsAlive {
+    get => comp_.IsAlive;
+    set => comp_.IsAlive = value;
+  }
 
   public override void _Ready() {
     comp_.Ready(this);

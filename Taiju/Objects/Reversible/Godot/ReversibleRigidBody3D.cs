@@ -10,6 +10,11 @@ public abstract partial class ReversibleRigidBody3D : RigidBody3D, IReversibleNo
    * Members
    */
   protected Clock Clock => comp_.Clock;
+  protected ClockNode ClockNode => comp_.ClockNode;
+  public bool IsAlive {
+    get => comp_.IsAlive;
+    set => comp_.IsAlive = value;
+  }
 
   public override void _Ready() {
     comp_.Ready(this);

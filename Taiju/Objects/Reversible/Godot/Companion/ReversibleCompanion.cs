@@ -11,7 +11,7 @@ public struct ReversibleCompanion<T>
   public Clock Clock { get; private set; }
   /// Clock Stats
   private double ClockIntegrateTime => ClockNode.IntegrateTime;
-    
+  public bool IsAlive { get; set; }
   private ClockNode.TimeDirection Direction => ClockNode.Direction;
   private bool Ticked => ClockNode.Ticked;
   private bool Leap => ClockNode.Leaped;
@@ -29,6 +29,7 @@ public struct ReversibleCompanion<T>
     Clock = ClockNode.Clock;
     bornTick_ = Clock.CurrentTick;
     bornAt_ = ClockIntegrateTime;
+    IsAlive = true;
   }
 
   public void Process(T self, double delta) {
@@ -65,11 +66,13 @@ public struct ReversibleCompanion<T>
 
   public void Destroy(T self) {
     ClockNode.QueueDestroy(self);
+    IsAlive = false;
     self.SetDeferred(Node3D.PropertyName.Visible, false);
     self.SetDeferred(Node.PropertyName.ProcessMode, (int)Node.ProcessModeEnum.Disabled);
   }
 
   public void Rescue(T self) {
+    IsAlive = true;
     self.SetDeferred(Node3D.PropertyName.Visible, true);
     self.SetDeferred(Node.PropertyName.ProcessMode, (int)Node.ProcessModeEnum.Inherit);
   }
