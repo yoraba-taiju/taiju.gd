@@ -86,8 +86,8 @@ public partial class Arrow : ReversibleTrail<Arrow.Param> {
     switch (rec.State) {
       case State.Tracking: {
         if (target is not { IsAlive: true }) {
-          if (rec.Velocity.Length() < 80.0f) {
-            rec.Velocity = rec.Velocity.Normalized() * 80.0f;
+          if (rec.Velocity.Length() < 120.0f) {
+            rec.Velocity = rec.Velocity.Normalized() * 120.0f;
           }
           rec.Position += rec.Velocity * (float)dt;
           Push(rec.Position, new Param());
