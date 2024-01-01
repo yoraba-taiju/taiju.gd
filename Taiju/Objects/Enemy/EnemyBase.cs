@@ -31,11 +31,13 @@ public abstract partial class EnemyBase : ReversibleRigidBody3D {
   }
 
   public void Hit() {
+    if (!IsAlive) {
+      return;
+    }
     Shield -= 1;
     if (Shield > 0) {
       return;
     }
-
     Destroy();
     var explosion = explosionScene_.Instantiate<ReversibleExplosion>();
     explosion.Position = Position;

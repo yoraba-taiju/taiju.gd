@@ -96,7 +96,7 @@ public partial class Sora : ReversibleRigidBody3D {
     if (Input.IsActionJustPressed("spell")) {
       var arrow = arrowScene_.Instantiate<Arrow>();
       arrow.InitialPosition = Position;
-      arrow.InitialVelocity = Vector3.Left * 50.0f;
+      arrow.InitialVelocity = Vector3.Left * 80.0f;
       bulletNode_.AddChild(arrow);
     }
     

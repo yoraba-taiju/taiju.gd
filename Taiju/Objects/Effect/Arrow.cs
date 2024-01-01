@@ -17,7 +17,7 @@ public partial class Arrow : ReversibleTrail<Arrow.Param> {
   [Export] private bool randomizedHue_ = true;
   [Export] public double TrackPeriod = 0.5;
   [Export] public double StopPeriod = 0.05;
-  [Export] private float maxRotateAngle_ = 120.0f;
+  [Export] private float maxRotateAngle_ = 30.0f;
   [Export] public Vector3 InitialPosition { get; set; }
   [Export] public Vector3 InitialVelocity { get; set; }
   public struct Param {
@@ -84,7 +84,10 @@ public partial class Arrow : ReversibleTrail<Arrow.Param> {
     var leftPeriod = TrackPeriod - integrateTime;
     switch (rec.State) {
       case State.Tracking: {
-        if (target == null) {
+        if (target is not { IsAlive: true }) {
+          if (rec.Velocity.Length() < 80.0f) {
+            rec.Velocity = rec.Velocity.Normalized() * 80.0f;
+          }
           rec.Position += rec.Velocity * (float)dt;
           Push(rec.Position, new Param());
           if (Mathf.Abs(rec.Position.X) >= 30.0f || Mathf.Abs(rec.Position.Y) >= 18.0f) {
