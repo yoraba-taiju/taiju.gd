@@ -46,8 +46,6 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
 
   public override bool _ProcessForward(double integrateTime, double dt) {
     Render();
-    // Debug purpose
-    Rotation = new Vector3((float)integrateTime, 0, 0);
     return true;
   }
 
@@ -74,7 +72,7 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
     var items = items_.Ref;
     ref readonly var currentIdx = ref idx_.Ref;
     if (currentIdx < 3) {
-      GD.PrintErr($"Not enough length: {currentIdx} < 3");
+      GD.Print($"Not enough length: {currentIdx} < 3");
       return;
     }
     vertexes_.Clear();
