@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=26 format=3 uid="uid://ceqv14au1y2ag"]
 
 [ext_resource type="Script" path="res://Objects/Reversible/Godot/ClockNode.cs" id="1_alw2w"]
 [ext_resource type="Material" uid="uid://dxb0h08vdwfrl" path="res://Background/Forest/Forest.tres" id="1_bmh26"]
@@ -9,12 +9,12 @@
 [ext_resource type="PackedScene" uid="uid://dulu3o8yh1dam" path="res://Objects/Witch/SoraBullet.tscn" id="5_kp850"]
 [ext_resource type="Texture2D" uid="uid://byt2kh2w5jhox" path="res://Objects/Effect/textures/red_bullet.png" id="6_bwfd2"]
 [ext_resource type="Script" path="res://Objects/Witch/SoraBulletServer.cs" id="7_hxyi1"]
+[ext_resource type="PackedScene" uid="uid://c7a61pvvxfaev" path="res://Objects/Effect/Arrow.tscn" id="7_iut33"]
 [ext_resource type="Script" path="res://Objects/BulletServer/Servers/CircleBulletServer.cs" id="8_qfb4r"]
 [ext_resource type="PackedScene" uid="uid://bc66k31538av8" path="res://Objects/Enemy/Drone1/Drone1.tscn" id="9_ge6oq"]
 [ext_resource type="PackedScene" uid="uid://dj3ie2qhiow02" path="res://Objects/Enemy/Drone0/Drone0.tscn" id="12_3edtj"]
 [ext_resource type="Script" path="res://Scenes/Spawner.cs" id="12_kg1q4"]
 [ext_resource type="Script" path="res://Scenes/Dolly.cs" id="12_mgcli"]
-[ext_resource type="Script" path="res://Objects/Effect/Arrow.cs" id="15_83evh"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_aadso"]
 energy_multiplier = 2.0
@@ -112,13 +112,6 @@ _data = {
 "dolly": SubResource("Animation_qjeby")
 }
 
-[sub_resource type="Curve" id="Curve_gwk2b"]
-_data = [Vector2(0, 0), 0.0, 3.94857, 0, 0, Vector2(0.230769, 0.454198), 0.0, 0.0, 0, 0, Vector2(0.596154, 0.142312), -1.35419, -1.35419, 0, 0, Vector2(0.991758, 0.0288986), 0.0, 0.0, 0, 0]
-point_count = 4
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_driuc"]
-vertex_color_use_as_albedo = true
-
 [node name="Root" type="Node3D"]
 
 [node name="Clock" type="Node3D" parent="."]
@@ -183,7 +176,10 @@ skeleton = NodePath("../..")
 
 [node name="Witch" type="Node3D" parent="Field"]
 
-[node name="Sora" parent="Field/Witch" instance=ExtResource("4_h45ke")]
+[node name="Sora" parent="Field/Witch" node_paths=PackedStringArray("bulletServer_", "bulletNode_") instance=ExtResource("4_h45ke")]
+bulletServer_ = NodePath("../../WitchBullet/SoraBulletServer")
+bulletNode_ = NodePath("../../WitchBullet")
+arrowScene_ = ExtResource("7_iut33")
 
 [node name="WitchEffect" type="Node3D" parent="Field"]
 
@@ -201,9 +197,7 @@ bulletScene_ = ExtResource("5_kp850")
 
 [node name="CircleBulletServer" type="Node3D" parent="Field/EnemyBullet"]
 script = ExtResource("8_qfb4r")
-size_ = null
 Mesh = SubResource("PlaneMesh_hhw22")
-bulletCount_ = null
 
 [node name="Dolly" type="AnimationPlayer" parent="."]
 deterministic = true
@@ -214,8 +208,3 @@ script = ExtResource("12_mgcli")
 
 [node name="Spawner" type="Node3D" parent="Dolly"]
 script = ExtResource("12_kg1q4")
-
-[node name="Arrow" type="Node3D" parent="."]
-script = ExtResource("15_83evh")
-tubeCurve_ = SubResource("Curve_gwk2b")
-material_ = SubResource("StandardMaterial3D_driuc")

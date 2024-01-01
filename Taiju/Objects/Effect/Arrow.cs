@@ -13,8 +13,10 @@ public partial class Arrow : ReversibleTrail<Arrow.Param> {
   private Node3D? enemies_;
   private Sora? sora_;
   [Export] protected Color ArrayColor = Godot.Colors.DarkRed;
-  [Export] public double Period = 5.0;
-  [Export] public Vector3 InitialSpeed { get; set; }
+  [Export] public double Period = 0.5;
+  [Export] private float maxRotateAngle_ = 120.0f;
+  [Export] public Vector3 InitialPosition { get; set; }
+  [Export] public Vector3 InitialVelocity { get; set; }
   public struct Param {
   }
 
@@ -35,8 +37,8 @@ public partial class Arrow : ReversibleTrail<Arrow.Param> {
     enemies_ = GetNode<Node3D>("/root/Root/Field/Enemy")!;
     sora_ = GetNode<Sora>("/root/Root/Field/Witch/Sora")!;
     state_ = new Dense<Record>(Clock, new Record {
-      Position = Position,
-      Velocity = InitialSpeed,
+      Position = InitialPosition,
+      Velocity = InitialVelocity,
       Target = FindEnemy(),
     });
   }
@@ -67,18 +69,32 @@ public partial class Arrow : ReversibleTrail<Arrow.Param> {
     base._ProcessForward(integrateTime, dt);
     ref var rec = ref state_.Mut;
     var target = rec.Target;
-    if (integrateTime >= Period) {
-      target?.Hit();
+    var leftPeriod = Period - integrateTime;
+    if (target == null) {
+      rec.Position += rec.Velocity * (float)dt;
+      Push(rec.Position, new Param());
+      if (Mathf.Abs(Position.X) >= 24.0f || Mathf.Abs(Position.Y) >= 13.5f) {
+        Destroy();
+      }
+      return true;
+    }
+
+    if (leftPeriod < 0.001f) {
+      Push(target.Position, new Param());
+      target.Hit();
       rec.Target = null;
       Destroy();
       return true;
     }
-    if (target == null) {
+
+    if (leftPeriod < Period / 3.0f) {
+      var direction = target.Position - rec.Position;
+      Mover.Follow(direction, rec.Velocity, (float)(maxRotateAngle_ * dt));
       rec.Position += rec.Velocity * (float)dt;
       Push(rec.Position, new Param());
       return true;
     }
-    var leftPeriod = Period - integrateTime;
+
     var force = Mover.TrackingForce(
       rec.Position,
       rec.Velocity,

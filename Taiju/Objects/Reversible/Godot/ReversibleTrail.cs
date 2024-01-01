@@ -27,7 +27,10 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
   private Dense<int> idx_;
   public override void _Ready() {
     base._Ready();
-    items_ = new DenseArray<Item>(Clock, BufferSize, new Item());
+    items_ = new DenseArray<Item>(Clock, BufferSize, new Item {
+      Position = Position,
+      Param = new TParam(),
+    });
     idx_ = new Dense<int>(Clock, 0);
     meshInstance_.Name = "MeshInstance3D";
     meshInstance_.Mesh = arrayMesh_;
@@ -37,7 +40,12 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
   protected void Push(Vector3 pos, TParam param) {
     ref var idx = ref idx_.Mut;
     var items = items_.Mut;
-    items[idx] = new Item {
+    var last = items[idx % BufferSize].Position;
+    var distance = (last - pos).Length();
+    if (distance is < 0.1f or > 1000.0f) {
+      return;
+    }
+    items[idx % BufferSize] = new Item {
       Position = pos,
       Param = param,
     };
@@ -72,7 +80,7 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
     var items = items_.Ref;
     ref readonly var currentIdx = ref idx_.Ref;
     if (currentIdx < 3) {
-      GD.Print($"Not enough length: {currentIdx} < 3");
+      // GD.Print($"Not enough length: {currentIdx} < 3");
       return;
     }
     vertexes_.Clear();

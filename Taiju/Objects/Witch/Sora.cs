@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using Taiju.Objects.Effect;
 using Taiju.Objects.Enemy;
 using Taiju.Objects.Reversible.Godot;
 using Taiju.Objects.Reversible.Value;
@@ -9,20 +10,22 @@ namespace Taiju.Objects.Witch;
 
 public partial class Sora : ReversibleRigidBody3D {
   [Export] private SoraBulletServer bulletServer_;
+  [Export] private Node3D bulletNode_;
+  [Export] private PackedScene arrowScene_;
   private const double MoveDelta = 16.0;
   private record struct Record {
     public Vector3 Position;
     public double SpiritRot;
     public double AfterFire;
   }
-  private Dense<Record> state_;
+  private Dense<Record> record_;
   
   // Nodes
   private Node3D spirit_;
 
   public override void _Ready() {
     base._Ready();
-    state_ = new Dense<Record>(Clock, new Record {
+    record_ = new Dense<Record>(Clock, new Record {
       Position = Position,
       SpiritRot = 0.0,
       AfterFire = 0.0,
@@ -41,10 +44,10 @@ public partial class Sora : ReversibleRigidBody3D {
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
-    ref var state = ref state_.Mut;
+    ref var rec = ref record_.Mut;
 
     // Position
-    ref var pos = ref state.Position;
+    ref var pos = ref rec.Position;
     var deltaPos = new Vector3();
     var moved = false;
     if (Input.IsActionPressed("move_right")) {
@@ -72,11 +75,11 @@ public partial class Sora : ReversibleRigidBody3D {
     }
 
     // Spirit rot
-    ref var rot = ref state.SpiritRot;
+    ref var rot = ref rec.SpiritRot;
     rot += dt;
 
     // Handle shot
-    ref var afterFire = ref state.AfterFire;
+    ref var afterFire = ref rec.AfterFire;
     if (Input.IsActionJustPressed("fire")) {
       bulletServer_.Spawn(pos);
       afterFire = 0.0;
@@ -88,6 +91,13 @@ public partial class Sora : ReversibleRigidBody3D {
       }
     } else {
       afterFire = 0.0;
+    }
+
+    if (Input.IsActionJustPressed("spell")) {
+      var arrow = arrowScene_.Instantiate<Arrow>();
+      arrow.InitialPosition = Position;
+      arrow.InitialVelocity = Vector3.Left * 50.0f;
+      bulletNode_.AddChild(arrow);
     }
     
     // Update using current value.
@@ -101,7 +111,7 @@ public partial class Sora : ReversibleRigidBody3D {
   }
 
   private bool LoadCurrentStatus() {
-    ref readonly var state = ref state_.Ref;
+    ref readonly var state = ref record_.Ref;
     ref readonly var pos = ref state.Position;
     ref readonly var rot = ref state.SpiritRot;
     Position = pos;
