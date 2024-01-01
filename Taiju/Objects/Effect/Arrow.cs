@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using System;
 using System.Linq;
 using Godot;
 using Taiju.Objects.Enemy;
@@ -12,16 +13,22 @@ namespace Taiju.Objects.Effect;
 public partial class Arrow : ReversibleTrail<Arrow.Param> {
   private Node3D? enemies_;
   private Sora? sora_;
-  [Export] protected Color ArrayColor = Godot.Colors.DarkRed;
-  [Export] public double Period = 0.5;
+  [Export] private Color arrayColor_ = Godot.Colors.PaleVioletRed;
+  [Export] private bool randomizedHue_ = true;
+  [Export] public double TrackPeriod = 0.5;
+  [Export] public double StopPeriod = 0.05;
   [Export] private float maxRotateAngle_ = 120.0f;
   [Export] public Vector3 InitialPosition { get; set; }
   [Export] public Vector3 InitialVelocity { get; set; }
   public struct Param {
   }
-
-  private Dense<Record> state_;
+  private Dense<Record> record_;
+  public enum State {
+    Tracking,
+    Stop,
+  }
   public struct Record {
+    public State State;
     public Vector3 Position;
     public Vector3 Velocity;
     public EnemyBase? Target;
@@ -29,14 +36,19 @@ public partial class Arrow : ReversibleTrail<Arrow.Param> {
 
   public override void _Ready() {
     base._Ready();
-    Colors = new Color[Length];
-    for (var i = 0; i < Length; ++i) {
-      var f = (float)i;
-      Colors[i] = ArrayColor.Darkened(f / Length);
+    { // ColorSetting
+      arrayColor_.ToHsv(out _, out var saturation, out var value);
+      var hue = Random.Shared.NextSingle();
+      Colors = new Color[Length];
+      for (var i = 0; i < Length; ++i) {
+        var f = (float)i;
+        Colors[i] = Color.FromHsv(hue, saturation, value, 1.0f - (f / Length));
+      }
     }
     enemies_ = GetNode<Node3D>("/root/Root/Field/Enemy")!;
     sora_ = GetNode<Sora>("/root/Root/Field/Witch/Sora")!;
-    state_ = new Dense<Record>(Clock, new Record {
+    record_ = new Dense<Record>(Clock, new Record {
+      State = State.Tracking,
       Position = InitialPosition,
       Velocity = InitialVelocity,
       Target = FindEnemy(),
@@ -67,44 +79,55 @@ public partial class Arrow : ReversibleTrail<Arrow.Param> {
 
   public override bool _ProcessForward(double integrateTime, double dt) {
     base._ProcessForward(integrateTime, dt);
-    ref var rec = ref state_.Mut;
+    ref var rec = ref record_.Mut;
     var target = rec.Target;
-    var leftPeriod = Period - integrateTime;
-    if (target == null) {
-      rec.Position += rec.Velocity * (float)dt;
-      Push(rec.Position, new Param());
-      if (Mathf.Abs(Position.X) >= 24.0f || Mathf.Abs(Position.Y) >= 13.5f) {
-        Destroy();
+    var leftPeriod = TrackPeriod - integrateTime;
+    switch (rec.State) {
+      case State.Tracking: {
+        if (target == null) {
+          rec.Position += rec.Velocity * (float)dt;
+          Push(rec.Position, new Param());
+          if (Mathf.Abs(rec.Position.X) >= 30.0f || Mathf.Abs(rec.Position.Y) >= 18.0f) {
+            Destroy();
+          }
+          return true;
+        }
+        if (leftPeriod < 0.001f) {
+          Push(target.Position, new Param());
+          target.Hit();
+          rec.Target = null;
+          rec.State = State.Stop;
+          break;
+        }
+        if (leftPeriod < TrackPeriod / 3.0f) {
+          var direction = target.Position - rec.Position;
+          Mover.Follow(direction, rec.Velocity, (float)(maxRotateAngle_ * dt));
+          rec.Position += rec.Velocity * (float)dt;
+          Push(rec.Position, new Param());
+          break;
+        }
+        var force = Mover.TrackingForce(
+          rec.Position,
+          rec.Velocity,
+          target.Position,
+          target.LinearVelocity,
+          (float)leftPeriod
+        );
+        rec.Velocity += force * (float)dt;
+        rec.Position += rec.Velocity * (float)dt;
+        Push(rec.Position, new Param());
       }
-      return true;
-    }
+        break;
 
-    if (leftPeriod < 0.001f) {
-      Push(target.Position, new Param());
-      target.Hit();
-      rec.Target = null;
-      Destroy();
-      return true;
+      case State.Stop: {
+        if (integrateTime > (TrackPeriod + StopPeriod)) {
+          Destroy();
+        }
+      }
+        break;
+      default:
+        throw new ArgumentOutOfRangeException();
     }
-
-    if (leftPeriod < Period / 3.0f) {
-      var direction = target.Position - rec.Position;
-      Mover.Follow(direction, rec.Velocity, (float)(maxRotateAngle_ * dt));
-      rec.Position += rec.Velocity * (float)dt;
-      Push(rec.Position, new Param());
-      return true;
-    }
-
-    var force = Mover.TrackingForce(
-      rec.Position,
-      rec.Velocity,
-      target.Position,
-      target.LinearVelocity,
-      (float)leftPeriod
-    );
-    rec.Velocity += force * (float)dt;
-    rec.Position += rec.Velocity * (float)dt;
-    Push(rec.Position, new Param());
     return true;
   }
 }

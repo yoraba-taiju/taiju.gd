@@ -42,7 +42,7 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
     var items = items_.Mut;
     var last = items[idx % BufferSize].Position;
     var distance = (last - pos).Length();
-    if (distance is < 0.1f or > 1000.0f) {
+    if (distance is < 0.001f or > 1000.0f) {
       return;
     }
     items[idx % BufferSize] = new Item {
