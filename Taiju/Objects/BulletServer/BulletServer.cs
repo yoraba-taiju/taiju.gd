@@ -11,6 +11,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
   where TParam: struct, IBullet
 {
   [Export] protected Mesh Mesh;
+  [Export] private uint bulletCount_ = 64;
   private MultiMeshInstance3D multiMeshInstance_;
   private MultiMesh multiMesh_;
   protected struct Bullet {
@@ -25,9 +26,6 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
   }
 
   private Queue<TParam> spawnQueue_;
-
-  [Export] private uint bulletCount_ = 64;
-
   protected SparseArray<Bullet> Bullets;
 
   protected Sora Sora;
