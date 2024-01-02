@@ -6,7 +6,7 @@ using Taiju.Objects.Reversible.ValueArray;
 
 namespace Taiju.Objects.Reversible.Godot;
 
-public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
+public abstract partial class ReversibleTubeTrail<TParam> : ReversibleNode3D
   where TParam: struct
 {
   private const int BufferSize = 16;
@@ -26,6 +26,16 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
   private DenseArray<Item> items_;
   private Dense<int> idx_;
   public override void _Ready() {
+    // Pre-conditions assertion
+    if (Length <= 3) {
+      throw new InvalidOperationException($"Invalid Length. {Length} < 3");
+    }
+    if (Length != Colors.Length) {
+      throw new InvalidOperationException($"Length should be ColorsLength. (Length = {Length}) != (Colors.Length ={Colors.Length})");
+    }
+    if (TubeLength < 3) {
+      throw new InvalidOperationException($"Invalid TubeLength. {TubeLength} < 3");
+    }
     base._Ready();
     items_ = new DenseArray<Item>(Clock, BufferSize, new Item {
       Position = Position,
@@ -71,12 +81,6 @@ public abstract partial class ReversibleTrail<TParam> : ReversibleNode3D
   private readonly List<Color> colors_ = [];
   private readonly List<int> indexes_ = [];
   private void Render() {
-    if (Length <= 3) {
-      throw new InvalidOperationException($"Invalid Length. {Length} < 3");
-    }
-    if (TubeLength < 3) {
-      throw new InvalidOperationException($"Invalid TubeLength. {TubeLength} < 3");
-    }
     var items = items_.Ref;
     ref readonly var currentIdx = ref idx_.Ref;
     if (currentIdx < 3) {

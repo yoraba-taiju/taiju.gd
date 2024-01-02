@@ -10,7 +10,7 @@ using Taiju.Util.Godot;
 
 namespace Taiju.Objects.Effect;
 
-public partial class Arrow : ReversibleTrail<Arrow.Param> {
+public partial class Arrow : ReversibleTubeTrail<Arrow.Param> {
   private Node3D? enemies_;
   private Sora? sora_;
   [Export] private Color arrayColor_ = Godot.Colors.PaleVioletRed;
