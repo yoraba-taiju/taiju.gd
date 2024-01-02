@@ -68,7 +68,11 @@ public partial class Arrow : ReversibleTubeTrail<Arrow.Param> {
       if (enemy is not { IsAlive: true }) {
         continue;
       }
-      var d = (enemy.Position - soraPosition).Length();
+      var pos = enemy.Position;
+      if (Mathf.Abs(pos.X) > 21f || Mathf.Abs(pos.Y) > 11.5f) {
+        continue;
+      }
+      var d = (pos - soraPosition).Length();
       if (d > distance) {
         continue;
       }
