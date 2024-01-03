@@ -100,7 +100,13 @@ public partial class Arrow : ReversibleTubeTrail<Arrow.Param> {
           }
           return true;
         }
-        if (leftPeriod < 0.001f) {
+        var targetPosition = target.Position;
+        if (Mathf.Abs(targetPosition.X) > 21f || Mathf.Abs(targetPosition.Y) > 11.5f) {
+          rec.Target = null;
+          rec.State = State.Stop;
+          return true;
+        }
+        if (leftPeriod < 0.001f ) {
           Push(target.Position, new Param());
           target.Hit();
           rec.Target = null;
