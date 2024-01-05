@@ -20,8 +20,7 @@ public partial class Arrow : ReversibleTubeTrail<Arrow.Param> {
   [Export] private float maxRotateAngle_ = 30.0f;
   [Export] public Vector3 InitialPosition { get; set; }
   [Export] public Vector3 InitialVelocity { get; set; }
-  public struct Param {
-  }
+  public struct Param {}
   private Dense<Record> record_;
   public enum State {
     Tracking,
@@ -39,11 +38,11 @@ public partial class Arrow : ReversibleTubeTrail<Arrow.Param> {
     { // ColorSetting
       arrayColor_.ToHsv(out _, out var saturation, out var value);
       var hue = Random.Shared.NextSingle();
-      Colors = new Color[Length];
+      TubeColors = new Color[Length];
       for (var i = 0; i < Length; ++i) {
         var f = (float)i;
         var alpha = 1.0f - f / (Length - 1);
-        Colors[i] = Color.FromHsv(hue, saturation, value, alpha * alpha * alpha);
+        TubeColors[i] = Color.FromHsv(hue, saturation, value, alpha * alpha * alpha);
       }
     }
     enemies_ = GetNode<Node3D>("/root/Root/Field/Enemy")!;

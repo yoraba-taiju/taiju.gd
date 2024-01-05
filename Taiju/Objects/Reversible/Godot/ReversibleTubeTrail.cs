@@ -13,7 +13,7 @@ public abstract partial class ReversibleTubeTrail<TParam> : ReversibleNode3D
   [Export(PropertyHint.Range, "3, 16")] protected int Length = 8;
   [Export] private Curve tubeCurve_;
   [Export(PropertyHint.Range, "3, 24")] protected int TubeLength = 6;
-  protected Color[] Colors = new Color[8];
+  protected Color[] TubeColors = new Color[8];
   private global::Godot.Collections.Array meshData_ = new();
   private struct Item {
     public Vector3 Position;
@@ -26,17 +26,17 @@ public abstract partial class ReversibleTubeTrail<TParam> : ReversibleNode3D
   private DenseArray<Item> items_;
   private Dense<int> idx_;
   public override void _Ready() {
+    base._Ready();
     // Pre-conditions assertion
     if (Length <= 3) {
       throw new InvalidOperationException($"Invalid Length. {Length} < 3");
     }
-    if (Length != Colors.Length) {
-      throw new InvalidOperationException($"Length should be ColorsLength. (Length = {Length}) != (Colors.Length ={Colors.Length})");
+    if (Length != TubeColors.Length) {
+      throw new InvalidOperationException($"Length should be ColorsLength. (Length = {Length}) != (Colors.Length ={TubeColors.Length})");
     }
     if (TubeLength < 3) {
       throw new InvalidOperationException($"Invalid TubeLength. {TubeLength} < 3");
     }
-    base._Ready();
     items_ = new DenseArray<Item>(Clock, BufferSize, new Item {
       Position = Position,
       Param = new TParam(),
@@ -102,9 +102,9 @@ public abstract partial class ReversibleTubeTrail<TParam> : ReversibleNode3D
     var length = currentIdx - zero;
     { // Triangle caps begin
       var begin = items[(currentIdx - 1) % BufferSize];
-      var beginColor = Colors[0];
+      var beginColor = TubeColors[0];
       var end = items[(currentIdx - 2) % BufferSize];
-      var endColor = Colors[1];
+      var endColor = TubeColors[1];
       var ring = tubeCurve_.Sample(1.0f / length);
       var deltaX = end.Position - begin.Position;
       var deltaZ = new Vector3(deltaX.Z / deltaX.X, 0, 1).Normalized() * ring;
@@ -136,8 +136,8 @@ public abstract partial class ReversibleTubeTrail<TParam> : ReversibleNode3D
     for (var i = currentIdx - 2; i > zero + 1; --i) {
       var beginPoint = items[i % BufferSize].Position;
       var endPoint = items[(i - 1) % BufferSize].Position;
-      var beginColor = Colors[points];
-      var endColor = Colors[points + 1];
+      var beginColor = TubeColors[points];
+      var endColor = TubeColors[points + 1];
       var deltaX = endPoint - beginPoint;
       var axis = deltaX.Normalized();
       var ring = tubeCurve_.Sample((float)(points + 1) / length);
@@ -176,9 +176,9 @@ public abstract partial class ReversibleTubeTrail<TParam> : ReversibleNode3D
     }
     { // Triangle caps end
       var begin = items[(zero + 1) % BufferSize];
-      var beginColor = Colors[points];
+      var beginColor = TubeColors[points];
       var end = items[zero % BufferSize];
-      var endColor = Colors[points + 1];
+      var endColor = TubeColors[points + 1];
       var deltaX = end.Position - begin.Position;
       var deltaZ = new Vector3(deltaX.Z / deltaX.X, 0, 1).Normalized() * ring0;
       var deltaY = deltaZ.Cross(deltaX).Normalized();
