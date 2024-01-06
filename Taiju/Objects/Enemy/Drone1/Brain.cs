@@ -109,13 +109,11 @@ public partial class Brain : EnemyBase {
     if (!IsAlive) {
       return;
     }
-
     ref var rec = ref record_.Mut;
     rec.Shield -= 1;
     if (rec.Shield > 0) {
       return;
     }
-
     base.Destroy();
   }
 
