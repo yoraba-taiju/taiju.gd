@@ -23,6 +23,7 @@ public partial class Brain : EnemyBase {
   private int defaultEscapeDirection_;
 
   private record struct Record {
+    public int Shield;
     public State State;
     public Vector3 Position;
     public Vector3 Velocity;
@@ -33,6 +34,7 @@ public partial class Brain : EnemyBase {
     base._Ready();
     body_ = GetNode<Node3D>("Body");
     record_ = new Dense<Record>(Clock, new Record {
+      Shield = 1,
       State = State.Seek,
       Position = Position,
       Velocity = new Vector3(-10.0f, 0.0f, 0.0f),
@@ -45,7 +47,6 @@ public partial class Brain : EnemyBase {
     animPlayer_.PlaybackActive = true;
     animPlayer_.Play("Rotate");
     defaultEscapeDirection_ = ((int)(rand_.Randi() % 2) * 2) - 1;
-    Shield = 1;
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
@@ -87,6 +88,18 @@ public partial class Brain : EnemyBase {
     body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity)));
 
     return true;
+  }
+
+  public override void Hit() {
+    if (!IsAlive) {
+      return;
+    }
+    ref var rec = ref record_.Mut;
+    rec.Shield -= 1;
+    if (rec.Shield > 0) {
+      return;
+    }
+    Destroy();
   }
 
   public override bool _ProcessBack(double integrateTime) {

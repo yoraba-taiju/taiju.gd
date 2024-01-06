@@ -11,13 +11,11 @@ public abstract partial class EnemyBase : ReversibleRigidBody3D {
   protected Sora Sora { get; private set; }
   private bool displayed_;
 
-  protected int Shield;
   public override void _Ready() {
     base._Ready();
     explosionScene_ = ResourceLoader.Load<PackedScene>("res://Objects/Effect/RevesibleExplosion.tscn");
     effectNode_ = GetNode<Node3D>("/root/Root/Field/EnemyEffect");
     Sora = GetNode<Sora>("/root/Root/Field/Witch/Sora");
-    Shield = 1;
     displayed_ = false;
   }
 
@@ -30,15 +28,10 @@ public abstract partial class EnemyBase : ReversibleRigidBody3D {
     return true;
   }
 
-  public void Hit() {
-    if (!IsAlive) {
-      return;
-    }
-    Shield -= 1;
-    if (Shield > 0) {
-      return;
-    }
-    Destroy();
+  public abstract void Hit();
+
+  public override void Destroy() {
+    base.Destroy();
     var explosion = explosionScene_.Instantiate<ReversibleExplosion>();
     explosion.Position = Position;
     effectNode_.AddChild(explosion);

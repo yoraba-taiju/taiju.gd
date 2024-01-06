@@ -33,7 +33,7 @@ public abstract partial class ReversibleAnimationPlayer : AnimationPlayer, IReve
    * Helpers
    */
 
-  public void Destroy() {
+  public virtual void Destroy() {
     comp_.Destroy(this);
   }
 

@@ -26,6 +26,7 @@ public partial class Brain : EnemyBase {
   private int defaultEscapeDirection_;
 
   private record struct Record {
+    public int Shield;
     public State State;
     public Vector3 Position;
     public Vector3 Velocity;
@@ -40,6 +41,7 @@ public partial class Brain : EnemyBase {
     animationTree_.Active = true;
 
     record_ = new Dense<Record>(Clock, new Record {
+      Shield = 4,
       State = State.Seek,
       Position = Position,
       Velocity = new Vector3(-10.0f, 0.0f, 0.0f),
@@ -48,7 +50,6 @@ public partial class Brain : EnemyBase {
 
     defaultEscapeDirection_ = ((int)(rand_.Randi() % 2) * 2) - 1;
     circleBulletServer_ = GetNode<CircleBulletServer>("/root/Root/Field/EnemyBullet/CircleBulletServer");
-    Shield = 4;
     animationTree_.Set(SeekReq, 0f);
   }
 
@@ -102,6 +103,20 @@ public partial class Brain : EnemyBase {
     }
 
     return true;
+  }
+
+  public override void Hit() {
+    if (!IsAlive) {
+      return;
+    }
+
+    ref var rec = ref record_.Mut;
+    rec.Shield -= 1;
+    if (rec.Shield > 0) {
+      return;
+    }
+
+    base.Destroy();
   }
 
   public override bool _ProcessBack(double integrateTime) {
