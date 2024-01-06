@@ -27,6 +27,8 @@ sky_material = SubResource("PhysicalSkyMaterial_aadso")
 background_mode = 2
 sky = SubResource("Sky_7rgmx")
 ambient_light_source = 3
+glow_enabled = true
+glow_blend_mode = 0
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_y7npk"]
 
