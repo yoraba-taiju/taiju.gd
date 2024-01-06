@@ -181,7 +181,7 @@ skeleton = NodePath("../..")
 [node name="Sora" parent="Field/Witch" node_paths=PackedStringArray("bulletServer_", "bulletNode_") instance=ExtResource("4_h45ke")]
 bulletServer_ = NodePath("../../WitchBullet/SoraBulletServer")
 bulletNode_ = NodePath("../../WitchBullet")
-arrowScene_ = ExtResource("7_iut33")
+arrowAsset_ = ExtResource("7_iut33")
 
 [node name="WitchEffect" type="Node3D" parent="Field"]
 

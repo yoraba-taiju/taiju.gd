@@ -11,7 +11,7 @@ namespace Taiju.Objects.Witch;
 public partial class Sora : ReversibleRigidBody3D {
   [Export] private SoraBulletServer bulletServer_;
   [Export] private Node3D bulletNode_;
-  [Export] private PackedScene arrowScene_;
+  [Export] private PackedScene arrowAsset_;
   private const double MoveDelta = 16.0;
   private record struct Record {
     public Vector3 Position;
@@ -94,7 +94,7 @@ public partial class Sora : ReversibleRigidBody3D {
     }
 
     if (Input.IsActionJustPressed("spell")) {
-      var arrow = arrowScene_.Instantiate<Arrow>();
+      var arrow = arrowAsset_.Instantiate<Arrow>();
       arrow.InitialPosition = Position;
       arrow.InitialVelocity = Vector3.Left * 120.0f;
       bulletNode_.AddChild(arrow);
