@@ -30,7 +30,6 @@ public partial class Brain : EnemyBase {
     public State State;
     public Vector3 Position;
     public Vector3 Velocity;
-    public bool Emitted;
   }
 
   public override void _Ready() {
@@ -45,7 +44,6 @@ public partial class Brain : EnemyBase {
       State = State.Seek,
       Position = Position,
       Velocity = new Vector3(-10.0f, 0.0f, 0.0f),
-      Emitted = false,
     });
 
     defaultEscapeDirection_ = ((int)(rand_.Randi() % 2) * 2) - 1;
