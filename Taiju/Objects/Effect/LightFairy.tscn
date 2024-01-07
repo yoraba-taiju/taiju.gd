@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://k2e28k7btn11"]
+
+[ext_resource type="Script" path="res://Objects/Effect/LightFairy.cs" id="1_b3rbq"]
+
+[sub_resource type="Curve" id="Curve_y516o"]
+_data = [Vector2(0, 0.3602), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fbvne"]
+transparency = 1
+vertex_color_use_as_albedo = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h7lbh"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_6kjp7"]
+material = SubResource("StandardMaterial3D_h7lbh")
+radius = 0.4
+height = 0.8
+radial_segments = 8
+rings = 8
+
+[node name="LightFairy" type="Node3D"]
+script = ExtResource("1_b3rbq")
+Length = 12
+tubeCurve_ = SubResource("Curve_y516o")
+material_ = SubResource("StandardMaterial3D_fbvne")
+
+[node name="Sphere" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_6kjp7")

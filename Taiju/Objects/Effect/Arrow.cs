@@ -13,7 +13,7 @@ namespace Taiju.Objects.Effect;
 public partial class Arrow : ReversibleTubeTrail<Arrow.Param> {
   private Node3D? enemies_;
   private Sora? sora_;
-  [Export] private Color arrayColor_ = Godot.Colors.PaleVioletRed;
+  [Export] private Color arrayColor_ = Colors.PaleVioletRed;
   [Export] private bool randomizedHue_ = true;
   [Export] public double TrackPeriod = 0.5;
   [Export] public double StopPeriod = 0.05;
@@ -35,7 +35,6 @@ public partial class Arrow : ReversibleTubeTrail<Arrow.Param> {
   }
 
   public override void _Ready() {
-    base._Ready();
     { // ColorSetting
       arrayColor_.ToHsv(out _, out var saturation, out var value);
       var hue = Random.Shared.NextSingle();
@@ -46,6 +45,7 @@ public partial class Arrow : ReversibleTubeTrail<Arrow.Param> {
         TubeColors[i] = Color.FromHsv(hue, saturation, value, alpha * alpha * alpha);
       }
     }
+    base._Ready();
     enemies_ = GetNode<Node3D>("/root/Root/Field/Enemy")!;
     sora_ = GetNode<Sora>("/root/Root/Field/Witch/Sora")!;
     record_ = new Dense<Record>(Clock, new Record {

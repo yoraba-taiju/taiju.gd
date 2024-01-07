@@ -13,7 +13,7 @@ public abstract partial class ReversibleTubeTrail<TParam> : ReversibleNode3D
   [Export(PropertyHint.Range, "3, 16")] protected int Length = 8;
   [Export] private Curve tubeCurve_;
   [Export(PropertyHint.Range, "3, 24")] protected int TubeLength = 6;
-  protected Color[] TubeColors = new Color[8];
+  protected Color[] TubeColors;
   private global::Godot.Collections.Array meshData_ = new();
   private struct Item {
     public Vector3 Position;
