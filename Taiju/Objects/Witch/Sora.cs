@@ -13,6 +13,7 @@ public partial class Sora : ReversibleRigidBody3D {
   [Export] private Node3D bulletNode_;
   [Export] private PackedScene arrowAsset_;
   private const double MoveDelta = 16.0;
+
   private record struct Record {
     public Vector3 Position;
     public double SpiritRot;
