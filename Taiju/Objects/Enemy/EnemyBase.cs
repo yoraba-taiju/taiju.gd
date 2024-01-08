@@ -28,9 +28,21 @@ public abstract partial class EnemyBase : ReversibleRigidBody3D {
     return true;
   }
 
-  public abstract void Hit();
+  public void Hit() {
+    if (!IsAlive) {
+      return;
+    }
+    ref var shield = ref ShieldMut;
+    shield -= 1;
+    if (shield > 0) {
+      return;
+    }
+    ExplodeAndDestroy();
+  }
 
-  public override void Destroy() {
+  public abstract ref int ShieldMut { get; }
+
+  public void ExplodeAndDestroy() {
     base.Destroy();
     var explosion = explosionScene_.Instantiate<ReversibleExplosion>();
     explosion.Position = Position;

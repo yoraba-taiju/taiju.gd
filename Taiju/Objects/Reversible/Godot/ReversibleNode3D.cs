@@ -32,7 +32,7 @@ public abstract partial class ReversibleNode3D : Node3D, IReversibleNode {
    * Helpers
    */
 
-  public virtual void Destroy() {
+  public void Destroy() {
     comp_.Destroy(this);
   }
 

@@ -31,7 +31,7 @@ public abstract partial class ReversibleRigidBody3D : RigidBody3D, IReversibleNo
    * Helpers
    */
 
-  public virtual void Destroy() {
+  public void Destroy() {
     comp_.Destroy(this);
   }
 

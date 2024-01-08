@@ -103,17 +103,7 @@ public partial class Brain : EnemyBase {
     return true;
   }
 
-  public override void Hit() {
-    if (!IsAlive) {
-      return;
-    }
-    ref var rec = ref record_.Mut;
-    rec.Shield -= 1;
-    if (rec.Shield > 0) {
-      return;
-    }
-    base.Destroy();
-  }
+  public override ref int ShieldMut => ref record_.Mut.Shield;
 
   public override bool _ProcessBack(double integrateTime) {
     return LoadCurrentStatus(integrateTime);
