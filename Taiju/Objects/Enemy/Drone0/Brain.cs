@@ -90,7 +90,7 @@ public partial class Brain : EnemyBase {
     return true;
   }
 
-  public override ref int ShieldMut => ref record_.Mut.Shield;
+  protected override ref int ShieldMut => ref record_.Mut.Shield;
 
   public override bool _ProcessBack(double integrateTime) {
     return LoadCurrentStatus();

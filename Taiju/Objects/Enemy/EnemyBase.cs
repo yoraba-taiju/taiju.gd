@@ -40,7 +40,7 @@ public abstract partial class EnemyBase : ReversibleRigidBody3D {
     ExplodeAndDestroy();
   }
 
-  public abstract ref int ShieldMut { get; }
+  protected abstract ref int ShieldMut { get; }
 
   public void ExplodeAndDestroy() {
     base.Destroy();
