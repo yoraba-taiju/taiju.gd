@@ -137,6 +137,7 @@ public partial class Arrow : ReversibleTubeTrail<Arrow.Param> {
         }
       }
         break;
+
       default:
         throw new ArgumentOutOfRangeException();
     }
