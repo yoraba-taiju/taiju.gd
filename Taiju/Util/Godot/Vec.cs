@@ -59,6 +59,6 @@ public static class Vec {
       r * Mathf.Cos(angle),
       r * Mathf.Sin(angle),
       z
-    );
+    ).Normalized();
   }
 }
