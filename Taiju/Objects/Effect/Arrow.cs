@@ -18,8 +18,8 @@ public partial class Arrow : ReversibleTubeTrail<Arrow.Param> {
   [Export] public double TrackPeriod = 0.5;
   [Export] public double StopPeriod = 0.05;
   [Export] private float maxRotateAngle_ = 30.0f;
-  [Export] public Vector3 InitialPosition { get; set; }
-  [Export] public Vector3 InitialVelocity { get; set; }
+  [Export] public Vector3 InitialPosition;
+  [Export] public Vector3 InitialVelocity;
 
   public struct Param;
   private Dense<Record> record_;
