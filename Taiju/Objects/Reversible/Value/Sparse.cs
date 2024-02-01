@@ -9,10 +9,12 @@ public struct Sparse<T> : IValue<T> where T : struct {
     public T Value;
   }
 
+  // Touch info
   private readonly Clock clock_;
   private uint lastTouchedLeap_;
   private uint lastTouchedTick_;
 
+  // Internal ring buffer
   private readonly Entry[] entries_;
   private uint entriesBeg_;
   private uint entriesLen_;
