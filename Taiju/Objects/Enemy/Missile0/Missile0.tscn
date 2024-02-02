@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://bi8hpvq33rq72"]
+[gd_scene load_steps=5 format=3 uid="uid://bi8hpvq33rq72"]
 
 [ext_resource type="PackedScene" uid="uid://dewid4618mhp" path="res://Objects/Enemy/Missile0/Missile0.blend" id="1_1bljx"]
 [ext_resource type="Script" path="res://Objects/Enemy/Missile0/Brain.cs" id="1_sqlu0"]
+[ext_resource type="PackedScene" uid="uid://581jt6ajonyu" path="res://Objects/Effect/StarDust.tscn" id="2_i8ywv"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_2e4ai"]
 height = 6.0
@@ -19,6 +20,10 @@ gravity_scale = 0.0
 script = ExtResource("1_sqlu0")
 
 [node name="Body" type="Node3D" parent="."]
+
+[node name="StarDust" parent="Body" instance=ExtResource("2_i8ywv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.28362, 0, 0)
+Angle = 0.0
 
 [node name="Model" parent="Body" instance=ExtResource("1_1bljx")]
 transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, -0.316487, 0, 0)
