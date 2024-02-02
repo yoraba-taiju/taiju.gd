@@ -80,14 +80,11 @@ public partial class Brain : EnemyBase {
     }
 
     { // Update godot states
-      var q = Quaternion.FromEuler(new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity))));
-      var v = Quaternion.FromEuler(new Vector3(Mathf.DegToRad((float)(integrateTime * 300.0)), 0, 0));
-      body_.Quaternion = q;
-      shape_.Quaternion = q * shapeRot_;
-      model_.Quaternion = v;
+      SetVelocity(rec.Velocity, integrateTime);
     }
     return true;
   }
+
 
   public override bool _ProcessBack(double integrateTime) {
     return LoadCurrentStatus(integrateTime);
@@ -96,12 +93,16 @@ public partial class Brain : EnemyBase {
   private bool LoadCurrentStatus(double integrateTime) {
     ref readonly var rec = ref record_.Ref;
     Position = rec.Position;
-    var q = Quaternion.FromEuler(new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity))));
+    SetVelocity(rec.Velocity, integrateTime);
+    return true;
+  }
+
+  private void SetVelocity(Vector3 velocity, double integrateTime) {
+    var q = Quaternion.FromEuler(new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-velocity))));
     var v = Quaternion.FromEuler(new Vector3(Mathf.DegToRad((float)(integrateTime * 300.0)), 0, 0));
     body_.Quaternion = q;
     shape_.Quaternion = q * shapeRot_;
     model_.Quaternion = v;
-    return true;
   }
 
   public override void _IntegrateForces(PhysicsDirectBodyState3D state) {
