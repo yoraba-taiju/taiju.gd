@@ -103,15 +103,8 @@ public partial class Brain : EnemyBase {
     return true;
   }
 
-  protected override ref int ShieldMut => ref record_.Mut.Shield;
-
   public override bool _ProcessBack(double integrateTime) {
     return LoadCurrentStatus(integrateTime);
-  }
-
-  public override void _IntegrateForces(PhysicsDirectBodyState3D state) {
-    ref readonly var rec = ref record_.Ref;
-    state.LinearVelocity = rec.Velocity;
   }
 
   private bool LoadCurrentStatus(double integrateTime) {
@@ -121,4 +114,10 @@ public partial class Brain : EnemyBase {
     animationTree_.Set(SeekReq, integrateTime);
     return true;
   }
+
+  public override void _IntegrateForces(PhysicsDirectBodyState3D state) {
+    ref readonly var rec = ref record_.Ref;
+    state.LinearVelocity = rec.Velocity;
+  }
+  protected override ref int ShieldMut => ref record_.Mut.Shield;
 }
