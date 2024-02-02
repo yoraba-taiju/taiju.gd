@@ -6,7 +6,7 @@ namespace Taiju.Objects.Effect;
 public partial class StarDust : ReversibleParticle3D<StarDust.Param> {
   [Export] protected Color BaseColor = Colors.White;
   [Export(PropertyHint.Range, "0,360,")] protected float Angle;
-  [Export(PropertyHint.Range, "0,180,")] protected float Range = 45;
+  [Export(PropertyHint.Range, "0,180,")] protected float Range = 45.0f;
   [Export] protected double DecayRate = 0.9;
 
   public struct Param {
