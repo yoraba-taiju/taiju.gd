@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=26 format=3 uid="uid://ceqv14au1y2ag"]
 
 [ext_resource type="Script" path="res://Objects/Reversible/Godot/ClockNode.cs" id="1_alw2w"]
 [ext_resource type="Material" uid="uid://dxb0h08vdwfrl" path="res://Background/Forest/Forest.tres" id="1_bmh26"]
@@ -12,7 +12,6 @@
 [ext_resource type="PackedScene" uid="uid://c7a61pvvxfaev" path="res://Objects/Effect/Arrow.tscn" id="7_iut33"]
 [ext_resource type="Script" path="res://Objects/BulletServer/Servers/CircleBulletServer.cs" id="8_qfb4r"]
 [ext_resource type="PackedScene" uid="uid://bc66k31538av8" path="res://Objects/Enemy/Drone1/Drone1.tscn" id="9_ge6oq"]
-[ext_resource type="PackedScene" uid="uid://ctl1rlqndp4yk" path="res://Objects/Enemy/Missile0/Missile0.tscn" id="10_5rvdg"]
 [ext_resource type="PackedScene" uid="uid://dj3ie2qhiow02" path="res://Objects/Enemy/Drone0/Drone0.tscn" id="12_3edtj"]
 [ext_resource type="Script" path="res://Scenes/Spawner.cs" id="12_kg1q4"]
 [ext_resource type="Script" path="res://Scenes/Dolly.cs" id="12_mgcli"]
@@ -193,8 +192,6 @@ script = ExtResource("7_hxyi1")
 bulletScene_ = ExtResource("5_kp850")
 
 [node name="Enemy" type="Node3D" parent="Field"]
-
-[node name="Missile0" parent="Field/Enemy" instance=ExtResource("10_5rvdg")]
 
 [node name="EnemyEffect" type="Node3D" parent="Field"]
 
