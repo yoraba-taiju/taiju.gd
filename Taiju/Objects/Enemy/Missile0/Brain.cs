@@ -16,6 +16,7 @@ public partial class Brain : EnemyBase {
   }
 
   private Node3D body_;
+  private Node3D model_;
   private CollisionShape3D shape_;
   private Quaternion shapeRot_;
   private RandomNumberGenerator rand_ = new();
@@ -33,6 +34,7 @@ public partial class Brain : EnemyBase {
   public override void _Ready() {
     base._Ready();
     body_ = GetNode<Node3D>("Body")!;
+    model_ = GetNode<Node3D>("Body/Model");
     shape_ = GetNode<CollisionShape3D>("Shape")!;
     shapeRot_ = shape_.Quaternion;
     InitialPosition = Position;
@@ -78,11 +80,11 @@ public partial class Brain : EnemyBase {
     }
 
     { // Update godot states
-      var q =
-        Quaternion.FromEuler(new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity)))) *
-        Quaternion.FromEuler(new Vector3(Mathf.DegToRad((float)(integrateTime * 300.0)), 0, 0));
+      var q = Quaternion.FromEuler(new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity))));
+      var v = Quaternion.FromEuler(new Vector3(Mathf.DegToRad((float)(integrateTime * 300.0)), 0, 0));
       body_.Quaternion = q;
       shape_.Quaternion = q * shapeRot_;
+      model_.Quaternion = v;
     }
     return true;
   }
@@ -94,11 +96,11 @@ public partial class Brain : EnemyBase {
   private bool LoadCurrentStatus(double integrateTime) {
     ref readonly var rec = ref record_.Ref;
     Position = rec.Position;
-    var q =
-      Quaternion.FromEuler(new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity)))) *
-      Quaternion.FromEuler(new Vector3(Mathf.DegToRad((float)(integrateTime * 300.0)), 0, 0));
+    var q = Quaternion.FromEuler(new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity))));
+    var v = Quaternion.FromEuler(new Vector3(Mathf.DegToRad((float)(integrateTime * 300.0)), 0, 0));
     body_.Quaternion = q;
     shape_.Quaternion = q * shapeRot_;
+    model_.Quaternion = v;
     return true;
   }
 
