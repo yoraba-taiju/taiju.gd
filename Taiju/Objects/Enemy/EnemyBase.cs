@@ -42,7 +42,7 @@ public abstract partial class EnemyBase : ReversibleRigidBody3D {
 
   protected abstract ref int ShieldMut { get; }
 
-  public void ExplodeAndDestroy() {
+  private void ExplodeAndDestroy() {
     Destroy();
     var explosion = explosionScene_.Instantiate<ReversibleExplosion>();
     explosion.Position = Position;
