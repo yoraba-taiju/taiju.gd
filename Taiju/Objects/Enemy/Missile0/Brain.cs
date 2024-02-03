@@ -7,11 +7,13 @@ using Taiju.Util.Godot;
 namespace Taiju.Objects.Enemy.Missile0;
 
 public partial class Brain : EnemyBase {
-  [Export(PropertyHint.Range, "0,360,")] private float maxRotateDegreePerSec_ = 180.0f;
+  [Export(PropertyHint.Range, "0,360,")] private float maxRotateDegreePerSec_ = 60.0f;
   [Export(PropertyHint.Range, "0,10,")] private float appearTime_ = 0.5f;
+  [Export(PropertyHint.Range, "0,100,")] private float speed_ = 20.0f;
   //
   private enum State {
     Appear,
+    Follow,
     Attack,
   }
 
@@ -20,8 +22,8 @@ public partial class Brain : EnemyBase {
   private CollisionShape3D shape_;
   private Quaternion shapeRot_;
   private RandomNumberGenerator rand_ = new();
-  public Vector3 StartPosition = new (15, 7, 0);
-  public Vector3 InitialPosition;
+  private Vector3 appearPosition_;
+  private Vector3 initialPosition_;
   private Dense<Record> record_;
 
   private record struct Record {
@@ -37,12 +39,13 @@ public partial class Brain : EnemyBase {
     model_ = GetNode<Node3D>("Body/Model")!;
     shape_ = GetNode<CollisionShape3D>("Shape")!;
     shapeRot_ = shape_.Quaternion;
-    InitialPosition = Position;
+    initialPosition_ = Position;
+    appearPosition_ = new Vector3(rand_.RandfRange(15, 17), rand_.RandfRange(-10, 10), 0.0f);
     record_ = new Dense<Record>(Clock, new Record {
-      Shield = 30,
+      Shield = 5,
       State = State.Appear,
       Position = Position,
-      Velocity = new Vector3(-10.0f, 0.0f, 0.0f),
+      Velocity = new Vector3(-speed_, 0.0f, 0.0f),
     });
   }
 
@@ -61,19 +64,25 @@ public partial class Brain : EnemyBase {
         if (integrateTime <= appearTime_) {
           var progress = integrateTime / appearTime_;
           progress = Math.Pow(progress, 1.0/1.8);
-          rec.Position = InitialPosition + (StartPosition - InitialPosition) * (float)progress;
+          rec.Position = initialPosition_ + (appearPosition_ - initialPosition_) * (float)progress;
           rec.Velocity = Mover.Follow(delta, rec.Velocity, maxAngle);
           Position = rec.Position;
         } else {
-          rec.State = State.Attack;
-          rec.Position = StartPosition;
-          rec.Velocity = delta.Normalized() * 10.0f;
+          rec.State = State.Follow;
+          rec.Position = appearPosition_;
+          rec.Velocity = delta.Normalized() * speed_;
         }
       }
         break;
-      case State.Attack: {
-        rec.Velocity = Mover.Follow(delta, rec.Velocity, maxAngle);
+      case State.Follow: {
+        if (delta.Length() >= 3.0f) {
+          rec.Velocity = Mover.Follow(delta, rec.Velocity, maxAngle).Normalized() * speed_ * MathF.Exp((float)(integrateTime - appearTime_));
+        } else {
+          rec.State = State.Attack;
+        }
       }
+        break;
+      case State.Attack:
         break;
       default:
         throw new ArgumentOutOfRangeException();
