@@ -47,7 +47,7 @@ public partial class StarDust : ReversibleParticle3D<StarDust.Param> {
     var color = param.Color;
     color.A *= alpha;
     Meshes.SetInstanceColor(i, color);
-    var trans = (CalcTransform2D().Inverse() * param.EmitTransform).Translated(param.Direction * param.Velocity * (float)t);
+    var trans = (CalcTransform2D().Inverse() * param.EmitTransform).TranslatedLocal(param.Direction * param.Velocity * (float)t);
     Meshes.SetInstanceTransform2D(i, trans);
   }
 }
