@@ -34,7 +34,7 @@ public partial class Brain : EnemyBase {
   public override void _Ready() {
     base._Ready();
     body_ = GetNode<Node3D>("Body")!;
-    model_ = GetNode<Node3D>("Body/Model");
+    model_ = GetNode<Node3D>("Body/Model")!;
     shape_ = GetNode<CollisionShape3D>("Shape")!;
     shapeRot_ = shape_.Quaternion;
     InitialPosition = Position;
