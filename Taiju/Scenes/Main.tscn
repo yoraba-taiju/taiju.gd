@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=26 format=3 uid="uid://ceqv14au1y2ag"]
 
 [ext_resource type="Script" path="res://Objects/Reversible/Godot/ClockNode.cs" id="1_alw2w"]
 [ext_resource type="Material" uid="uid://dxb0h08vdwfrl" path="res://Background/Forest/Forest.tres" id="1_bmh26"]
@@ -9,7 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://dulu3o8yh1dam" path="res://Objects/Witch/SoraBullet.tscn" id="5_kp850"]
 [ext_resource type="Texture2D" uid="uid://byt2kh2w5jhox" path="res://Objects/Effect/textures/red_bullet.png" id="6_bwfd2"]
 [ext_resource type="Script" path="res://Objects/Witch/SoraBulletServer.cs" id="7_hxyi1"]
-[ext_resource type="PackedScene" uid="uid://c7a61pvvxfaev" path="res://Objects/Effect/Arrow.tscn" id="7_iut33"]
 [ext_resource type="Script" path="res://Objects/BulletServer/Servers/CircleBulletServer.cs" id="8_qfb4r"]
 [ext_resource type="PackedScene" uid="uid://bc66k31538av8" path="res://Objects/Enemy/Drone1/Drone1.tscn" id="9_ge6oq"]
 [ext_resource type="PackedScene" uid="uid://dj3ie2qhiow02" path="res://Objects/Enemy/Drone0/Drone0.tscn" id="12_3edtj"]
@@ -241,10 +240,7 @@ skeleton = NodePath("../..")
 
 [node name="Witch" type="Node3D" parent="Field"]
 
-[node name="Sora" parent="Field/Witch" node_paths=PackedStringArray("bulletServer_", "bulletNode_") instance=ExtResource("4_h45ke")]
-bulletServer_ = NodePath("../../WitchBullet/SoraBulletServer")
-bulletNode_ = NodePath("../../WitchBullet")
-arrowAsset_ = ExtResource("7_iut33")
+[node name="Sora" parent="Field/Witch" instance=ExtResource("4_h45ke")]
 
 [node name="WitchEffect" type="Node3D" parent="Field"]
 

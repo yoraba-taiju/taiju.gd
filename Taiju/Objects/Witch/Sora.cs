@@ -9,9 +9,9 @@ using Vector3 = Godot.Vector3;
 namespace Taiju.Objects.Witch;
 
 public partial class Sora : ReversibleRigidBody3D {
-  [Export] private SoraBulletServer bulletServer_;
-  [Export] private Node3D bulletNode_;
-  [Export] private PackedScene arrowAsset_;
+  private SoraBulletServer bulletServer_;
+  private Node3D bulletNode_;
+  private PackedScene arrowAsset_;
   private const double MoveDelta = 16.0;
 
   private record struct Record {
@@ -26,7 +26,10 @@ public partial class Sora : ReversibleRigidBody3D {
 
   public override void _Ready() {
     base._Ready();
-    record_ = new Dense<Record>(Clock, new Record {
+    bulletServer_ = GetNode<SoraBulletServer>("/root/Root/Field/WitchBullet/SoraBulletServer")!;
+    bulletNode_ = GetNode<Node3D>("/root/Root/Field/WitchBullet");
+    arrowAsset_ = ResourceLoader.Load<PackedScene>("res://Objects/Effect/Arrow.tscn")!;
+      record_ = new Dense<Record>(Clock, new Record {
       Position = Position,
       SpiritRot = 0.0,
       AfterFire = 0.0,

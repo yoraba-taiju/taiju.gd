@@ -4,7 +4,13 @@ using Taiju.Objects.Reversible.Godot;
 namespace Taiju.Objects.Witch; 
 
 public partial class SoraBulletServer : ReversibleNode3D {
-  [Export] private PackedScene bulletScene_;
+  private PackedScene bulletScene_;
+
+  public override void _Ready() {
+    base._Ready();
+    bulletScene_ = ResourceLoader.Load<PackedScene>("res://Objects/Witch/SoraBullet.tscn")!;
+  }
+
   public override bool _ProcessForward(double integrateTime, double dt) {
     return false;
   }
