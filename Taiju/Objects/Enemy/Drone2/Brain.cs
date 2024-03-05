@@ -40,7 +40,7 @@ public partial class Brain : EnemyBase {
     base._Ready();
     body_ = GetNode<Node3D>("Body");
     record_ = new Dense<Record>(Clock, new Record {
-      Shield = 4,
+      Shield = 30,
       State = State.Seek,
       Position = Position,
       Velocity = new Vector3(-10.0f, 0.0f, 0.0f),
