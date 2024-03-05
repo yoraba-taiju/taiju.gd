@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://ivrfqydpshnh"]
+
+[ext_resource type="Script" path="res://Objects/Enemy/Drone2/Brain.cs" id="1_2abfm"]
+[ext_resource type="PackedScene" uid="uid://dx51j6p0uf1cd" path="res://Objects/Enemy/Drone2/Drone2.blend" id="2_kx6q0"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_fppdd"]
+radius = 1.0
+
+[node name="Drone2" type="RigidBody3D"]
+collision_layer = 16
+collision_mask = 6
+mass = 100.0
+gravity_scale = 0.0
+script = ExtResource("1_2abfm")
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_fppdd")
+
+[node name="Body" type="Node3D" parent="."]
+
+[node name="Drone2" parent="Body" instance=ExtResource("2_kx6q0")]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 0)
