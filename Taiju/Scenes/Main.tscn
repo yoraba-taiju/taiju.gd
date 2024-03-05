@@ -255,18 +255,18 @@ script = ExtResource("7_hxyi1")
 [node name="Enemy" type="Node3D" parent="Field"]
 
 [node name="Drone2" type="RigidBody3D" parent="Field/Enemy"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.43062, 2.57623, -0.44449)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.8162, 2.57623, -0.44449)
 mass = 100.0
 gravity_scale = 0.0
 script = ExtResource("8_avsru")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Field/Enemy/Drone2"]
+[node name="Shape" type="CollisionShape3D" parent="Field/Enemy/Drone2"]
 shape = SubResource("SphereShape3D_fppdd")
 
-[node name="Model" type="Node3D" parent="Field/Enemy/Drone2"]
+[node name="Body" type="Node3D" parent="Field/Enemy/Drone2"]
 
-[node name="Drone2" parent="Field/Enemy/Drone2/Model" instance=ExtResource("9_pwo81")]
-transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Drone2" parent="Field/Enemy/Drone2/Body" instance=ExtResource("9_pwo81")]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 1.69274, 8.40062, 0)
 
 [node name="EnemyEffect" type="Node3D" parent="Field"]
 
@@ -274,9 +274,7 @@ transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 
 
 [node name="CircleBulletServer" type="Node3D" parent="Field/EnemyBullet"]
 script = ExtResource("8_qfb4r")
-hitRadius_ = null
 Mesh = SubResource("PlaneMesh_hhw22")
-bulletCount_ = null
 
 [node name="Dolly" type="AnimationPlayer" parent="."]
 deterministic = true

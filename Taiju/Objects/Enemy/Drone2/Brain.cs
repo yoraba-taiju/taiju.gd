@@ -49,6 +49,7 @@ public partial class Brain : EnemyBase {
     circleBulletServer_ = GetNode<CircleBulletServer>("/root/Root/Field/EnemyBullet/CircleBulletServer");
   }
 
+  
   public override bool _ProcessForward(double integrateTime, double dt) {
     base._ProcessForward(integrateTime, dt);
     ref var rec = ref record_.Mut;
