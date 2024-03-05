@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=28 format=3 uid="uid://ceqv14au1y2ag"]
 
 [ext_resource type="Script" path="res://Objects/Reversible/Godot/ClockNode.cs" id="1_alw2w"]
 [ext_resource type="Material" uid="uid://dxb0h08vdwfrl" path="res://Background/Forest/Forest.tres" id="1_bmh26"]
@@ -6,11 +6,12 @@
 [ext_resource type="Script" path="res://Util/Godot/Overlay/StretchedSubViewportContainer.cs" id="2_fx8hw"]
 [ext_resource type="Script" path="res://Util/Godot/Overlay/StretchedControl.cs" id="2_gkihw"]
 [ext_resource type="PackedScene" uid="uid://dpaqnt3ddpiub" path="res://Objects/Sora.tscn" id="4_h45ke"]
-[ext_resource type="PackedScene" uid="uid://dulu3o8yh1dam" path="res://Objects/Witch/SoraBullet.tscn" id="5_kp850"]
 [ext_resource type="Texture2D" uid="uid://byt2kh2w5jhox" path="res://Objects/Effect/textures/red_bullet.png" id="6_bwfd2"]
 [ext_resource type="Script" path="res://Objects/Witch/SoraBulletServer.cs" id="7_hxyi1"]
+[ext_resource type="Script" path="res://Objects/Enemy/Drone2/Brain.cs" id="8_avsru"]
 [ext_resource type="Script" path="res://Objects/BulletServer/Servers/CircleBulletServer.cs" id="8_qfb4r"]
 [ext_resource type="PackedScene" uid="uid://bc66k31538av8" path="res://Objects/Enemy/Drone1/Drone1.tscn" id="9_ge6oq"]
+[ext_resource type="PackedScene" uid="uid://dx51j6p0uf1cd" path="res://Objects/Enemy/Drone2/Drone2.blend" id="9_pwo81"]
 [ext_resource type="PackedScene" uid="uid://dj3ie2qhiow02" path="res://Objects/Enemy/Drone0/Drone0.tscn" id="12_3edtj"]
 [ext_resource type="Script" path="res://Scenes/Spawner.cs" id="12_kg1q4"]
 [ext_resource type="Script" path="res://Scenes/Dolly.cs" id="12_mgcli"]
@@ -37,6 +38,8 @@ glow_blend_mode = 0
 [sub_resource type="PlaneMesh" id="PlaneMesh_17g3q"]
 material = ExtResource("1_bmh26")
 size = Vector2(4, 2)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_fppdd"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jlq0k"]
 transparency = 1
@@ -248,9 +251,22 @@ skeleton = NodePath("../..")
 
 [node name="SoraBulletServer" type="Node3D" parent="Field/WitchBullet"]
 script = ExtResource("7_hxyi1")
-bulletScene_ = ExtResource("5_kp850")
 
 [node name="Enemy" type="Node3D" parent="Field"]
+
+[node name="Drone2" type="RigidBody3D" parent="Field/Enemy"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.43062, 2.57623, -0.44449)
+mass = 100.0
+gravity_scale = 0.0
+script = ExtResource("8_avsru")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Field/Enemy/Drone2"]
+shape = SubResource("SphereShape3D_fppdd")
+
+[node name="Model" type="Node3D" parent="Field/Enemy/Drone2"]
+
+[node name="Drone2" parent="Field/Enemy/Drone2/Model" instance=ExtResource("9_pwo81")]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 0)
 
 [node name="EnemyEffect" type="Node3D" parent="Field"]
 
@@ -258,7 +274,9 @@ bulletScene_ = ExtResource("5_kp850")
 
 [node name="CircleBulletServer" type="Node3D" parent="Field/EnemyBullet"]
 script = ExtResource("8_qfb4r")
+hitRadius_ = null
 Mesh = SubResource("PlaneMesh_hhw22")
+bulletCount_ = null
 
 [node name="Dolly" type="AnimationPlayer" parent="."]
 deterministic = true
