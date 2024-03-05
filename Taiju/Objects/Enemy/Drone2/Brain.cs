@@ -8,6 +8,7 @@ namespace Taiju.Objects.Enemy.Drone2;
 // https://code.ledyba.org/yoraba-taiju/taiju.unity/src/branch/magistra/Assets/Scripts/Enemy/Drone/Drone2.cs
 
 public partial class Brain : EnemyBase {
+  [Export(PropertyHint.Range, "0,100,")] private int initialShield_ = 30;
   [Export(PropertyHint.Range, "0,360,")] private float maxRotateDegreePerSec_ = 180.0f;
   [Export(PropertyHint.Range, "0,20,")] private float seekSpeed_ = 7.0f;
   [Export(PropertyHint.Range, "0,20,")] private float escapeSpeed_ = 12.0f;
@@ -40,7 +41,7 @@ public partial class Brain : EnemyBase {
     base._Ready();
     body_ = GetNode<Node3D>("Body");
     record_ = new Dense<Record>(Clock, new Record {
-      Shield = 30,
+      Shield = initialShield_,
       State = State.Seek,
       Position = Position,
       Velocity = new Vector3(-10.0f, 0.0f, 0.0f),
