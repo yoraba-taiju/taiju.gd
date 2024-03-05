@@ -5,6 +5,7 @@ using Taiju.Objects.Reversible.Value;
 using Taiju.Util.Godot;
 
 namespace Taiju.Objects.Enemy.Drone2;
+// https://code.ledyba.org/yoraba-taiju/taiju.unity/src/branch/magistra/Assets/Scripts/Enemy/Drone/Drone2.cs
 
 public partial class Brain : EnemyBase {
   [Export(PropertyHint.Range, "0,360,")] private float maxRotateDegreePerSec_ = 180.0f;
