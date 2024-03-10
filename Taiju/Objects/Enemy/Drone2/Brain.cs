@@ -8,7 +8,7 @@ namespace Taiju.Objects.Enemy.Drone2;
 // https://code.ledyba.org/yoraba-taiju/taiju.unity/src/branch/magistra/Assets/Scripts/Enemy/Drone/Drone2.cs
 
 public partial class Brain : EnemyBase {
-  [Export(PropertyHint.Range, "0,100,")] private int initialShield_ = 30;
+  [Export(PropertyHint.Range, "0,100,1")] private int initialShield_ = 30;
   [Export(PropertyHint.Range, "0,360,")] private float maxRotateDegreePerSec_ = 180.0f;
   [Export(PropertyHint.Range, "0,20,")] private float seekSpeed_ = 7.0f;
   [Export(PropertyHint.Range, "0,20,")] private float escapeSpeed_ = 12.0f;
@@ -33,6 +33,7 @@ public partial class Brain : EnemyBase {
     public State State;
     public Vector3 Position;
     public Vector3 Velocity;
+    public float Rotation;
     public int FireCount;
     public double TimeToFire;
   }
@@ -45,6 +46,7 @@ public partial class Brain : EnemyBase {
       State = State.Seek,
       Position = Position,
       Velocity = new Vector3(-10.0f, 0.0f, 0.0f),
+      Rotation = 0.0f,
       FireCount = fireCount_,
       TimeToFire = timeToFire_,
     });
@@ -60,12 +62,30 @@ public partial class Brain : EnemyBase {
     var currentPosition = rec.Position;
     var soraPosition = Sora.Position;
     var maxAngle = (float)(dt * maxRotateDegreePerSec_);
+    var targetDirection = soraPosition - currentPosition;
+    var targetDistance = targetDirection.Length();
+    var currentRot = rec.Rotation - 180.0f;
+    var currentVelocity = rec.Velocity;
+    var deltaAngle = Vec.DeltaAngle(rec.Rotation - 180.0f, targetDirection);
 
     switch (rec.State) {
       case State.Seek:
+        currentRot += Mathf.Clamp(deltaAngle, -maxAngle, maxAngle);
+        // Set speed
+        var rot = Mathf.DegToRad(currentRot);
+        if (targetDistance > 10.0f) {
+          currentVelocity =
+            new Vector3(Mathf.Cos(rot), Mathf.Sin(rot), 0.0f) *
+            (seekSpeed_ * Mathf.Exp(Mathf.Clamp(targetDistance - 10.0f, 0.0f, 0.5f)));
+        } else {
+          currentVelocity =
+            new Vector3(Mathf.Cos(rot), Mathf.Sin(rot), 0.0f) *
+            currentVelocity.Length() * Mathf.Exp((float)-dt);
+        }
         break;
 
       case State.Fight:
+        currentRot += Mathf.Clamp(deltaAngle, -maxAngle, maxAngle);
         break;
 
       case State.Sleep:
@@ -78,8 +98,13 @@ public partial class Brain : EnemyBase {
         throw new ArgumentOutOfRangeException();
     }
 
+    currentRot += 180.0f;
+    { // Record state
+      rec.Rotation = currentRot;
+      rec.Velocity = currentVelocity;
+    }
     { // Update godot states
-      body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity)));
+      body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(currentRot));
     }
 
     return true;
@@ -89,10 +114,11 @@ public partial class Brain : EnemyBase {
     return LoadCurrentStatus(integrateTime);
   }
 
+
   private bool LoadCurrentStatus(double integrateTime) {
     ref readonly var rec = ref record_.Ref;
     Position = rec.Position;
-    body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity)));
+    body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(rec.Rotation));
     return true;
   }
 
