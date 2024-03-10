@@ -72,14 +72,14 @@ public partial class Brain : EnemyBase {
       case State.Seek:
         currentRot += Mathf.Clamp(deltaAngle, -maxAngle, maxAngle);
         // Set speed
-        var rot = Mathf.DegToRad(currentRot);
+        var rad = Mathf.DegToRad(currentRot);
         if (targetDistance > 10.0f) {
           currentVelocity =
-            new Vector3(Mathf.Cos(rot), Mathf.Sin(rot), 0.0f) *
+            new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0.0f) *
             (seekSpeed_ * Mathf.Exp(Mathf.Clamp(targetDistance - 10.0f, 0.0f, 0.5f)));
         } else {
           currentVelocity =
-            new Vector3(Mathf.Cos(rot), Mathf.Sin(rot), 0.0f) *
+            new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0.0f) *
             currentVelocity.Length() * Mathf.Exp((float)-dt);
         }
         break;
