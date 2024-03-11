@@ -29,6 +29,7 @@ public partial class LightFairy : ReversibleTubeTrail<LightFairy.Param> {
       TubeColors[i] = c;
     }
 
+    // TubeColors should be initialized before this call.
     base._Ready();
 
     var r = Vec.RandomAngle(rng_);
