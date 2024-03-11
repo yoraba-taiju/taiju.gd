@@ -45,12 +45,14 @@ public partial class LightFairy : ReversibleTubeTrail<LightFairy.Param> {
 
   public override bool _ProcessForward(double integrateTime, double dt) {
     base._ProcessForward(integrateTime, dt);
+    var rotateSpeed = Mathf.DegToRad(RotateSpeed);
+    var poleRotateSpeed = Mathf.DegToRad(PoleRotateSpeed);
     switch (integrateTime) {
       case <= 0.5: {
         var t = (float)integrateTime;
         var pos = CenterPosition + (rod_ * (Radius * t / 0.5f))
-          .Rotated(Pole, Mathf.DegToRad(RotateSpeed * (float)integrateTime))
-          .Rotated(poleRotatePole_, Mathf.DegToRad(PoleRotateSpeed * (float)integrateTime));
+          .Rotated(Pole, rotateSpeed * (float)integrateTime)
+          .Rotated(poleRotatePole_, poleRotateSpeed * (float)integrateTime);
         sphereInstance_.Position = pos;
         Push(pos, new Param());
       }
@@ -59,8 +61,8 @@ public partial class LightFairy : ReversibleTubeTrail<LightFairy.Param> {
       case <= 3.5: {
         var t = (float)(integrateTime - 0.5);
         var pos = CenterPosition + (rod_ * Radius)
-          .Rotated(Pole, Mathf.DegToRad(RotateSpeed * (float)integrateTime))
-          .Rotated(poleRotatePole_, Mathf.DegToRad(PoleRotateSpeed * (float)integrateTime));
+          .Rotated(Pole, rotateSpeed * (float)integrateTime)
+          .Rotated(poleRotatePole_, poleRotateSpeed * (float)integrateTime);
         sphereInstance_.Position = pos;
         Push(pos, new Param());
       }
@@ -69,8 +71,8 @@ public partial class LightFairy : ReversibleTubeTrail<LightFairy.Param> {
       case <= 4.0: {
         var t = (float)(integrateTime - 3.5);
         var pos = CenterPosition + (rod_ * (Radius * (0.5f - t) / 0.5f))
-          .Rotated(Pole, Mathf.DegToRad(RotateSpeed * (float)integrateTime))
-          .Rotated(poleRotatePole_, Mathf.DegToRad(PoleRotateSpeed * (float)integrateTime));
+          .Rotated(Pole, rotateSpeed * (float)integrateTime)
+          .Rotated(poleRotatePole_, poleRotateSpeed * (float)integrateTime);
         sphereInstance_.Position = pos;
         Push(pos, new Param());
       }
