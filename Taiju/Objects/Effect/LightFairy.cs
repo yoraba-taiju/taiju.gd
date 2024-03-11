@@ -1,7 +1,5 @@
-﻿using System;
-using Godot;
+﻿using Godot;
 using Taiju.Objects.Reversible.Godot;
-using Taiju.Objects.Reversible.Value;
 using Taiju.Util.Godot;
 
 namespace Taiju.Objects.Effect;

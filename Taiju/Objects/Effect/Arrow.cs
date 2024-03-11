@@ -1,6 +1,5 @@
 ﻿#nullable enable
 using System;
-using System.Linq;
 using Godot;
 using Taiju.Objects.Enemy;
 using Taiju.Objects.Reversible.Godot;

@@ -4,7 +4,6 @@ using Taiju.Objects.Effect;
 using Taiju.Objects.Enemy;
 using Taiju.Objects.Reversible.Godot;
 using Taiju.Objects.Reversible.Value;
-using Vector3 = Godot.Vector3;
 
 namespace Taiju.Objects.Witch;
 

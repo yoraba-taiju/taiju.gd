@@ -1,5 +1,4 @@
-﻿using System;
-using Godot;
+﻿using Godot;
 using Taiju.Objects.Reversible.Value;
 
 namespace Taiju.Objects.Reversible.Godot;
