@@ -16,8 +16,8 @@ vertex_color_use_as_albedo = true
 material = SubResource("StandardMaterial3D_h7lbh")
 radius = 0.4
 height = 0.8
-radial_segments = 8
-rings = 8
+radial_segments = 10
+rings = 10
 
 [node name="LightFairy" type="Node3D"]
 script = ExtResource("1_b3rbq")
