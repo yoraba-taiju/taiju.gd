@@ -102,16 +102,18 @@ public partial class Brain : EnemyBase {
       }
         break;
 
-      case State.Sleep:
+      case State.Sleep: {
         // Do nothing
+      }
         break;
 
-      case State.Escape:
+      case State.Escape: {
         if (currentVelocity.Length() < escapeSpeed_) {
           currentVelocity = new Vector3(Mathf.Cos(currentRot), Mathf.Sin(currentRot), 0f) * escapeSpeed_;
         } else {
           currentVelocity *= Mathf.Exp((float)dt);
         }
+      }
         break;
 
       default:
