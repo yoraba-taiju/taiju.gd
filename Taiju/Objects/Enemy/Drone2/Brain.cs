@@ -3,6 +3,7 @@ using Godot;
 using Taiju.Objects.BulletServer.Servers;
 using Taiju.Objects.Reversible.Value;
 using Taiju.Util.Godot;
+using Vector3 = Godot.Vector3;
 
 namespace Taiju.Objects.Enemy.Drone2;
 // https://code.ledyba.org/yoraba-taiju/taiju.unity/src/branch/magistra/Assets/Scripts/Enemy/Drone/Drone2.cs
@@ -36,6 +37,7 @@ public partial class Brain : EnemyBase {
     public float Rotation;
     public int FireCount;
     public double TimeToFire;
+    public double TimeToNextAction;
   }
 
   public override void _Ready() {
@@ -49,6 +51,7 @@ public partial class Brain : EnemyBase {
       Rotation = 0.0f,
       FireCount = fireCount_,
       TimeToFire = timeToFire_,
+      TimeToNextAction = 0.0f,
     });
     circleBulletServer_ = GetNode<CircleBulletServer>("/root/Root/Field/EnemyBullet/CircleBulletServer");
   }
@@ -90,8 +93,9 @@ public partial class Brain : EnemyBase {
         ref var timeToFire = ref rec.TimeToFire;
         timeToFire -= dt;
         if (timeToFire < 0.0) {
-          var vel = new Vector2(Mathf.Cos(currentRot), Mathf.Sin(currentRot)) * 15.0f;
-          circleBulletServer_.Spawn(currentPosition, vel);
+          var velocity3d = new Vector3(Mathf.Cos(currentRot), Mathf.Sin(currentRot), 0f);
+          var velocity = new Vector2(velocity3d.X, velocity3d.Y) * 15.0f;
+          circleBulletServer_.Spawn(currentPosition + velocity3d * 1.2f, velocity);
           // Next
           timeToFire += timeToFire_;
         }
@@ -103,10 +107,24 @@ public partial class Brain : EnemyBase {
         break;
 
       case State.Escape:
+        if (currentVelocity.Length() < escapeSpeed_) {
+          currentVelocity = new Vector3(Mathf.Cos(currentRot), Mathf.Sin(currentRot), 0f) * escapeSpeed_;
+        } else {
+          currentVelocity *= Mathf.Exp((float)dt);
+        }
         break;
 
       default:
         throw new ArgumentOutOfRangeException();
+    }
+
+    if (rec.FireCount < 0) {
+      rec.State = State.Escape;
+    } else if (targetDistance >= 10.0f || Mathf.Abs(deltaAngle) >= 1.0f / 180.0f) {
+      rec.State = State.Seek;
+    } else if (rec.State != State.Fight) {
+      rec.FireCount -= 1;
+      rec.State = State.Fight;
     }
 
     currentRot += Mathf.Pi;
