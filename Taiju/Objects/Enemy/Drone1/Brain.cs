@@ -9,6 +9,7 @@ namespace Taiju.Objects.Enemy.Drone1;
 public partial class Brain : EnemyBase {
   [Export(PropertyHint.Range, "0,360,")] private float maxRotateDegreePerSec_ = 180.0f;
   [Export(PropertyHint.Range, "0,20,")] private float returnDistance_ = 12.0f;
+  [Export(PropertyHint.Range, "0,30,")] private float bulletSpeed_ = 15.0f;
   private const string SeekReq = "parameters/Seek/seek_request";
   private CircleBulletServer circleBulletServer_;
 
@@ -68,7 +69,7 @@ public partial class Brain : EnemyBase {
           rec.Velocity = Mover.Follow(delta, rec.Velocity, maxAngle);
         } else {
           rec.State = State.Return;
-          circleBulletServer_.SpawnToSora(rec.Position, 15.0f);
+          circleBulletServer_.SpawnToSora(rec.Position, bulletSpeed_);
         }
       }
         break;

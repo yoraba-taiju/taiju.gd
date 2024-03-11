@@ -15,6 +15,7 @@ public partial class Brain : EnemyBase {
   [Export(PropertyHint.Range, "0,20,")] private float escapeSpeed_ = 12.0f;
   [Export(PropertyHint.Range, "0,20")] private float timeToFire_ = 0.3f;
   [Export(PropertyHint.Range, "0,20,1")] private int fireCount_ = 5;
+  [Export(PropertyHint.Range, "0,30,")] private float bulletSpeed_ = 15.0f;
   private CircleBulletServer circleBulletServer_;
 
   //
@@ -37,7 +38,7 @@ public partial class Brain : EnemyBase {
     public float Rotation;
     public int FireCount;
     public double TimeToFire;
-    public double TimeToNextAction;
+    public double NextTimeToAction;
   }
 
   public override void _Ready() {
@@ -51,7 +52,7 @@ public partial class Brain : EnemyBase {
       Rotation = 0.0f,
       FireCount = fireCount_,
       TimeToFire = timeToFire_,
-      TimeToNextAction = 0.0f,
+      NextTimeToAction = 0.0f,
     });
     circleBulletServer_ = GetNode<CircleBulletServer>("/root/Root/Field/EnemyBullet/CircleBulletServer");
   }
@@ -94,7 +95,7 @@ public partial class Brain : EnemyBase {
         timeToFire -= dt;
         if (timeToFire < 0.0) {
           var velocity3d = new Vector3(Mathf.Cos(currentRot), Mathf.Sin(currentRot), 0f);
-          var velocity = new Vector2(velocity3d.X, velocity3d.Y) * 15.0f;
+          var velocity = new Vector2(velocity3d.X, velocity3d.Y) * bulletSpeed_;
           circleBulletServer_.Spawn(currentPosition + velocity3d * 1.2f, velocity);
           // Next
           timeToFire += timeToFire_;
@@ -119,6 +120,8 @@ public partial class Brain : EnemyBase {
       default:
         throw new ArgumentOutOfRangeException();
     }
+
+    
 
     if (rec.FireCount < 0) {
       rec.State = State.Escape;
