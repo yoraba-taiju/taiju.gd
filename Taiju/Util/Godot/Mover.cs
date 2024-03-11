@@ -12,7 +12,6 @@ public static class Mover {
     var direct = targetDirection.Normalized() * speed;
     var dx = currentVelocity.X;
     var dy = currentVelocity.Y;
-    maxAngle = Mathf.DegToRad(maxAngle);
     var c = Mathf.Cos(maxAngle);
     var s = Mathf.Sin(maxAngle);
     var limited1 = new Vector3(dx * c - s * dy, dx * s + dy * c, 0.0f);

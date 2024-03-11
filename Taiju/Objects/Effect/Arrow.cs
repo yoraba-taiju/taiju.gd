@@ -113,7 +113,7 @@ public partial class Arrow : ReversibleTubeTrail<Arrow.Param> {
         }
         if (leftPeriod < TrackPeriod / 3.0f) {
           var direction = target.Position - rec.Position;
-          Mover.Follow(direction, rec.Velocity, (float)(maxRotateAngle_ * dt));
+          Mover.Follow(direction, rec.Velocity, (float)Mathf.DegToRad(maxRotateAngle_ * dt));
           rec.Position += rec.Velocity * (float)dt;
           Push(rec.Position, new Param());
           break;

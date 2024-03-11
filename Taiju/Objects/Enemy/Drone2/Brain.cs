@@ -61,25 +61,24 @@ public partial class Brain : EnemyBase {
     }
     var currentPosition = rec.Position;
     var soraPosition = Sora.Position;
-    var maxAngle = (float)(dt * maxRotateDegreePerSec_);
+    var maxAngle = (float)(dt * Mathf.DegToRad(maxRotateDegreePerSec_));
     var targetDirection = soraPosition - currentPosition;
     var targetDistance = targetDirection.Length();
-    var currentRot = rec.Rotation - 180.0f;
+    var currentRot = rec.Rotation - Mathf.Pi;
     var currentVelocity = rec.Velocity;
-    var deltaAngle = Vec.DeltaAngle(rec.Rotation - 180.0f, targetDirection);
+    var deltaAngle = Vec.DeltaAngle(rec.Rotation - Mathf.Pi, targetDirection);
 
     switch (rec.State) {
       case State.Seek: {
         currentRot += Mathf.Clamp(deltaAngle, -maxAngle, maxAngle);
         // Set speed
-        var rad = Mathf.DegToRad(currentRot);
         if (targetDistance > 10.0f) {
           currentVelocity =
-            new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0.0f) *
+            new Vector3(Mathf.Cos(currentRot), Mathf.Sin(currentRot), 0.0f) *
             (seekSpeed_ * Mathf.Exp(Mathf.Clamp(targetDistance - 10.0f, 0.0f, 0.5f)));
         } else {
           currentVelocity =
-            new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0.0f) *
+            new Vector3(Mathf.Cos(currentRot), Mathf.Sin(currentRot), 0.0f) *
             currentVelocity.Length() * Mathf.Exp((float)-dt);
         }
       }
@@ -91,8 +90,7 @@ public partial class Brain : EnemyBase {
         ref var timeToFire = ref rec.TimeToFire;
         timeToFire -= dt;
         if (timeToFire < 0.0) {
-          var rad = Mathf.DegToRad(currentRot);
-          var vel = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)) * 15.0f;
+          var vel = new Vector2(Mathf.Cos(currentRot), Mathf.Sin(currentRot)) * 15.0f;
           circleBulletServer_.Spawn(currentPosition, vel);
           // Next
           timeToFire += timeToFire_;
@@ -111,13 +109,13 @@ public partial class Brain : EnemyBase {
         throw new ArgumentOutOfRangeException();
     }
 
-    currentRot += 180.0f;
+    currentRot += Mathf.Pi;
     { // Record state
       rec.Rotation = currentRot;
       rec.Velocity = currentVelocity;
     }
     { // Update godot states
-      body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(currentRot));
+      body_.Rotation = new Vector3(0, 0, currentRot);
     }
 
     return true;
@@ -131,7 +129,7 @@ public partial class Brain : EnemyBase {
   private bool LoadCurrentStatus(double integrateTime) {
     ref readonly var rec = ref record_.Ref;
     Position = rec.Position;
-    body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(rec.Rotation));
+    body_.Rotation = new Vector3(0, 0, rec.Rotation);
     return true;
   }
 

@@ -58,7 +58,7 @@ public partial class Brain : EnemyBase {
     }
     var delta = Sora.Position - Position;
     delta.Z = 0;
-    var maxAngle = (float)(dt * maxRotateDegreePerSec_);
+    var maxAngle = (float)(dt * Mathf.DegToRad(maxRotateDegreePerSec_));
     switch (rec.State) {
       case State.Appear: {
         if (integrateTime <= appearTime_) {
@@ -107,8 +107,8 @@ public partial class Brain : EnemyBase {
   }
 
   private void SetVelocity(Vector3 velocity, double integrateTime) {
-    var q = Quaternion.FromEuler(new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-velocity))));
-    var v = Quaternion.FromEuler(new Vector3(Mathf.DegToRad((float)(integrateTime * 300.0)), 0, 0));
+    var q = Quaternion.FromEuler(new Vector3(0, 0, Vec.Atan2(-velocity)));
+    var v = Quaternion.FromEuler(new Vector3((float)(integrateTime * Mathf.Pi * 1.7f), 0, 0));
     body_.Quaternion = q;
     shape_.Quaternion = q * shapeRot_;
     model_.Quaternion = v;

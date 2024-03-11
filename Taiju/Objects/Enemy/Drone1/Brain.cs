@@ -59,7 +59,7 @@ public partial class Brain : EnemyBase {
     }
     var currentPosition = rec.Position;
     var soraPosition = Sora.Position;
-    var maxAngle = (float)(dt * maxRotateDegreePerSec_);
+    var maxAngle = (float)(dt * Mathf.DegToRad(maxRotateDegreePerSec_));
 
     switch (rec.State) {
       case State.Seek: {
@@ -97,7 +97,7 @@ public partial class Brain : EnemyBase {
     }
 
     { // Update godot states
-      body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity)));
+      body_.Rotation = new Vector3(0, 0, Vec.Atan2(-rec.Velocity));
     }
 
     return true;
@@ -110,7 +110,7 @@ public partial class Brain : EnemyBase {
   private bool LoadCurrentStatus(double integrateTime) {
     ref readonly var rec = ref record_.Ref;
     Position = rec.Position;
-    body_.Rotation = new Vector3(0, 0, Mathf.DegToRad(Vec.Atan2(-rec.Velocity)));
+    body_.Rotation = new Vector3(0, 0, Vec.Atan2(-rec.Velocity));
     animationTree_.Set(SeekReq, integrateTime);
     return true;
   }
