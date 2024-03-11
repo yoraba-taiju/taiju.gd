@@ -9,4 +9,9 @@ public abstract partial class LinearBulletServer: BulletServer<Linear> {
     var bullet = new Linear(new Vector2(spawnAt.X, spawnAt.Y), new Vector2(velocity.X, velocity.Y));
     Spawn(bullet);
   }
+
+  public void Spawn(Vector3 spawnAt, Vector2 velocity) {
+    var bullet = new Linear(new Vector2(spawnAt.X, spawnAt.Y), velocity);
+    Spawn(bullet);
+  }
 }

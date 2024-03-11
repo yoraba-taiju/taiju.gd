@@ -124,7 +124,7 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
 
       var attitude = bullet.Param.AttitudeAt(integrateTime - bullet.SpawnAt);
       var pos = attitude.Position;
-      var angle = attitude.Angle;
+      var angle = attitude.InitialVelocity;
       var resp = OnBulletMove(attitude);
 
       if (resp == Response.HitToSora) {

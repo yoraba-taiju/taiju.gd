@@ -69,7 +69,7 @@ public partial class Brain : EnemyBase {
     var deltaAngle = Vec.DeltaAngle(rec.Rotation - 180.0f, targetDirection);
 
     switch (rec.State) {
-      case State.Seek:
+      case State.Seek: {
         currentRot += Mathf.Clamp(deltaAngle, -maxAngle, maxAngle);
         // Set speed
         var rad = Mathf.DegToRad(currentRot);
@@ -82,13 +82,26 @@ public partial class Brain : EnemyBase {
             new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0.0f) *
             currentVelocity.Length() * Mathf.Exp((float)-dt);
         }
+      }
         break;
 
-      case State.Fight:
+      case State.Fight: {
         currentRot += Mathf.Clamp(deltaAngle, -maxAngle, maxAngle);
+        currentVelocity *= Mathf.Exp((float)-dt);
+        ref var timeToFire = ref rec.TimeToFire;
+        timeToFire -= dt;
+        if (timeToFire < 0.0) {
+          var rad = Mathf.DegToRad(currentRot);
+          var vel = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)) * 15.0f;
+          circleBulletServer_.Spawn(currentPosition, vel);
+          // Next
+          timeToFire += timeToFire_;
+        }
+      }
         break;
 
       case State.Sleep:
+        // Do nothing
         break;
 
       case State.Escape:
