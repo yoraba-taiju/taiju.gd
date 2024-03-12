@@ -12,7 +12,7 @@ public partial class Brain : EnemyBase {
   [Export(PropertyHint.Range, "0,100,1")] private int initialShield_ = 30;
   [Export(PropertyHint.Range, "0,360,")] private float maxRotateDegreePerSec_ = 180.0f;
   [Export(PropertyHint.Range, "0,20,")] private float seekSpeed_ = 7.0f;
-  [Export(PropertyHint.Range, "0,20,")] private float escapeSpeed_ = 20.0f;
+  [Export(PropertyHint.Range, "0,40,")] private float escapeSpeed_ = 23.0f;
   [Export(PropertyHint.Range, "0,20")] private float timeToFire_ = 0.3f;
   [Export(PropertyHint.Range, "0,20,1")] private int fireCount_ = 5;
   [Export(PropertyHint.Range, "0,30,")] private float bulletSpeed_ = 15.0f;
@@ -138,18 +138,18 @@ public partial class Brain : EnemyBase {
 
         case State.Fight:
           rec.FireCount--;
+          state = State.Sleep;
+          nextTimeToAction += 1.0;
+          break;
+
+        case State.Sleep:
           if (rec.FireCount >= 0) {
-            state = State.Sleep;
+            state = State.Seek;
             nextTimeToAction += 1.0;
           } else {
             state = State.Escape;
             nextTimeToAction = double.PositiveInfinity;
           }
-          break;
-
-        case State.Sleep:
-          state = State.Seek;
-          nextTimeToAction += 1.0;
           break;
 
         case State.Escape:
