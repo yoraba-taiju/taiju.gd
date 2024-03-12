@@ -12,7 +12,7 @@ public partial class Brain : EnemyBase {
   [Export(PropertyHint.Range, "0,100,1")] private int initialShield_ = 30;
   [Export(PropertyHint.Range, "0,360,")] private float maxRotateDegreePerSec_ = 180.0f;
   [Export(PropertyHint.Range, "0,20,")] private float seekSpeed_ = 7.0f;
-  [Export(PropertyHint.Range, "0,20,")] private float escapeSpeed_ = 12.0f;
+  [Export(PropertyHint.Range, "0,20,")] private float escapeSpeed_ = 20.0f;
   [Export(PropertyHint.Range, "0,20")] private float timeToFire_ = 0.3f;
   [Export(PropertyHint.Range, "0,20,1")] private int fireCount_ = 5;
   [Export(PropertyHint.Range, "0,30,")] private float bulletSpeed_ = 15.0f;
@@ -71,8 +71,10 @@ public partial class Brain : EnemyBase {
     var currentRot = rec.Rotation - Mathf.Pi;
     var currentVelocity = rec.Velocity;
     var deltaAngle = Vec.DeltaAngle(rec.Rotation - Mathf.Pi, targetDirection);
+    ref var nextTimeToAction = ref rec.NextTimeToAction;
+    ref var state = ref rec.State;
 
-    switch (rec.State) {
+    switch (state) {
       case State.Seek: {
         currentRot += Mathf.Clamp(deltaAngle, -maxAngle, maxAngle);
         // Set speed
@@ -121,15 +123,41 @@ public partial class Brain : EnemyBase {
         throw new ArgumentOutOfRangeException();
     }
 
-    
 
-    if (rec.FireCount < 0) {
-      rec.State = State.Escape;
-    } else if (targetDistance >= 10.0f || Mathf.Abs(deltaAngle) >= 1.0f / 180.0f) {
-      rec.State = State.Seek;
-    } else if (rec.State != State.Fight) {
-      rec.FireCount -= 1;
-      rec.State = State.Fight;
+    if (nextTimeToAction < integrateTime) {
+      switch (state) {
+        case State.Seek:
+          if (targetDistance >= 10.0f || Mathf.Abs(deltaAngle) >= Mathf.Pi / 60.0f) {
+            state = State.Seek;
+            nextTimeToAction += 1.0;
+          } else {
+            state = State.Fight;
+            nextTimeToAction += 1.0;
+          }
+          break;
+
+        case State.Fight:
+          rec.FireCount--;
+          if (rec.FireCount >= 0) {
+            state = State.Sleep;
+            nextTimeToAction += 1.0;
+          } else {
+            state = State.Escape;
+            nextTimeToAction = double.PositiveInfinity;
+          }
+          break;
+
+        case State.Sleep:
+          state = State.Seek;
+          nextTimeToAction += 1.0;
+          break;
+
+        case State.Escape:
+          break;
+
+        default:
+          throw new ArgumentOutOfRangeException();
+      }
     }
 
     currentRot += Mathf.Pi;
