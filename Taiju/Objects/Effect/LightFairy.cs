@@ -7,7 +7,7 @@ namespace Taiju.Objects.Effect;
 public partial class LightFairy : ReversibleTubeTrail<LightFairy.Param> {
   [Export] public Color Color = Colors.PaleVioletRed;
   // Rotation
-  [Export] public Vector3 CenterPosition = Vector3.Zero;
+  [Export] public Vector3 CenterPosition;
   [Export] public Vector3 Pole = Vector3.Up;
   private Vector3 poleRotatePole_;
   private Vector3 rod_ = Vector3.Right;
@@ -38,6 +38,7 @@ public partial class LightFairy : ReversibleTubeTrail<LightFairy.Param> {
     poleRotatePole_ = Pole.Cross(rod_).Normalized();
 
     sphereInstance_ = GetNode<MeshInstance3D>("Sphere")!;
+    sphereInstance_.Position = CenterPosition;
     sphereMaterial_ = (StandardMaterial3D)sphereInstance_.Mesh.SurfaceGetMaterial(0)!;
     sphereMaterial_.AlbedoColor = Color * 1.5f;
   }
