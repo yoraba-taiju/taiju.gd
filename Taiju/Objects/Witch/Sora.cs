@@ -28,7 +28,7 @@ public partial class Sora : ReversibleRigidBody3D {
     bulletServer_ = GetNode<SoraBulletServer>("/root/Root/Field/WitchBullet/SoraBulletServer")!;
     bulletNode_ = GetNode<Node3D>("/root/Root/Field/WitchBullet");
     arrowAsset_ = ResourceLoader.Load<PackedScene>("res://Objects/Effect/Arrow.tscn")!;
-      record_ = new Dense<Record>(Clock, new Record {
+    record_ = new Dense<Record>(Clock, new Record {
       Position = Position,
       SpiritRot = 0.0,
       AfterFire = 0.0,
