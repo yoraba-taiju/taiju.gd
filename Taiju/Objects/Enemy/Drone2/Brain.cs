@@ -139,7 +139,7 @@ public partial class Brain : EnemyBase {
         case State.Fight:
           rec.FireCount--;
           state = State.Sleep;
-          nextTimeToAction += 1.0;
+          nextTimeToAction += 0.5;
           break;
 
         case State.Sleep:
