@@ -85,7 +85,7 @@ public partial class Brain : EnemyBase {
         } else {
           currentVelocity =
             new Vector3(Mathf.Cos(currentRot), Mathf.Sin(currentRot), 0.0f) *
-            currentVelocity.Length() * Mathf.Pow(1.0f/3.0f, (float)dt);
+            currentVelocity.Length() * Mathf.Pow(3.0f, -(float)dt);
         }
       }
         break;
