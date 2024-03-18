@@ -44,7 +44,10 @@ public partial class Arrow : ReversibleTubeTrail<Arrow.Param> {
         TubeColors[i] = Color.FromHsv(hue, saturation, value, alpha * alpha * alpha);
       }
     }
+
+    // TubeColors should be initialized before this call.
     base._Ready();
+
     enemies_ = GetNode<Node3D>("/root/Root/Field/Enemy")!;
     sora_ = GetNode<Sora>("/root/Root/Field/Witch/Sora")!;
     record_ = new Dense<Record>(Clock, new Record {
