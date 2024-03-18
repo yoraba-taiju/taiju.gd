@@ -127,7 +127,7 @@ public partial class Brain : EnemyBase {
     if (nextTimeToAction < integrateTime) {
       switch (state) {
         case State.Seek:
-          if (targetDistance >= 10.0f || Mathf.Abs(deltaAngle) >= Mathf.Pi / 60.0f) {
+          if (targetDistance >= 10.0f || Mathf.Abs(deltaAngle) >= Mathf.Pi / 45.0f) {
             state = State.Seek;
             nextTimeToAction += 1.0;
           } else {
