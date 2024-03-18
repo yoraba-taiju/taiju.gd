@@ -26,9 +26,8 @@ public partial class Sora : ReversibleRigidBody3D {
   public override void _Ready() {
     base._Ready();
     bulletServer_ = GetNode<SoraBulletServer>("/root/Root/Field/WitchBullet/SoraBulletServer")!;
-    bulletNode_ = GetNode<Node3D>("/root/Root/Field/WitchBullet");
-    //arrowAsset_ = ResourceLoader.Load<PackedScene>("res://Objects/Effect/Arrow.tscn")!;
-    arrowAsset_ = ResourceLoader.Load<PackedScene>("res://Objects/Effect/LightFairy.tscn")!;
+    bulletNode_ = GetNode<Node3D>("/root/Root/Field/WitchBullet")!;
+    arrowAsset_ = ResourceLoader.Load<PackedScene>("res://Objects/Effect/Arrow.tscn")!;
     // Initial State
     record_ = new Dense<Record>(Clock, new Record {
       Position = Position,
@@ -99,15 +98,7 @@ public partial class Sora : ReversibleRigidBody3D {
     }
 
     if (Input.IsActionJustPressed("spell")) {
-      /*
-      var arrow = arrowAsset_.Instantiate<Arrow>();
-      arrow.InitialPosition = Position;
-      arrow.InitialVelocity = Vector3.Left * 120.0f;
-      bulletNode_.AddChild(arrow);
-      */
-      var fairy = arrowAsset_.Instantiate<LightFairy>();
-      fairy.CenterPosition = Position;
-      bulletNode_.AddChild(fairy);
+      InvokeArrow();
     }
     
     // Update using current value.
@@ -118,6 +109,13 @@ public partial class Sora : ReversibleRigidBody3D {
 
   public override bool _ProcessBack(double integrateTime) {
     return LoadCurrentStatus();
+  }
+
+  private void InvokeArrow() {
+    var arrow = arrowAsset_.Instantiate<Arrow>();
+    arrow.InitialPosition = Position;
+    arrow.InitialVelocity = Vector3.Left * 120.0f;
+    bulletNode_.AddChild(arrow);
   }
 
   private bool LoadCurrentStatus() {
