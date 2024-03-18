@@ -107,7 +107,7 @@ public abstract partial class ReversibleTubeTrail<TParam> : ReversibleNode3D
       var endColor = TubeColors[1];
       var ring = tubeCurve_.Sample(1.0f / length);
       var deltaX = end.Position - begin.Position;
-      var deltaZ = Mathf.Abs(deltaX.X) < 0.1 && Mathf.Abs(deltaX.Z) < 0.1
+      var deltaZ = Mathf.Abs(deltaX.X) < 0.1
         ? new Vector3(0.0f, 0.0f, 1.0f).Normalized() * ring
         : new Vector3(deltaX.Z / deltaX.X, 0, 1).Normalized() * ring;
       var deltaY = deltaZ.Cross(deltaX).Normalized();
@@ -143,7 +143,7 @@ public abstract partial class ReversibleTubeTrail<TParam> : ReversibleNode3D
       var deltaX = endPoint - beginPoint;
       var axis = deltaX.Normalized();
       var ring = tubeCurve_.Sample((float)(points + 1) / length);
-      var deltaZ = Mathf.Abs(deltaX.X) < 0.1 && Mathf.Abs(deltaX.Z) < 0.1
+      var deltaZ = Mathf.Abs(deltaX.X) < 0.1
         ? new Vector3(0.0f, 0.0f, 1.0f).Normalized() * ring
         : new Vector3(deltaX.Z / deltaX.X, 0, 1).Normalized() * ring;
       var deltaY = deltaZ.Cross(deltaX).Normalized();
@@ -184,7 +184,7 @@ public abstract partial class ReversibleTubeTrail<TParam> : ReversibleNode3D
       var end = items[zero % BufferSize];
       var endColor = TubeColors[points + 1];
       var deltaX = end.Position - begin.Position;
-      var deltaZ = Mathf.Abs(deltaX.X) < 0.1 && Mathf.Abs(deltaX.Z) < 0.1
+      var deltaZ = Mathf.Abs(deltaX.X) < 0.1
         ? new Vector3(0.0f, 0.0f, 1.0f).Normalized() * ring0
         : new Vector3(deltaX.Z / deltaX.X, 0, 1).Normalized() * ring0;
       var deltaY = deltaZ.Cross(deltaX).Normalized();

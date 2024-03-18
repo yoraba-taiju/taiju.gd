@@ -27,7 +27,9 @@ public partial class Sora : ReversibleRigidBody3D {
     base._Ready();
     bulletServer_ = GetNode<SoraBulletServer>("/root/Root/Field/WitchBullet/SoraBulletServer")!;
     bulletNode_ = GetNode<Node3D>("/root/Root/Field/WitchBullet");
-    arrowAsset_ = ResourceLoader.Load<PackedScene>("res://Objects/Effect/Arrow.tscn")!;
+    //arrowAsset_ = ResourceLoader.Load<PackedScene>("res://Objects/Effect/Arrow.tscn")!;
+    arrowAsset_ = ResourceLoader.Load<PackedScene>("res://Objects/Effect/LightFairy.tscn")!;
+    // Initial State
     record_ = new Dense<Record>(Clock, new Record {
       Position = Position,
       SpiritRot = 0.0,
@@ -97,10 +99,15 @@ public partial class Sora : ReversibleRigidBody3D {
     }
 
     if (Input.IsActionJustPressed("spell")) {
+      /*
       var arrow = arrowAsset_.Instantiate<Arrow>();
       arrow.InitialPosition = Position;
       arrow.InitialVelocity = Vector3.Left * 120.0f;
       bulletNode_.AddChild(arrow);
+      */
+      var fairy = arrowAsset_.Instantiate<LightFairy>();
+      fairy.CenterPosition = Position;
+      bulletNode_.AddChild(fairy);
     }
     
     // Update using current value.
