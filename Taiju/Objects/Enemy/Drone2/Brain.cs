@@ -16,7 +16,7 @@ public partial class Brain : EnemyBase {
   [Export(PropertyHint.Range, "0,20")] private float timeToFire_ = 0.3f;
   [Export(PropertyHint.Range, "0,20,1")] private int fireCount_ = 5;
   [Export(PropertyHint.Range, "0,30,")] private float bulletSpeed_ = 15.0f;
-  private CircleBulletServer circleBulletServer_;
+  private CircleBulletServer bulletServer_;
 
   //
   private enum State {
@@ -54,7 +54,7 @@ public partial class Brain : EnemyBase {
       TimeToFire = timeToFire_,
       NextTimeToAction = 0.0f,
     });
-    circleBulletServer_ = GetNode<CircleBulletServer>("/root/Root/Field/EnemyBullet/CircleBulletServer");
+    bulletServer_ = GetNode<CircleBulletServer>("/root/Root/Field/EnemyBullet/CircleBulletServer")!;
   }
   
   public override bool _ProcessForward(double integrateTime, double dt) {
@@ -98,7 +98,7 @@ public partial class Brain : EnemyBase {
         if (timeToFire < 0.0) {
           var velocity3d = new Vector3(Mathf.Cos(currentRot), Mathf.Sin(currentRot), 0f);
           var velocity = new Vector2(velocity3d.X, velocity3d.Y) * bulletSpeed_;
-          circleBulletServer_.Spawn(currentPosition + velocity3d * 1.2f, velocity);
+          bulletServer_.Spawn(currentPosition + velocity3d * 1.2f, velocity);
           // Next
           timeToFire += timeToFire_;
         }
