@@ -8,7 +8,7 @@ using Taiju.Objects.Reversible.Value;
 namespace Taiju.Objects.Witch;
 
 public partial class Sora : ReversibleRigidBody3D {
-  [Export(PropertyHint.Range, "0,0.2,")] private double nextBulletTime_ = 0.08;
+  [Export(PropertyHint.Range, "0,0.2,")] private double nextBulletDuration_ = 0.08;
   private SoraBulletServer bulletServer_;
   private Node3D bulletNode_;
   private PackedScene arrowAsset_;
@@ -87,15 +87,15 @@ public partial class Sora : ReversibleRigidBody3D {
     ref var afterFire = ref rec.AfterFire;
     if (Input.IsActionJustPressed("fire")) {
       bulletServer_.Spawn(pos);
-      afterFire = nextBulletTime_;
+      afterFire = nextBulletDuration_;
     } else if (Input.IsActionPressed("fire")) {
       afterFire -= dt;
       if (afterFire < 0.0) {
         bulletServer_.SpawnDouble(pos);
-        afterFire += nextBulletTime_;
+        afterFire += nextBulletDuration_;
       }
     } else {
-      afterFire = nextBulletTime_;
+      afterFire = nextBulletDuration_;
     }
 
     if (Input.IsActionJustPressed("spell")) {
