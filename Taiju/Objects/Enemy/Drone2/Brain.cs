@@ -43,7 +43,7 @@ public partial class Brain : EnemyBase {
 
   public override void _Ready() {
     base._Ready();
-    body_ = GetNode<Node3D>("Body");
+    body_ = GetNode<Node3D>("Body")!;
     record_ = new Dense<Record>(Clock, new Record {
       Shield = initialShield_,
       State = State.Seek,
