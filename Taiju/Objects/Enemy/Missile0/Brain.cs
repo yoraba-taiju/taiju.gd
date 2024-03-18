@@ -69,7 +69,7 @@ public partial class Brain : EnemyBase {
         } else {
           rec.State = State.Follow;
           rec.Position = appearPosition_;
-          rec.Velocity = delta.Normalized() * speed_;
+          rec.Velocity = Mover.Follow(delta, rec.Velocity, maxAngle);
         }
       }
         break;
