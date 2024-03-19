@@ -11,7 +11,7 @@ public partial class Brain : EnemyBase {
   [Export(PropertyHint.Range, "0,20,")] private float returnDistance_ = 12.0f;
   [Export(PropertyHint.Range, "0,30,")] private float bulletSpeed_ = 15.0f;
   private const string SeekReq = "parameters/Seek/seek_request";
-  private CircleBulletServer circleBulletServer_;
+  private CircleBulletServer bulletServer_;
 
   //
   private enum State {
@@ -35,9 +35,9 @@ public partial class Brain : EnemyBase {
 
   public override void _Ready() {
     base._Ready();
-    body_ = GetNode<Node3D>("Body");
+    body_ = GetNode<Node3D>("Body")!;
 
-    animationTree_ = GetNode<AnimationTree>("AnimationTree");
+    animationTree_ = GetNode<AnimationTree>("AnimationTree")!;
     animationTree_.Active = true;
 
     record_ = new Dense<Record>(Clock, new Record {
@@ -48,7 +48,7 @@ public partial class Brain : EnemyBase {
     });
 
     defaultEscapeDirection_ = ((int)(rand_.Randi() % 2) * 2) - 1;
-    circleBulletServer_ = GetNode<CircleBulletServer>("/root/Root/Field/EnemyBullet/CircleBulletServer");
+    bulletServer_ = GetNode<CircleBulletServer>("/root/Root/Field/EnemyBullet/CircleBulletServer")!;
     animationTree_.Set(SeekReq, 0f);
   }
 
@@ -69,7 +69,7 @@ public partial class Brain : EnemyBase {
           rec.Velocity = Mover.Follow(delta, rec.Velocity, maxAngle);
         } else {
           rec.State = State.Return;
-          circleBulletServer_.SpawnToSora(rec.Position, bulletSpeed_);
+          bulletServer_.SpawnToSora(rec.Position, bulletSpeed_);
         }
       }
         break;
@@ -83,7 +83,7 @@ public partial class Brain : EnemyBase {
           }
           rec.Velocity = Vec.Rotate(rec.Velocity, sign * maxAngle) * Mathf.Exp((float)dt / 2);
         } else if (length > returnDistance_ * 1.1f) {
-          circleBulletServer_.SpawnToSora(rec.Position, 15.0f);
+          bulletServer_.SpawnToSora(rec.Position, 15.0f);
           rec.State = State.Escape;
         }
       }

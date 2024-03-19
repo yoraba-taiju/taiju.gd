@@ -31,7 +31,7 @@ public partial class Brain : EnemyBase {
 
   public override void _Ready() {
     base._Ready();
-    body_ = GetNode<Node3D>("Body");
+    body_ = GetNode<Node3D>("Body")!;
     record_ = new Dense<Record>(Clock, new Record {
       Shield = 1,
       State = State.Seek,
@@ -39,9 +39,9 @@ public partial class Brain : EnemyBase {
       Velocity = new Vector3(-10.0f, 0.0f, 0.0f),
       Animation = 0.0,
     });
-    var model = body_.GetNode<Node3D>("Model");
-    animPlayer_ = model.GetNode<AnimationPlayer>("AnimationPlayer");
-    var anim = animPlayer_.GetAnimation("Rotate");
+    var model = body_.GetNode<Node3D>("Model")!;
+    animPlayer_ = model.GetNode<AnimationPlayer>("AnimationPlayer")!;
+    var anim = animPlayer_.GetAnimation("Rotate")!;
     anim.LoopMode = Animation.LoopModeEnum.Linear;
     animPlayer_.PlaybackActive = true;
     animPlayer_.Play("Rotate");
