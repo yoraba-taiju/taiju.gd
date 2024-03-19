@@ -98,7 +98,7 @@ public partial class Brain : EnemyBase {
         if (timeToFire < 0.0) {
           var velocity3d = new Vector3(Mathf.Cos(currentRot), Mathf.Sin(currentRot), 0f);
           var velocity = new Vector2(velocity3d.X, velocity3d.Y) * bulletSpeed_;
-          bulletServer_.Spawn(currentPosition + velocity3d * 1.2f, velocity);
+          bulletServer_.Spawn(currentPosition + velocity3d * 2.0f, velocity);
           // Next
           timeToFire += timeToFire_;
         }
