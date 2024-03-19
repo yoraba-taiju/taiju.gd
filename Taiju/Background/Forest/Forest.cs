@@ -8,8 +8,8 @@ public partial class Forest : ReversibleNode3D {
 
   public override void _Ready() {
     base._Ready();
-    var meshInstance = GetNode<MeshInstance3D>("Mesh");
-    mat_ = meshInstance.GetActiveMaterial(0);
+    var meshInstance = GetNode<MeshInstance3D>("Mesh")!;
+    mat_ = meshInstance.GetActiveMaterial(0)!;
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
