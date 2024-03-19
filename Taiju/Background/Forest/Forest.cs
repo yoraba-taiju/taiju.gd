@@ -13,15 +13,15 @@ public partial class Forest : ReversibleNode3D {
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
-    return false;
+    return false; // Use raw
   }
 
   public override bool _ProcessBack(double integrateTime) {
-    return false;
+    return false; // Use raw
   }
 
   public override bool _ProcessLeap(double integrateTime) {
-    return false;
+    return false; // Use raw
   }
 
   public override void _ProcessRaw(double integrateTime) {
