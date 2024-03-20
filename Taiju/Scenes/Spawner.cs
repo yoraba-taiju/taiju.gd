@@ -12,7 +12,7 @@ public partial class Spawner : Node3D {
 
   private void Play(PackedScene packedNode, Vector2 at) {
     var node = packedNode.Instantiate<Node3D>();
-    node.Translate(new Vector3(at.X, at.Y, 0.0f));
+    node.Position = new Vector3(at.X, at.Y, 0.0f);
     field_.AddChild(node);
   }
 
