@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Godot;
 
 namespace Taiju.Util.Godot.Overlay;
