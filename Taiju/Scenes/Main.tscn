@@ -16,39 +16,6 @@
 [ext_resource type="Script" path="res://Scenes/Dolly.cs" id="12_mgcli"]
 [ext_resource type="PackedScene" uid="uid://bi8hpvq33rq72" path="res://Objects/Enemy/Missile0/Missile0.tscn" id="14_mwam3"]
 
-[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_aadso"]
-energy_multiplier = 2.0
-
-[sub_resource type="Sky" id="Sky_7rgmx"]
-resource_local_to_scene = true
-sky_material = SubResource("PhysicalSkyMaterial_aadso")
-
-[sub_resource type="Environment" id="Environment_t1wdw"]
-background_mode = 2
-sky = SubResource("Sky_7rgmx")
-ambient_light_source = 3
-glow_enabled = true
-glow_blend_mode = 0
-
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_y7npk"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vj3aa"]
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_17g3q"]
-material = ExtResource("1_bmh26")
-size = Vector2(4, 2)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jlq0k"]
-transparency = 1
-albedo_color = Color(1, 1, 1.1, 1)
-albedo_texture = ExtResource("6_bwfd2")
-billboard_mode = 1
-billboard_keep_scale = true
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_hhw22"]
-material = SubResource("StandardMaterial3D_jlq0k")
-orientation = 2
-
 [sub_resource type="Animation" id="Animation_qjeby"]
 resource_name = "dolly"
 length = 60.0
@@ -176,10 +143,53 @@ _data = {
 "dolly": SubResource("Animation_qjeby")
 }
 
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_aadso"]
+energy_multiplier = 2.0
+
+[sub_resource type="Sky" id="Sky_7rgmx"]
+resource_local_to_scene = true
+sky_material = SubResource("PhysicalSkyMaterial_aadso")
+
+[sub_resource type="Environment" id="Environment_t1wdw"]
+background_mode = 2
+sky = SubResource("Sky_7rgmx")
+ambient_light_source = 3
+glow_enabled = true
+glow_blend_mode = 0
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_y7npk"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vj3aa"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_17g3q"]
+material = ExtResource("1_bmh26")
+size = Vector2(4, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jlq0k"]
+transparency = 1
+albedo_color = Color(1, 1, 1.1, 1)
+albedo_texture = ExtResource("6_bwfd2")
+billboard_mode = 1
+billboard_keep_scale = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_hhw22"]
+material = SubResource("StandardMaterial3D_jlq0k")
+orientation = 2
+
 [node name="Root" type="Node3D"]
 
 [node name="Clock" type="Node3D" parent="."]
 script = ExtResource("1_alw2w")
+
+[node name="Dolly" type="AnimationPlayer" parent="."]
+deterministic = true
+libraries = {
+"": SubResource("AnimationLibrary_flfhp")
+}
+script = ExtResource("12_mgcli")
+
+[node name="Spawner" type="Node3D" parent="Dolly"]
+script = ExtResource("12_kg1q4")
 
 [node name="MainCamera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
@@ -265,13 +275,3 @@ axis_lock_angular_z = true
 [node name="CircleBulletServer" type="Node3D" parent="Field/EnemyBullet"]
 script = ExtResource("8_qfb4r")
 Mesh = SubResource("PlaneMesh_hhw22")
-
-[node name="Dolly" type="AnimationPlayer" parent="."]
-deterministic = true
-libraries = {
-"": SubResource("AnimationLibrary_flfhp")
-}
-script = ExtResource("12_mgcli")
-
-[node name="Spawner" type="Node3D" parent="Dolly"]
-script = ExtResource("12_kg1q4")
