@@ -13,7 +13,7 @@ public partial class StretchedSubViewportContainer : SubViewportContainer {
   private void OnViewportSizeChanged() {
     PivotOffset = Vector2.Zero;
     Position = Vector2.Zero;
-    var parent = GetParent().GetViewport();
+    var parent = GetParent()!.GetViewport()!;
     Size = parent switch {
       SubViewport s => s.Size,
       Window w => w.Size,

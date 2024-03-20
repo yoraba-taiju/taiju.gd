@@ -12,7 +12,7 @@ public partial class StretchedControl : Control {
 
   private void OnViewportSizeChanged() {
     Position = Vector2.Zero;
-    var parent = GetParent().GetViewport();
+    var parent = GetParent()!.GetViewport()!;
     Size = parent switch {
       SubViewport s => s.Size,
       Window w => w.Size,
