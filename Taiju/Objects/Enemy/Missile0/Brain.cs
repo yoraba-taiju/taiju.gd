@@ -6,6 +6,7 @@ using Taiju.Util.Godot;
 namespace Taiju.Objects.Enemy.Missile0;
 
 public partial class Brain : EnemyBase {
+  [Export(PropertyHint.Range, "0,100,1")] private int initialShield_ = 8;
   [Export(PropertyHint.Range, "0,360,")] private float maxRotateDegreePerSec_ = 60.0f;
   [Export(PropertyHint.Range, "0,10,")] private float appearTime_ = 0.5f;
   [Export(PropertyHint.Range, "0,100,")] private float speed_ = 20.0f;
@@ -42,7 +43,7 @@ public partial class Brain : EnemyBase {
     appearPosition_ = new Vector3(rand_.RandfRange(15, 17), rand_.RandfRange(-10, 10), 0.0f);
     record_ = new Dense<Record>(Clock, new Record {
       State = State.Appear,
-      Shield = 5,
+      Shield = initialShield_,
       Position = Position,
       Velocity = new Vector3(-speed_, 0.0f, 0.0f),
     });

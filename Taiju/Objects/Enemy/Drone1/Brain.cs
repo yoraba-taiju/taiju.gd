@@ -7,6 +7,7 @@ using Taiju.Util.Godot;
 namespace Taiju.Objects.Enemy.Drone1;
 
 public partial class Brain : EnemyBase {
+  [Export(PropertyHint.Range, "0,100,1")] private int initialShield_ = 12;
   [Export] private Vector3 initialVelocity_ = new(-10.0f, 0.0f, 0.0f);
   [Export(PropertyHint.Range, "0,360,")] private float maxRotateDegreePerSec_ = 180.0f;
   [Export(PropertyHint.Range, "0,20,")] private float returnDistance_ = 12.0f;
@@ -44,7 +45,7 @@ public partial class Brain : EnemyBase {
 
     record_ = new Dense<Record>(Clock, new Record {
       State = State.Init,
-      Shield = 4,
+      Shield = initialShield_,
       Position = Position,
       Velocity = initialVelocity_,
     });

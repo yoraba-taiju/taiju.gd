@@ -10,7 +10,7 @@ namespace Taiju.Objects.Enemy.Drone2;
 
 public partial class Brain : EnemyBase {
   [Export] private Vector3 initialVelocity_ = new(-10.0f, 0.0f, 0.0f);
-  [Export(PropertyHint.Range, "0,100,1")] private int initialShield_ = 30;
+  [Export(PropertyHint.Range, "0,100,1")] private int initialShield_ = 24;
   [Export(PropertyHint.Range, "0,360,")] private float maxRotateDegreePerSec_ = 180.0f;
   [Export(PropertyHint.Range, "0,20,")] private float seekSpeed_ = 7.0f;
   [Export(PropertyHint.Range, "0,40,")] private float escapeSpeed_ = 23.0f;
