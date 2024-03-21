@@ -26,8 +26,8 @@ public partial class Brain : EnemyBase {
   private Dense<Record> record_;
 
   private record struct Record {
-    public int Shield;
     public State State;
+    public int Shield;
     public Vector3 Position;
     public Vector3 Velocity;
   }
@@ -41,8 +41,8 @@ public partial class Brain : EnemyBase {
     initialPosition_ = Position;
     appearPosition_ = new Vector3(rand_.RandfRange(15, 17), rand_.RandfRange(-10, 10), 0.0f);
     record_ = new Dense<Record>(Clock, new Record {
-      Shield = 5,
       State = State.Appear,
+      Shield = 5,
       Position = Position,
       Velocity = new Vector3(-speed_, 0.0f, 0.0f),
     });

@@ -33,8 +33,8 @@ public partial class Brain : EnemyBase {
   private RandomNumberGenerator rand_ = new();
 
   private record struct Record {
-    public int Shield;
     public State State;
+    public int Shield;
     public Vector3 Position;
     public Vector3 Velocity;
     public float Rotation;
@@ -47,8 +47,8 @@ public partial class Brain : EnemyBase {
     base._Ready();
     body_ = GetNode<Node3D>("Body")!;
     record_ = new Dense<Record>(Clock, new Record {
-      Shield = initialShield_,
       State = State.Init,
+      Shield = initialShield_,
       Position = Position,
       Velocity = initialVelocity_,
       Rotation = 0.0f,

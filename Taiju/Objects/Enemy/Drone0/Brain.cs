@@ -24,8 +24,8 @@ public partial class Brain : EnemyBase {
   private int defaultEscapeDirection_;
 
   private record struct Record {
-    public int Shield;
     public State State;
+    public int Shield;
     public Vector3 Position;
     public Vector3 Velocity;
     public double Animation;
@@ -35,8 +35,8 @@ public partial class Brain : EnemyBase {
     base._Ready();
     body_ = GetNode<Node3D>("Body")!;
     record_ = new Dense<Record>(Clock, new Record {
-      Shield = 1,
       State = State.Init,
+      Shield = 1,
       Position = Position,
       Velocity = initialVelocity_,
       Animation = 0.0,
