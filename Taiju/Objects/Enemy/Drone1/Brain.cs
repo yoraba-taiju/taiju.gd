@@ -7,6 +7,7 @@ using Taiju.Util.Godot;
 namespace Taiju.Objects.Enemy.Drone1;
 
 public partial class Brain : EnemyBase {
+  [Export] private Vector3 initialVelocity_ = new(-10.0f, 0.0f, 0.0f);
   [Export(PropertyHint.Range, "0,360,")] private float maxRotateDegreePerSec_ = 180.0f;
   [Export(PropertyHint.Range, "0,20,")] private float returnDistance_ = 12.0f;
   [Export(PropertyHint.Range, "0,30,")] private float bulletSpeed_ = 15.0f;
@@ -15,6 +16,7 @@ public partial class Brain : EnemyBase {
 
   //
   private enum State {
+    Init,
     Seek,
     Return,
     Escape,
@@ -42,9 +44,9 @@ public partial class Brain : EnemyBase {
 
     record_ = new Dense<Record>(Clock, new Record {
       Shield = 4,
-      State = State.Seek,
+      State = State.Init,
       Position = Position,
-      Velocity = new Vector3(-10.0f, 0.0f, 0.0f),
+      Velocity = initialVelocity_,
     });
 
     defaultEscapeDirection_ = ((int)(rand_.Randi() % 2) * 2) - 1;
@@ -63,6 +65,14 @@ public partial class Brain : EnemyBase {
     var maxAngle = (float)(dt * Mathf.DegToRad(maxRotateDegreePerSec_));
 
     switch (rec.State) {
+      case State.Init: {
+        rec.Velocity = initialVelocity_;
+        if (Position.X <= 18.0f) {
+          rec.State = State.Seek;
+        }
+      }
+        break;
+
       case State.Seek: {
         var delta = soraPosition - currentPosition;
         if (Mathf.Abs(delta.X) > returnDistance_) {

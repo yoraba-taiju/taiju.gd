@@ -9,6 +9,7 @@ namespace Taiju.Objects.Enemy.Drone2;
 // https://code.ledyba.org/yoraba-taiju/taiju.unity/src/branch/magistra/Assets/Scripts/Enemy/Drone/Drone2.cs
 
 public partial class Brain : EnemyBase {
+  [Export] private Vector3 initialVelocity_ = new(-10.0f, 0.0f, 0.0f);
   [Export(PropertyHint.Range, "0,100,1")] private int initialShield_ = 30;
   [Export(PropertyHint.Range, "0,360,")] private float maxRotateDegreePerSec_ = 180.0f;
   [Export(PropertyHint.Range, "0,20,")] private float seekSpeed_ = 7.0f;
@@ -20,6 +21,7 @@ public partial class Brain : EnemyBase {
 
   //
   private enum State {
+    Init,
     Seek,
     Fight,
     Sleep,
@@ -46,9 +48,9 @@ public partial class Brain : EnemyBase {
     body_ = GetNode<Node3D>("Body")!;
     record_ = new Dense<Record>(Clock, new Record {
       Shield = initialShield_,
-      State = State.Seek,
+      State = State.Init,
       Position = Position,
-      Velocity = new Vector3(-10.0f, 0.0f, 0.0f),
+      Velocity = initialVelocity_,
       Rotation = 0.0f,
       FireCount = fireCount_,
       TimeToFire = timeToFire_,
@@ -75,6 +77,11 @@ public partial class Brain : EnemyBase {
     ref var state = ref rec.State;
 
     switch (state) {
+      case State.Init: {
+        rec.Velocity = initialVelocity_;
+      }
+        break;
+
       case State.Seek: {
         currentRot += Mathf.Clamp(deltaAngle, -maxAngle, maxAngle);
         // Set speed
@@ -126,6 +133,13 @@ public partial class Brain : EnemyBase {
 
     if (nextTimeToAction < integrateTime) {
       switch (state) {
+        case State.Init:
+          if (Position.X <= 18.0f) {
+            state = State.Seek;
+            nextTimeToAction = integrateTime + 1.0;
+          }
+          break;
+
         case State.Seek:
           if (targetDistance >= 10.0f || Mathf.Abs(deltaAngle) >= Mathf.Pi / 45.0f) {
             state = State.Seek;

@@ -6,6 +6,7 @@ using Taiju.Util.Godot;
 namespace Taiju.Objects.Enemy.Drone0;
 
 public partial class Brain : EnemyBase {
+  [Export] private Vector3 initialVelocity_ = new(-10.0f, 0.0f, 0.0f);
   [Export(PropertyHint.Range, "0,180,")] private float maxRotateDegreePerSec_ = 60.0f;
   [Export(PropertyHint.Range, "0,20,")] private float escapeDistance_ = 12.0f;
 
@@ -37,7 +38,7 @@ public partial class Brain : EnemyBase {
       Shield = 1,
       State = State.Init,
       Position = Position,
-      Velocity = new Vector3(-10.0f, 0.0f, 0.0f),
+      Velocity = initialVelocity_,
       Animation = 0.0,
     });
     var model = body_.GetNode<Node3D>("Model")!;
@@ -62,8 +63,8 @@ public partial class Brain : EnemyBase {
 
     switch (rec.State) {
       case State.Init: {
+        rec.Velocity = initialVelocity_;
         if (Position.X <= 18.0f) {
-          rec.Velocity = new Vector3(-10.0f, 0.0f, 0.0f);
           rec.State = State.Seek;
         }
       }
