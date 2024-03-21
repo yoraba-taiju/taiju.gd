@@ -11,6 +11,7 @@ public partial class Brain : EnemyBase {
 
   //
   private enum State {
+    Init,
     Seek,
     Escape,
   }
@@ -34,7 +35,7 @@ public partial class Brain : EnemyBase {
     body_ = GetNode<Node3D>("Body")!;
     record_ = new Dense<Record>(Clock, new Record {
       Shield = 1,
-      State = State.Seek,
+      State = State.Init,
       Position = Position,
       Velocity = new Vector3(-10.0f, 0.0f, 0.0f),
       Animation = 0.0,
@@ -60,6 +61,14 @@ public partial class Brain : EnemyBase {
     var maxAngle = (float)(dt * Mathf.DegToRad(maxRotateDegreePerSec_));
 
     switch (rec.State) {
+      case State.Init: {
+        if (Position.X <= 18.0f) {
+          rec.Velocity = new Vector3(-10.0f, 0.0f, 0.0f);
+          rec.State = State.Seek;
+        }
+      }
+        break;
+
       case State.Seek: {
         var delta = soraPosition - currentPosition;
         if (Mathf.Abs(delta.X) > escapeDistance_) {
