@@ -28,12 +28,12 @@ public abstract partial class EnemyBase : ReversibleRigidBody3D {
     return true;
   }
 
-  public void Hit() {
+  public void Hit(int damage) {
     if (!IsAlive) {
       return;
     }
     ref var shield = ref ShieldMut;
-    shield -= 1;
+    shield -= damage;
     if (shield > 0) {
       return;
     }

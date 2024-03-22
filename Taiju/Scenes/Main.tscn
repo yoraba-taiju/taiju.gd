@@ -67,9 +67,18 @@ tracks/3/path = NodePath("Dolly/Spawner")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(5.5),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(5, 7.5, 9, 10.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "values": [{
+"args": [ExtResource("9_ge6oq"), Vector2(25, 0)],
+"method": &"Play"
+}, {
+"args": [ExtResource("9_ge6oq"), Vector2(25, 5)],
+"method": &"Play"
+}, {
+"args": [ExtResource("9_ge6oq"), Vector2(25, -5)],
+"method": &"Play"
+}, {
 "args": [ExtResource("9_ge6oq"), Vector2(25, 0)],
 "method": &"Play"
 }]
@@ -81,7 +90,7 @@ tracks/4/path = NodePath("Dolly/Spawner")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(7, 8, 9),
+"times": PackedFloat32Array(14, 15, 16),
 "transitions": PackedFloat32Array(1, 1, 1),
 "values": [{
 "args": [ExtResource("14_mwam3"), Vector2(25, 7)],
@@ -101,7 +110,7 @@ tracks/5/path = NodePath("Dolly/Spawner")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(10),
+"times": PackedFloat32Array(17),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [ExtResource("14_mwam3"), Vector2(25, 0)],
@@ -115,7 +124,7 @@ tracks/6/path = NodePath("Dolly/Spawner")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(10),
+"times": PackedFloat32Array(17),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [ExtResource("14_mwam3"), Vector2(25, 0)],
@@ -129,7 +138,7 @@ tracks/7/path = NodePath("Dolly/Spawner")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
-"times": PackedFloat32Array(10),
+"times": PackedFloat32Array(17),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [ExtResource("14_mwam3"), Vector2(25, 0)],

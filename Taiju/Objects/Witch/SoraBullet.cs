@@ -27,7 +27,7 @@ public partial class SoraBullet : ReversibleRigidBody3D {
     if (node is not EnemyBase enemy) {
       return;
     }
-    enemy.Hit();
+    enemy.Hit(1);
     // FIXME: physics workaround
     SetDeferred(Node3D.PropertyName.Position, Position - Vector3.Right * 1.5f);
     Destroy();
