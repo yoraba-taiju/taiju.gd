@@ -10,16 +10,16 @@ public abstract partial class EnemyBase : ReversibleRigidBody3D {
   [Export(PropertyHint.Range, "0,100,1")] protected int InitialShield = 2;
   [Export] protected Vector2 BodySize = new(0, 0);
   [Export] protected float ExplosionScale = 1.0f;
-  private PackedScene explosionScene_;
-  private PackedScene magicElementScene_;
+  private PackedScene explosionPack_;
+  private PackedScene magicElementItemPack_;
   private Node3D effectNode_;
   protected Sora Sora { get; private set; }
   private bool displayed_;
 
   public override void _Ready() {
     base._Ready();
-    explosionScene_ = ResourceLoader.Load<PackedScene>("res://Objects/Effect/ReversibleExplosion.tscn")!;
-    magicElementScene_ = ResourceLoader.Load<PackedScene>("res://Objects/Effect/MagicElement.tscn")!;
+    explosionPack_ = ResourceLoader.Load<PackedScene>("res://Objects/Effect/ReversibleExplosion.tscn")!;
+    magicElementItemPack_ = ResourceLoader.Load<PackedScene>("res://Objects/Effect/MagicElementItem.tscn")!;
     effectNode_ = GetNode<Node3D>("/root/Root/Field/EnemyEffect")!;
     Sora = GetNode<Sora>("/root/Root/Field/Witch/Sora")!;
     displayed_ = false;
@@ -65,7 +65,7 @@ public abstract partial class EnemyBase : ReversibleRigidBody3D {
     Destroy();
     var scale = Vector3.One * ExplosionScale;
     {
-      var explosion = explosionScene_.Instantiate<ReversibleExplosion>();
+      var explosion = explosionPack_.Instantiate<ReversibleExplosion>();
       explosion.Position = Position;
       explosion.Scale = scale;
       effectNode_.AddChild(explosion);
@@ -73,7 +73,7 @@ public abstract partial class EnemyBase : ReversibleRigidBody3D {
     {
       var max = Math.Max(InitialShield / 4, 1);
       for (var i = 0; i < max; i++) {
-        var magicElement = magicElementScene_.Instantiate<MagicElement>();
+        var magicElement = magicElementItemPack_.Instantiate<MagicElementItem>();
         magicElement.Position = Position;
         magicElement.Scale = scale;
         effectNode_.AddChild(magicElement);
