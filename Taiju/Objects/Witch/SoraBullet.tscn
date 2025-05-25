@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dulu3o8yh1dam"]
+[gd_scene load_steps=7 format=3 uid="uid://dulu3o8yh1dam"]
 
 [ext_resource type="Script" uid="uid://b848dyhj7qfxj" path="res://Objects/Witch/SoraBullet.cs" id="1_vidhp"]
 [ext_resource type="Texture2D" uid="uid://dogya61fu548r" path="res://assets/Objects/Witch/Sora/SoraBullet.png" id="1_wga83"]
@@ -6,6 +6,9 @@
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r8evr"]
 transparency = 1
 albedo_texture = ExtResource("1_wga83")
+emission_enabled = true
+emission_energy_multiplier = 1.2
+emission_texture = ExtResource("1_wga83")
 billboard_mode = 1
 billboard_keep_scale = true
 grow_amount = 0.7
@@ -18,6 +21,11 @@ orientation = 2
 [sub_resource type="BoxShape3D" id="BoxShape3D_ois0p"]
 size = Vector3(3, 1.5, 1.5)
 
+[sub_resource type="PlaneMesh" id="PlaneMesh_i1r2u"]
+material = SubResource("StandardMaterial3D_r8evr")
+size = Vector2(2.5, 1.2)
+orientation = 2
+
 [node name="SoraBullet" type="RigidBody3D"]
 collision_layer = 8
 collision_mask = 18
@@ -29,8 +37,12 @@ gravity_scale = 0.0
 script = ExtResource("1_vidhp")
 
 [node name="Sprite" type="MeshInstance3D" parent="."]
+visible = false
 layers = 1024
 mesh = SubResource("PlaneMesh_p2wg3")
 
 [node name="Shape" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_ois0p")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_i1r2u")
