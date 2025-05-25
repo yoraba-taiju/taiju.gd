@@ -232,7 +232,7 @@ public partial class Sora : ReversibleRigidBody3D {
           EndTime = double.MaxValue,
         });
         if (!invoking) {
-          bulletServer_.Shot(rec.Position + Vector3.Right);
+          bulletServer_.Shot(rec.Position + Vector3.Right * 2.0f);
         }
         afterFire = nextBulletDuration_ * 1.3;
       } else {
@@ -240,7 +240,7 @@ public partial class Sora : ReversibleRigidBody3D {
         afterFire -= dt;
         if (afterFire < 0.0) {
           if (!invoking) {
-            bulletServer_.ShotDouble(rec.Position + Vector3.Right);
+            bulletServer_.ShotDouble(rec.Position + Vector3.Right * 2.0f);
           }
           afterFire += nextBulletDuration_;
         }
@@ -265,6 +265,10 @@ public partial class Sora : ReversibleRigidBody3D {
   }
 
   private void ProcessSpell(ref Record rec, double integrateTime, double dt) {
+    if (Input.IsActionJustPressed(Constant.SpellButtonName)) {
+      InvokeArrow();
+    }
+    return;
     ref var spell = ref rec.Spell;
     ref var invoking = ref spell.Invoking;
     ref var leftTime = ref spell.InvocationLeftTime;

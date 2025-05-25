@@ -71,12 +71,12 @@ public partial class SoraClone : ReversibleNode3D {
 
     if (currentRange.BeginTime <= integrateTime && integrateTime <= currentRange.EndTime) {
       if (double.IsNaN(afterFire)) {
-        bulletServer_.Shot(pos + Vector3.Right);
+        bulletServer_.Shot(pos + Vector3.Right * 2.0f);
         afterFire = nextBulletDuration_ * 1.3;
       } else {
         afterFire -= dt;
         if (afterFire < 0.0) {
-          bulletServer_.ShotDouble(pos + Vector3.Right);
+          bulletServer_.ShotDouble(pos + Vector3.Right * 2.0f);
           afterFire += nextBulletDuration_;
         }
       }

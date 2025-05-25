@@ -16,7 +16,6 @@
 [ext_resource type="Texture2D" uid="uid://chx21rgwj6x4c" path="res://assets/Objects/Enemy/Bullets/CircleBullet/Blue.png" id="15_p07sh"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_aadso"]
-energy_multiplier = 2.0
 
 [sub_resource type="Sky" id="Sky_7rgmx"]
 resource_local_to_scene = true
@@ -25,8 +24,9 @@ sky_material = SubResource("PhysicalSkyMaterial_aadso")
 [sub_resource type="Environment" id="Environment_t1wdw"]
 background_mode = 2
 sky = SubResource("Sky_7rgmx")
-ambient_light_source = 3
 glow_enabled = true
+glow_intensity = 2.0
+glow_strength = 1.15
 glow_blend_mode = 0
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_y7npk"]
@@ -80,7 +80,6 @@ camera_attributes = SubResource("CameraAttributesPractical_y7npk")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
 transform = Transform3D(0.707107, -0.353553, 0.612372, 0, 0.866025, 0.499999, -0.707107, -0.353553, 0.612372, 0, 100, 0)
 layers = 1025
-light_energy = 2.0
 light_cull_mask = 4293919745
 
 [node name="Stage" parent="." instance=ExtResource("10_1rftd")]

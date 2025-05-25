@@ -1,0 +1,19 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://cc7o7vjx62g1h"]
+
+[ext_resource type="Shader" uid="uid://cyd1uggltbuxk" path="res://Objects/Witch/Common/Outline.gdshader" id="1_tg460"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ini66"]
+render_priority = 0
+shader = ExtResource("1_tg460")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/distance_falloff = 1.0
+shader_parameter/smoothing_cutoff = 0.1
+shader_parameter/smoothing_max = 0.1
+
+[resource]
+next_pass = SubResource("ShaderMaterial_ini66")
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.299944, 0.158876, 0.0577252, 1)
+metallic = 0.2
+roughness = 0.3

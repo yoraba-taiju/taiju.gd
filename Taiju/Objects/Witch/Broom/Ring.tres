@@ -1,0 +1,19 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://dx7qdaeldmy82"]
+
+[ext_resource type="Shader" uid="uid://cyd1uggltbuxk" path="res://Objects/Witch/Common/Outline.gdshader" id="1_dg0nk"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b3t8w"]
+render_priority = 0
+shader = ExtResource("1_dg0nk")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/distance_falloff = 1.0
+shader_parameter/smoothing_cutoff = 0.1
+shader_parameter/smoothing_max = 0.1
+
+[resource]
+next_pass = SubResource("ShaderMaterial_b3t8w")
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.920746, 0.495758, 0.113977, 1)
+metallic = 0.632653
+roughness = 0.0
