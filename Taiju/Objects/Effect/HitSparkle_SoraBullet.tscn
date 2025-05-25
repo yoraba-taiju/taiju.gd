@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://ba5opwfhm5b56"]
 
 [ext_resource type="Script" uid="uid://dtjcx0wl1c25g" path="res://Objects/Effect/HitSparkle.cs" id="1_vpiiu"]
-[ext_resource type="PlaneMesh" uid="uid://uvpfw14gxb5v" path="res://Objects/Effect/Textures/MagicElement/MagicElement.tres" id="2_qhagx"]
+[ext_resource type="PlaneMesh" uid="uid://uvpfw14gxb5v" path="res://Objects/Effect/Materials/MagicElement.tres" id="2_qhagx"]
 
 [node name="HitEffect_SoraBullet" type="Node3D"]
 script = ExtResource("1_vpiiu")
