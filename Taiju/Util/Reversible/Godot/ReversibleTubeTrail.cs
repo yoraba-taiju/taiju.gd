@@ -25,6 +25,9 @@ public abstract partial class ReversibleTubeTrail<TParam> : ReversibleNode3D
   [Export] private Material material_;
   private DenseArray<Item> items_;
   private Dense<int> idx_;
+  
+  protected Material Material => material_;
+  
   public override void _Ready() {
     base._Ready();
     // Pre-conditions assertion

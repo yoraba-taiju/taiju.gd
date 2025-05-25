@@ -47,7 +47,10 @@ public partial class Arrow : ReversibleTubeTrail<Arrow.Param> {
         var alpha = 1.0f - f / (Length - 1);
         TubeColors[i] = Color.FromHsv(hue, saturation, value, alpha * alpha * alpha);
       }
+      var material = (StandardMaterial3D)Material;
+      material.Emission = Color.FromHsv(hue, saturation, value);
     }
+
 
     // TubeColors should be initialized before this call.
     base._Ready();
