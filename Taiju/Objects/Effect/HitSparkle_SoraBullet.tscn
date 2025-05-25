@@ -5,4 +5,5 @@
 
 [node name="HitEffect_SoraBullet" type="Node3D"]
 script = ExtResource("1_vpiiu")
+color_ = Color(0.537406, 0.646532, 1, 1)
 Mesh = ExtResource("2_qhagx")
