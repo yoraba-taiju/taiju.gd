@@ -6,7 +6,7 @@ using Taiju.Util.Reversible.Value;
 
 namespace Taiju.Objects.Effect;
 
-public partial class MagicElement : ReversibleNode3D {
+public partial class MagicElementItem : ReversibleNode3D {
   [Export] private Color baseColor_ = Colors.White;
   [Export(PropertyHint.Range, "0,128.0,1.0")] private float defaultSpeedMin_ = 18.0f;
   [Export(PropertyHint.Range, "0,128.0,1.0")] private float defaultSpeedMax_ = 24.0f;
@@ -31,8 +31,12 @@ public partial class MagicElement : ReversibleNode3D {
   public override void _Ready() {
     base._Ready();
     sora_ = GetNode<Sora>("/root/Root/Field/Witch/Sora")!;
-    baseColor_.ToHsv(out _, out var saturation, out var value);
-    color_ = Color.FromHsv(rand_.Randf() * 360.0f, saturation, value);
+    sprite_ = GetNode<Sprite3D>("Sprite")!;
+    { // Color
+      baseColor_.ToHsv(out _, out var saturation, out var value);
+      color_ = Color.FromHsv(rand_.Randf() * 360.0f, saturation, value);
+      sprite_.Modulate = color_;
+    }
     var velocity =
       new Vector3(rand_.RandfRange(-1.0f, 1.0f), rand_.RandfRange(-1.0f, 1.0f), 0.0f).Normalized() *
       rand_.RandfRange(defaultSpeedMin_, defaultSpeedMax_);
@@ -41,8 +45,6 @@ public partial class MagicElement : ReversibleNode3D {
       Position = Position,
       Velocity = velocity,
     });
-    sprite_ = GetNode<Sprite3D>("Sprite")!;
-    sprite_.Modulate = color_;
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
