@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dpv0yhqrreb71"]
+
+[ext_resource type="Script" uid="uid://orhxbyuc52if" path="res://Objects/Effect/ReversibleExplosion.cs" id="1_sq2m3"]
+[ext_resource type="PlaneMesh" uid="uid://uvpfw14gxb5v" path="res://Objects/Effect/Textures/MagicElement/MagicElement.tres" id="2_l0sxt"]
+
+[node name="RevesibleExplosion" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0, 0)
+script = ExtResource("1_sq2m3")
+color_ = Color(0.901961, 0.45098, 0.45098, 1)
+replaceHueWithRandomAngle_ = true
+Mesh = ExtResource("2_l0sxt")

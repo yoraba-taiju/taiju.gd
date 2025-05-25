@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://cvsvf8phnug2f"]
+
+[ext_resource type="Script" uid="uid://cdlk2kmcqaa5u" path="res://Objects/Enemy/Drone0/Straight.cs" id="1_4v6fg"]
+[ext_resource type="PackedScene" uid="uid://buygvnpm3f7l6" path="res://assets/Objects/Enemy/Drones/Drone0.blend" id="2_0sgo5"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_u58e6"]
+radius = 1.0
+
+[node name="Drone0" type="RigidBody3D"]
+collision_layer = 16
+collision_mask = 6
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+mass = 100.0
+gravity_scale = 0.0
+custom_integrator = true
+script = ExtResource("1_4v6fg")
+
+[node name="Body" type="Node3D" parent="."]
+
+[node name="Model" parent="Body" instance=ExtResource("2_0sgo5")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 0, 0)
+shape = SubResource("SphereShape3D_u58e6")

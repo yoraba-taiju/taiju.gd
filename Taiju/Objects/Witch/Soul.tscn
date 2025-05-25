@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bjnxwcakwbepo"]
+
+[ext_resource type="PackedScene" uid="uid://bakh3ahtalbv2" path="res://assets/Objects/Witch/Sora/Soul.blend" id="1_64jwb"]
+
+[node name="Spirit" instance=ExtResource("1_64jwb")]
+
+[node name="Spirit" parent="." index="0"]
+layers = 1024

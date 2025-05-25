@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://84s6x7i5navv"]
+
+[ext_resource type="Texture2D" uid="uid://cc2fmams62aw1" path="res://Objects/Effect/Textures/SpellGaugeItem.png" id="1_kp45r"]
+[ext_resource type="Script" uid="uid://b6httreuuv6gp" path="res://UI/SpellGaugeSlot.cs" id="2_jsgbi"]
+
+[node name="Slot" type="Sprite2D"]
+modulate = Color(2, 2, 2, 1)
+visibility_layer = 524288
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_kp45r")
+region_enabled = true
+region_rect = Rect2(256, 0, 128, 128)
+script = ExtResource("2_jsgbi")

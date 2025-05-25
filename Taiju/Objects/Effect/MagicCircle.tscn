@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://cta0hueu8ear5"]
+
+[ext_resource type="Script" uid="uid://cnfc253kg4m1q" path="res://Objects/Effect/MagicCircle.cs" id="1_08l4k"]
+[ext_resource type="Texture2D" uid="uid://eejewfevnvhi" path="res://assets/Objects/Effect/MagicCircle/MagicCircle_Circle.png" id="1_41hk5"]
+[ext_resource type="Texture2D" uid="uid://bvccwo30qlkyl" path="res://assets/Objects/Effect/MagicCircle/MagicCircle_Element.png" id="2_08l4k"]
+
+[node name="MagicCircle" type="Node3D"]
+script = ExtResource("1_08l4k")
+
+[node name="Circle" type="Sprite3D" parent="."]
+texture = ExtResource("1_41hk5")
+
+[node name="Element1" type="Sprite3D" parent="."]
+texture = ExtResource("2_08l4k")
+
+[node name="Element2" type="Sprite3D" parent="."]
+texture = ExtResource("2_08l4k")
+
+[node name="Element3" type="Sprite3D" parent="."]
+texture = ExtResource("2_08l4k")
+
+[node name="Element4" type="Sprite3D" parent="."]
+texture = ExtResource("2_08l4k")

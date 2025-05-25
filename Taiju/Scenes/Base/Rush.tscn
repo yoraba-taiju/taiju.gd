@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://c42w38iak405y"]
+
+[ext_resource type="Script" path="res://Scenes/Base/Rush.cs" id="1_pdtsl"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1dy44"]
+
+[node name="Rush" type="Area2D"]
+script = ExtResource("1_pdtsl")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_1dy44")

@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://dukxrylo64kvc"]
+
+[ext_resource type="Script" path="res://Scenes/Base/StageCamera.cs" id="1_77ma3"]
+[ext_resource type="PackedScene" uid="uid://hynb4av76fkm" path="res://Scenes/Base/StageFrame.tscn" id="3_5556c"]
+
+[sub_resource type="Animation" id="Animation_uo0pc"]
+resource_name = "Stage"
+length = 120.0
+step = 0.1
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mr52h"]
+_data = {
+"Stage": SubResource("Animation_uo0pc")
+}
+
+[node name="Stage" type="Node2D"]
+
+[node name="StageCamera" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_mr52h")
+}
+script = ExtResource("1_77ma3")
+HideOnRun = false
+
+[node name="StageFrame" parent="StageCamera" instance=ExtResource("3_5556c")]

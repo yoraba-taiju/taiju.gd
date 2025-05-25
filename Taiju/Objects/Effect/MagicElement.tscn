@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://c7p2mkbyn6dfb"]
+
+[ext_resource type="Script" uid="uid://c8d4h0blj4ffk" path="res://Objects/Effect/MagicElement.cs" id="1_837vb"]
+[ext_resource type="Texture2D" uid="uid://5j7odxvqky21" path="res://assets/Objects/Effect/MagicElement/MagicElement.png" id="2_nwa0c"]
+
+[node name="MagicElement" type="Node3D"]
+script = ExtResource("1_837vb")
+baseColor_ = Color(1, 0.709804, 0.713726, 1)
+
+[node name="Sprite" type="Sprite3D" parent="."]
+cast_shadow = 0
+texture = ExtResource("2_nwa0c")

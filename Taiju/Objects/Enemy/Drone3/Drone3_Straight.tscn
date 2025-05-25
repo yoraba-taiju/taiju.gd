@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://c1hrm8guabck6"]
+
+[ext_resource type="Script" uid="uid://b33t34yebrrbq" path="res://Objects/Enemy/Drone3/Straight.cs" id="1_171p1"]
+[ext_resource type="PackedScene" uid="uid://4aiotewnna7p" path="res://assets/Objects/Enemy/Drones/Drone3.blend" id="1_lw7j1"]
+[ext_resource type="PackedScene" uid="uid://581jt6ajonyu" path="res://Objects/Effect/StarDust.tscn" id="2_x0yp1"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_o1gpk"]
+radius = 2.0
+
+[node name="Drone3" type="RigidBody3D"]
+collision_layer = 16
+collision_mask = 6
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+mass = 100.0
+gravity_scale = 0.0
+script = ExtResource("1_171p1")
+InitialShield = 36
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_o1gpk")
+
+[node name="Body" type="Node3D" parent="."]
+
+[node name="Drone3" parent="Body" instance=ExtResource("1_lw7j1")]
+transform = Transform3D(-1.15, 1.73645e-07, -7.59027e-15, 0, -5.02681e-08, -1.15, -1.73645e-07, -1.15, 5.02681e-08, 0, 0, 0)
+
+[node name="StarDust" parent="Body" instance=ExtResource("2_x0yp1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.06143, 0, 0)
+EmitPerSecond = 20.0

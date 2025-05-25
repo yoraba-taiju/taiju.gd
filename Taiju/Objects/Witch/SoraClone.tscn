@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://ctnypwysqa45d"]
+
+[ext_resource type="Script" uid="uid://drxycl7x0ffdy" path="res://Objects/Witch/SoraClone.cs" id="1_huiu2"]
+[ext_resource type="PackedScene" uid="uid://gen4oose6k6b" path="res://Objects/Witch/Momiji.tscn" id="2_mvdln"]
+
+[node name="SoraClone" type="Node3D"]
+script = ExtResource("1_huiu2")
+
+[node name="Momiji" parent="." instance=ExtResource("2_mvdln")]

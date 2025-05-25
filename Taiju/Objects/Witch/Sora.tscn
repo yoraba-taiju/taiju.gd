@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3 uid="uid://co8ax7f470wis"]
+
+[ext_resource type="Script" uid="uid://b7pnwbk55fn6d" path="res://Objects/Witch/Sora.cs" id="1_hd6n4"]
+[ext_resource type="PackedScene" uid="uid://bjnxwcakwbepo" path="res://Objects/Witch/Soul.tscn" id="2_ats51"]
+[ext_resource type="PackedScene" uid="uid://581jt6ajonyu" path="res://Objects/Effect/StarDust.tscn" id="3_34uag"]
+[ext_resource type="PackedScene" uid="uid://b66jg6p721qkd" path="res://assets/Objects/Witch/Broom_Mini.blend" id="4_m4sht"]
+[ext_resource type="AudioStream" uid="uid://boff3bas861hg" path="res://assets/Sound/Effect/arrow.wav" id="5_i6tg4"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_efil6"]
+radius = 0.2
+
+[node name="Sora" type="RigidBody3D"]
+collision_layer = 2
+collision_mask = 10
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+gravity_scale = 0.0
+script = ExtResource("1_hd6n4")
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_efil6")
+
+[node name="Sounds" type="Node3D" parent="."]
+
+[node name="Arrow" type="AudioStreamPlayer3D" parent="Sounds"]
+stream = ExtResource("5_i6tg4")
+volume_db = 10.0
+
+[node name="SoraModel" type="Node3D" parent="."]
+
+[node name="Soul" parent="SoraModel" instance=ExtResource("2_ats51")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+
+[node name="StarDust" parent="SoraModel" instance=ExtResource("3_34uag")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.229, -1.05, 0)
+emitAngle_ = 180.0
+EmitPerSecond = 15.0
+
+[node name="Broom" parent="SoraModel" instance=ExtResource("4_m4sht")]
+transform = Transform3D(0.6, -5.24537e-08, 5.24537e-08, -5.24537e-08, -0.6, 0, 5.24537e-08, -4.58564e-15, -0.6, 0, -1.15, 0)
+
+[node name="ChitoseModel" type="Node3D" parent="."]
+
+[node name="Broom" parent="ChitoseModel" instance=ExtResource("4_m4sht")]
+transform = Transform3D(0.6, -5.24537e-08, 5.24537e-08, -2.57602e-08, -0.545192, -0.25053, 6.95643e-08, 0.25053, -0.545192, 0, -1.15, 0)
+
+[node name="StarDust" parent="ChitoseModel" instance=ExtResource("3_34uag")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.229, -1.05, 0)
+emitAngle_ = 180.0
+EmitPerSecond = 15.0

@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://k2e28k7btn11"]
+
+[ext_resource type="Script" uid="uid://d02qj6i3k20yy" path="res://Objects/Effect/Spirit.cs" id="1_b3rbq"]
+[ext_resource type="PackedScene" uid="uid://bfkmtige6eg50" path="res://assets/Objects/Effect/Spirit/Spirit10.blend" id="2_r8btn"]
+[ext_resource type="Material" uid="uid://c4ggjmtvvus0c" path="res://Objects/Effect/Materials/Spirit/Core Material.tres" id="3_i6ucx"]
+[ext_resource type="Material" uid="uid://cpto1peynx76b" path="res://Objects/Effect/Materials/Spirit/Tail Material.tres" id="3_jdxmu"]
+
+[node name="Spirit" type="Node3D"]
+script = ExtResource("1_b3rbq")
+
+[node name="Model" parent="." instance=ExtResource("2_r8btn")]
+
+[node name="Core" parent="Model/Armature/Skeleton3D" index="0"]
+surface_material_override/0 = ExtResource("3_i6ucx")
+
+[node name="Tail" parent="Model/Armature/Skeleton3D" index="1"]
+surface_material_override/0 = ExtResource("3_jdxmu")
+
+[editable path="Model"]

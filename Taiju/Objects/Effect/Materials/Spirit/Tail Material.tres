@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://cpto1peynx76b"]
+
+[ext_resource type="Texture2D" uid="uid://cue5m8cjcg8uy" path="res://assets/Objects/Effect/Spirit/Spirit_Tail.png" id="1_5hhkp"]
+
+[resource]
+resource_name = "Tail Material"
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 1, 1, 0.501961)
+albedo_texture = ExtResource("1_5hhkp")

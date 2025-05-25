@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://581jt6ajonyu"]
+
+[ext_resource type="Script" uid="uid://dngg7spl46jp5" path="res://Objects/Effect/StarDust.cs" id="1_8qo7t"]
+[ext_resource type="PlaneMesh" uid="uid://uvpfw14gxb5v" path="res://Objects/Effect/Textures/MagicElement/MagicElement.tres" id="2_ciqh2"]
+
+[node name="StarDust" type="Node3D"]
+script = ExtResource("1_8qo7t")
+baseColor_ = Color(1, 0.709804, 0.713726, 1)
+Mesh = ExtResource("2_ciqh2")
