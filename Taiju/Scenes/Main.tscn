@@ -1,29 +1,33 @@
-[gd_scene load_steps=27 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=28 format=3 uid="uid://ceqv14au1y2ag"]
 
 [ext_resource type="Script" uid="uid://xerpjryc82k5" path="res://Util/Reversible/Godot/ClockNode.cs" id="1_alw2w"]
 [ext_resource type="Script" uid="uid://clc46teldv4rk" path="res://Util/Godot/Camera.cs" id="2_1p5hy"]
 [ext_resource type="Script" uid="uid://xbqbk6n6bjsq" path="res://Util/Godot/Overlay/StretchedSubViewport.cs" id="3_grg3l"]
+[ext_resource type="Texture2D" uid="uid://ci480n5f4lr7t" path="res://assets/Background/Skybox/BlueSky.hdr" id="3_h1m7h"]
 [ext_resource type="PackedScene" uid="uid://co8ax7f470wis" path="res://Objects/Witch/Sora.tscn" id="4_h45ke"]
 [ext_resource type="Script" uid="uid://cxxvayvisde34" path="res://Objects/Witch/SoraBulletServer.cs" id="7_hxyi1"]
 [ext_resource type="PackedScene" uid="uid://cp8q8tkg6dn4i" path="res://UI/SpellGauge.tscn" id="8_grg3l"]
 [ext_resource type="Script" uid="uid://bbu6uiafbe25c" path="res://Objects/BulletServer/Server/CircleBulletServer.cs" id="8_qfb4r"]
 [ext_resource type="Script" uid="uid://dc1iy8ddjwdlx" path="res://UI/HUD/HudParent.cs" id="9_frkhe"]
 [ext_resource type="PackedScene" uid="uid://cnv7a2ru52o6e" path="res://Scenes/Stage01.tscn" id="10_1rftd"]
-[ext_resource type="Script" uid="uid://cawdxy2pwskny" path="res://Scenes/Stages/Chapter01/Stager.cs" id="11_1p5hy"]
-[ext_resource type="Script" uid="uid://c5d37pw5skb8u" path="res://Scenes/Stages/Chapter01/Forest.cs" id="11_frkhe"]
-[ext_resource type="Material" uid="uid://dxb0h08vdwfrl" path="res://Scenes/Stages/Chapter01/Forest.tres" id="12_frkhe"]
+[ext_resource type="Script" uid="uid://cawdxy2pwskny" path="res://Scenes/Stages/Stage01/Stager.cs" id="11_1p5hy"]
+[ext_resource type="Script" uid="uid://c5d37pw5skb8u" path="res://Scenes/Stages/Stage01/Forest.cs" id="11_frkhe"]
+[ext_resource type="Material" uid="uid://dxb0h08vdwfrl" path="res://Scenes/Stages/Stage01/Forest.tres" id="12_frkhe"]
 [ext_resource type="Texture2D" uid="uid://m8cnuhlku0wo" path="res://assets/Objects/Enemy/Bullets/CircleBullet/Red.png" id="14_knvo7"]
 [ext_resource type="Texture2D" uid="uid://chx21rgwj6x4c" path="res://assets/Objects/Enemy/Bullets/CircleBullet/Blue.png" id="15_p07sh"]
 
-[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_aadso"]
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_erwvk"]
+panorama = ExtResource("3_h1m7h")
+energy_multiplier = 0.3
 
 [sub_resource type="Sky" id="Sky_7rgmx"]
 resource_local_to_scene = true
-sky_material = SubResource("PhysicalSkyMaterial_aadso")
+sky_material = SubResource("PanoramaSkyMaterial_erwvk")
 
 [sub_resource type="Environment" id="Environment_t1wdw"]
 background_mode = 2
 sky = SubResource("Sky_7rgmx")
+sky_rotation = Vector3(0, 3.14159, 0)
 glow_enabled = true
 glow_intensity = 2.0
 glow_strength = 1.15
@@ -33,6 +37,7 @@ glow_blend_mode = 0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jlq0k"]
 transparency = 1
+shading_mode = 0
 albedo_texture = ExtResource("14_knvo7")
 billboard_mode = 1
 billboard_keep_scale = true
@@ -43,9 +48,11 @@ orientation = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gpj2h"]
 transparency = 1
+shading_mode = 0
 albedo_texture = ExtResource("15_p07sh")
 billboard_mode = 1
 billboard_keep_scale = true
+grow_amount = 0.095
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_xvsfn"]
 material = SubResource("StandardMaterial3D_gpj2h")

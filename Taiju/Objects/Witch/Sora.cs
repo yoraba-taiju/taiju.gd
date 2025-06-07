@@ -27,7 +27,7 @@ public partial class Sora : ReversibleRigidBody3D {
   private SoraBulletServer bulletServer_;
   private Node3D bulletNode_;
   private PackedScene arrowAsset_;
-  private SpellGauge gauge_;
+  private SpellGauge spellGauge_;
 
   /* Spell Related Types */
   private struct SpellConstant {
@@ -96,7 +96,7 @@ public partial class Sora : ReversibleRigidBody3D {
     bulletServer_ = GetNode<SoraBulletServer>("/root/Root/Field/WitchBullet/SoraBulletServer")!;
     bulletNode_ = GetNode<Node3D>("/root/Root/Field/WitchBullet")!;
     arrowAsset_ = ResourceLoader.Load<PackedScene>("res://Objects/Effect/Arrow.tscn")!;
-    gauge_ = GetNode<SpellGauge>("/root/Root/Field/HUD/SpellGauge")!;
+    spellGauge_ = GetNode<SpellGauge>("/root/Root/Field/HUD/SpellGauge")!;
     // Initial State
     record_ = new Dense<Record>(Clock, new Record {
       Position = Position,
@@ -265,10 +265,6 @@ public partial class Sora : ReversibleRigidBody3D {
   }
 
   private void ProcessSpell(ref Record rec, double integrateTime, double dt) {
-    if (Input.IsActionJustPressed(Constant.SpellButtonName)) {
-      InvokeArrow();
-    }
-    return;
     ref var spell = ref rec.Spell;
     ref var invoking = ref spell.Invoking;
     ref var leftTime = ref spell.InvocationLeftTime;
@@ -386,6 +382,6 @@ public partial class Sora : ReversibleRigidBody3D {
     if (numMagicElements < 8 * 12) {
       numMagicElements++;
     }
-    gauge_.SetGauge(numMagicElements);
+    spellGauge_.SetGauge(numMagicElements);
   }
 }

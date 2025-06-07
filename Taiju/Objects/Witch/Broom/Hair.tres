@@ -13,6 +13,6 @@ shader_parameter/smoothing_max = 0.1
 [resource]
 next_pass = SubResource("ShaderMaterial_t5g2g")
 diffuse_mode = 3
-specular_mode = 1
+specular_mode = 2
 albedo_color = Color(0.64598, 0.473898, 0.326851, 1)
 roughness = 0.0

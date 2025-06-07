@@ -6,5 +6,7 @@
 [node name="SoraClone" type="Node3D"]
 script = ExtResource("1_huiu2")
 
-[node name="Momiji" parent="." instance=ExtResource("2_mvdln")]
+[node name="Model" type="Node3D" parent="."]
+
+[node name="Momiji" parent="Model" instance=ExtResource("2_mvdln")]
 transform = Transform3D(-6.55671e-08, 0, -1.5, 0, 1.5, 0, 1.5, 0, -6.55671e-08, -0.205, -3.022, 0)

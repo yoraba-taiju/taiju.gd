@@ -1,14 +1,26 @@
-[gd_scene load_steps=20 format=3 uid="uid://gen4oose6k6b"]
+[gd_scene load_steps=23 format=3 uid="uid://gen4oose6k6b"]
 
-[ext_resource type="PackedScene" uid="uid://b3xejvm2s0d08" path="res://assets/Objects/Witch/Momiji/Model/body.glb" id="1_xyw3f"]
+[ext_resource type="PackedScene" uid="uid://b4s0wwjyeerm1" path="res://assets/Objects/Witch/Momiji/Model/momiji.glb" id="1_xyw3f"]
 [ext_resource type="Material" uid="uid://cc7o7vjx62g1h" path="res://Objects/Witch/Momiji/boots.tres" id="2_0hyio"]
+[ext_resource type="Texture2D" uid="uid://cud8v3f3xydhq" path="res://assets/Objects/Witch/Momiji/Model/momiji_skin.png" id="2_cbejd"]
 [ext_resource type="Material" uid="uid://cfyst5jris2ot" path="res://Objects/Witch/Momiji/skin.tres" id="2_smntx"]
 [ext_resource type="Material" uid="uid://lkiajcy2gdae" path="res://Objects/Witch/Momiji/boots_chord.tres" id="3_yub0u"]
 [ext_resource type="Shader" uid="uid://cyd1uggltbuxk" path="res://Objects/Witch/Common/Outline.gdshader" id="4_3x5kf"]
 [ext_resource type="Material" uid="uid://dx7qdaeldmy82" path="res://Objects/Witch/Broom/Ring.tres" id="5_5i3oq"]
 [ext_resource type="Material" uid="uid://feolh361ergm" path="res://Objects/Witch/Broom/Rod.tres" id="5_6e3un"]
-[ext_resource type="Texture2D" uid="uid://cewomidi331t7" path="res://assets/Objects/Witch/Momiji/Model/body_eye.png" id="5_dgrys"]
+[ext_resource type="Texture2D" uid="uid://os7nt1uplje4" path="res://assets/Objects/Witch/Momiji/Model/textures/eye.png" id="5_dgrys"]
 [ext_resource type="Material" uid="uid://c044bgug32bio" path="res://Objects/Witch/Broom/Hair.tres" id="5_k6huh"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yl8ef"]
+diffuse_mode = 3
+specular_mode = 2
+albedo_texture = ExtResource("2_cbejd")
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t8f3q"]
+diffuse_mode = 3
+specular_mode = 2
+roughness = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3x5kf"]
 render_priority = 0
@@ -21,8 +33,8 @@ shader_parameter/smoothing_max = 0.1
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6e3un"]
 next_pass = SubResource("ShaderMaterial_3x5kf")
 diffuse_mode = 3
-specular_mode = 1
-albedo_color = Color(0.629553, 0.359856, 0.398213, 1)
+specular_mode = 2
+albedo_color = Color(0.69, 0.3795, 0.436425, 1)
 roughness = 0.01
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cbejd"]
@@ -86,8 +98,8 @@ emission_texture = ExtResource("5_dgrys")
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 
 [node name="body_skin" parent="body/Root/Skeleton3D" index="0"]
-surface_material_override/0 = ExtResource("2_smntx")
-surface_material_override/1 = ExtResource("2_smntx")
+surface_material_override/0 = SubResource("StandardMaterial3D_yl8ef")
+surface_material_override/1 = SubResource("StandardMaterial3D_t8f3q")
 
 [node name="ear" parent="body/Root/Skeleton3D" index="1"]
 surface_material_override/0 = ExtResource("2_smntx")
