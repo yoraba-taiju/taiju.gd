@@ -1,13 +1,13 @@
 [gd_scene load_steps=7 format=3 uid="uid://dulu3o8yh1dam"]
 
 [ext_resource type="Script" uid="uid://b848dyhj7qfxj" path="res://Objects/Witch/SoraBullet.cs" id="1_vidhp"]
-[ext_resource type="Texture2D" uid="uid://dogya61fu548r" path="res://assets/Objects/Witch/Sora/SoraBullet.png" id="1_wga83"]
+[ext_resource type="Texture2D" uid="uid://dogya61fu548r" path="res://assets/Objects/Witch/Sora/Bullet/Bullet.png" id="1_wga83"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r8evr"]
 transparency = 1
 albedo_texture = ExtResource("1_wga83")
 emission_enabled = true
-emission_energy_multiplier = 1.2
+emission_energy_multiplier = 0.8
 emission_texture = ExtResource("1_wga83")
 billboard_mode = 1
 billboard_keep_scale = true
