@@ -212,6 +212,10 @@ public partial class Chase : EnemyBase {
     return LoadCurrentStatus(integrateTime);
   }
 
+  public override bool _ProcessLeap(double integrateTime) {
+    base._ProcessLeap(integrateTime);
+    return LoadCurrentStatus(integrateTime);
+  }
 
   private bool LoadCurrentStatus(double integrateTime) {
     ref readonly var rec = ref record_.Ref;

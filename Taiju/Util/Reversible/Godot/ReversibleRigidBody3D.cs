@@ -1,4 +1,6 @@
-﻿using Godot;
+﻿using System;
+using Godot;
+using Taiju.Objects;
 using Taiju.Util.Reversible.Godot.Companion;
 
 namespace Taiju.Util.Reversible.Godot;
@@ -25,12 +27,16 @@ public abstract partial class ReversibleRigidBody3D : RigidBody3D, IReversibleNo
    */
   public override void _Process(double delta) {
     comp_.Process(this, delta);
+    Freeze = ClockNode.Direction switch {
+      ClockNode.TimeDirection.Forward => false,
+      ClockNode.TimeDirection.Back or ClockNode.TimeDirection.Stop => true,
+      _ => throw new ArgumentOutOfRangeException()
+    };
   }
 
   /*
    * Helpers
    */
-
   public void Destroy() {
     comp_.Destroy(this);
   }

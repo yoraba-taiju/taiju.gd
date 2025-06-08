@@ -5,8 +5,8 @@ using Taiju.Util.Reversible.Godot.Companion;
 
 namespace Taiju.Util.Reversible.Godot;
 
-public partial class ReversibleAnimationPlayer : AnimationPlayer, IReversibleNode {
-  private ReversibleCompanion<ReversibleAnimationPlayer> comp_;
+public partial class ReversibleAnimationTree : AnimationTree, IReversibleNode {
+  private ReversibleCompanion<ReversibleAnimationTree> comp_;
 
   /*
    * Members
@@ -20,7 +20,11 @@ public partial class ReversibleAnimationPlayer : AnimationPlayer, IReversibleNod
 
   public override void _Ready() {
     comp_.Ready(this);
-    PlaybackActive = true;
+    Active = true;
+  }
+
+  protected virtual void Seek(double t) {
+    Set("parameters/Seek/seek_request", t);
   }
 
   /*

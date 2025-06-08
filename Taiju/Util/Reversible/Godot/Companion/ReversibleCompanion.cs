@@ -9,12 +9,11 @@ public struct ReversibleCompanion<T>
   where T: Node, IReversibleNode
 {
   /// Accessors
-  public ClockNode ClockNode { get; private set; }
+  public Objects.ClockNode ClockNode { get; private set; }
   public Clock Clock { get; private set; }
   /// Clock Stats
   public bool IsAlive { get; set; }
-  private ClockNode.TimeDirection Direction => ClockNode.Direction;
-  private bool Ticked => ClockNode.Ticked;
+  private Objects.ClockNode.TimeDirection Direction => ClockNode.Direction;
   private bool Leap => ClockNode.Leaped;
 
   /// This object
@@ -26,7 +25,7 @@ public struct ReversibleCompanion<T>
    */
 
   public void Ready(T self) {
-    ClockNode = self.GetNode<ClockNode>("/root/Root/Clock");
+    ClockNode = self.GetNode<Objects.ClockNode>("/root/Root/Clock");
     Clock = ClockNode.Clock;
     bornTick_ = Clock.CurrentTick;
     integrateTime_ = new Dense<double>(Clock, 0.0);
@@ -42,18 +41,7 @@ public struct ReversibleCompanion<T>
 
     // Run
     switch (Direction) {
-      case ClockNode.TimeDirection.Stop: {
-        ref readonly var integrateTime = ref integrateTime_.Ref;
-        if (Leap) {
-          if (self._ProcessLeap(integrateTime)) {
-            return;
-          }
-          self._ProcessRaw(integrateTime, delta);
-        }
-      }
-        break;
-
-      case ClockNode.TimeDirection.Forward: {
+      case Objects.ClockNode.TimeDirection.Forward: {
         ref var integrateTime = ref integrateTime_.Mut;
         integrateTime += delta;
         if (self._ProcessForward(integrateTime, delta)) {
@@ -63,7 +51,7 @@ public struct ReversibleCompanion<T>
       }
         break;
 
-      case ClockNode.TimeDirection.Back: {
+      case Objects.ClockNode.TimeDirection.Back: {
         ref readonly var integrateTime = ref integrateTime_.Ref;
         if (self._ProcessBack(integrateTime)) {
           return;
@@ -71,6 +59,21 @@ public struct ReversibleCompanion<T>
         self._ProcessRaw(integrateTime, delta);
         break;
       }
+
+      case Objects.ClockNode.TimeDirection.Stop: {
+        ref readonly var integrateTime = ref integrateTime_.Ref;
+        if (Leap) {
+          if (self._ProcessLeap(integrateTime)) {
+            return;
+          }
+        } else {
+          if (self._ProcessBack(integrateTime)) {
+            return;
+          }
+        }
+        self._ProcessRaw(integrateTime, delta);
+      }
+        break;
 
       default:
         throw new ArgumentOutOfRangeException();

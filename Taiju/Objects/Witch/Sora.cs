@@ -23,11 +23,11 @@ public partial class Sora : ReversibleRigidBody3D {
 
   /* Assets */
   [Export(PropertyHint.Range, "0,0.2,")] private double nextBulletDuration_ = 0.08;
+  private Player player_;
   private Node3D witchField_;
   private SoraBulletServer bulletServer_;
   private Node3D bulletNode_;
   private PackedScene arrowAsset_;
-  private SpellGauge spellGauge_;
 
   /* Spell Related Types */
   private struct SpellConstant {
@@ -67,7 +67,6 @@ public partial class Sora : ReversibleRigidBody3D {
   }
 
   internal record struct MetaRecord {
-    public int NumMagicElements;
     public CloneType CloneType;
   }
 
@@ -92,11 +91,11 @@ public partial class Sora : ReversibleRigidBody3D {
 
   public override void _Ready() {
     base._Ready();
+    player_ = GetNode<Player>("/root/Root/Player")!;
     witchField_ = GetNode<Node3D>("/root/Root/Field/Witch")!;
     bulletServer_ = GetNode<SoraBulletServer>("/root/Root/Field/WitchBullet/SoraBulletServer")!;
     bulletNode_ = GetNode<Node3D>("/root/Root/Field/WitchBullet")!;
     arrowAsset_ = ResourceLoader.Load<PackedScene>("res://Objects/Effect/Arrow.tscn")!;
-    spellGauge_ = GetNode<SpellGauge>("/root/Root/Field/HUD/SpellGauge")!;
     // Initial State
     record_ = new Dense<Record>(Clock, new Record {
       Position = Position,
@@ -116,7 +115,6 @@ public partial class Sora : ReversibleRigidBody3D {
     });
     shotRanges_ = [];
     meta_ = new MetaRecord {
-      NumMagicElements = 0,
       CloneType = CloneType.Momiji,
     };
     collisionShape_ = GetNode<CollisionShape3D>("Shape");
@@ -372,16 +370,10 @@ public partial class Sora : ReversibleRigidBody3D {
   }
 
   public void Hit() {
-    ref var rec = ref record_.Mut;
-    Console.WriteLine("Hit");
+    player_.OnDamageBySora();
   }
 
   public void AbsorbMagicElement() {
-    ref var meta = ref meta_;
-    ref var numMagicElements = ref meta.NumMagicElements;
-    if (numMagicElements < 8 * 12) {
-      numMagicElements++;
-    }
-    spellGauge_.SetGauge(numMagicElements);
+    player_.OnAbsorbMagicElementsBySora(4);
   }
 }

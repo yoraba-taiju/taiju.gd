@@ -5,7 +5,7 @@ namespace Taiju.UI.HUD;
 
 public partial class SpellGaugeSlot : Sprite2D {
   // Constants
-  public const int ItemPerSlot = 16;
+  public const int ItemPerSlot = 32;
   [Export(PropertyHint.Range, "0,1.0,0.1")] private double initialTickDuration_ = 0.5;
 
   // Status

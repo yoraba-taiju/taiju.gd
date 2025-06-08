@@ -4,6 +4,8 @@ using Godot;
 namespace Taiju.UI.HUD;
 
 public partial class SpellGauge : Node2D {
+  // Constants
+  public const int ItemsPerGauge = SpellGaugeSlot.ItemPerSlot * 8;
   private int numElements_;
   private SpellGaugeSlot[] gaugeItems_;
   public override void _Ready() {
@@ -28,8 +30,12 @@ public partial class SpellGauge : Node2D {
     var full = numElements_ / SpellGaugeSlot.ItemPerSlot;
     var left = numElements_ % SpellGaugeSlot.ItemPerSlot;
     var changed = false;
-    for (var i = 0; i < full; i++) {
-      changed = changed || gaugeItems_[i].SetNumItems(SpellGaugeSlot.ItemPerSlot);
+    for (var i = 0; i < 8; i++) {
+      if (i < full) {
+        changed = changed || gaugeItems_[i].SetNumItems(SpellGaugeSlot.ItemPerSlot);
+      } else {
+        gaugeItems_[i].SetNumItems(0);
+      }
     }
     if (full < 8) {
       changed = changed || gaugeItems_[full].SetNumItems(left);

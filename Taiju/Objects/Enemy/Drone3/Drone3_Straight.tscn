@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://c1hrm8guabck6"]
+[gd_scene load_steps=6 format=3 uid="uid://c1hrm8guabck6"]
 
 [ext_resource type="Script" uid="uid://b33t34yebrrbq" path="res://Objects/Enemy/Drone3/Straight.cs" id="1_171p1"]
 [ext_resource type="PackedScene" uid="uid://4aiotewnna7p" path="res://assets/Objects/Enemy/Drones/Drone3.blend" id="1_lw7j1"]
 [ext_resource type="PackedScene" uid="uid://581jt6ajonyu" path="res://Objects/Effect/StarDust.tscn" id="2_x0yp1"]
+[ext_resource type="Script" uid="uid://dc56ikdixyglm" path="res://Util/Reversible/Godot/ReversibleAnimationPlayer.cs" id="3_4n40o"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_o1gpk"]
 radius = 2.0
@@ -27,6 +28,14 @@ shape = SubResource("SphereShape3D_o1gpk")
 [node name="Drone3" parent="Body" instance=ExtResource("1_lw7j1")]
 transform = Transform3D(-1.15, 1.73645e-07, -7.59027e-15, 0, -5.02681e-08, -1.15, -1.73645e-07, -1.15, 5.02681e-08, 0, 0, 0)
 
+[node name="BarretAnchor" parent="Body/Drone3" index="3"]
+transform = Transform3D(1, 0, 0, 0, 0.9986295, -0.052335955, 0, 0.052335955, 0.9986295, 0, 0, 0)
+
+[node name="AnimationPlayer" parent="Body/Drone3" index="4"]
+script = ExtResource("3_4n40o")
+
 [node name="StarDust" parent="Body" instance=ExtResource("2_x0yp1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.06143, 0, 0)
 EmitPerSecond = 20.0
+
+[editable path="Body/Drone3"]

@@ -74,8 +74,8 @@ public abstract partial class BulletServer<TParam> : ReversibleNode3D
         SpawnEnqueuedBullets(integrateTime);
         ProcessBullets(true, integrateTime);
         break;
-      case ClockNode.TimeDirection.Stop:
       case ClockNode.TimeDirection.Back:
+      case ClockNode.TimeDirection.Stop:
         ProcessBullets(false, integrateTime);
         break;
       default:

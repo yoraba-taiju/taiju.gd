@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using Taiju.Objects.BulletServer.Server;
 using Taiju.Util;
@@ -71,12 +72,16 @@ public partial class Straight : EnemyBase {
     return LoadCurrentStatus();
   }
 
+  public override bool _ProcessLeap(double integrateTime) {
+    base._ProcessLeap(integrateTime);
+    return LoadCurrentStatus();
+  }
 
   private bool LoadCurrentStatus() {
     ref readonly var rec = ref record_.Ref;
     Position = rec.Position;
     body_.Rotation = new Vector3(0, 0, Vec.Atan2(-rec.Velocity));
-    animPlayer_.Seek(rec.Animation, true);
+    animPlayer_.Seek(rec.Animation, true, true);
     return true;
   }
 

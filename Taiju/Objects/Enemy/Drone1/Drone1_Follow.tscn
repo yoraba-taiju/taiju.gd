@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://bc66k31538av8"]
+[gd_scene load_steps=12 format=3 uid="uid://bc66k31538av8"]
 
 [ext_resource type="Script" uid="uid://bqy2jycxniq8u" path="res://Objects/Enemy/Drone1/Follow.cs" id="1_70det"]
 [ext_resource type="PackedScene" uid="uid://c7xy606gjxyr8" path="res://assets/Objects/Enemy/Drones/Drone1.blend" id="1_jmkx4"]
+[ext_resource type="Script" uid="uid://5qe07ww5qt3j" path="res://Util/Reversible/Godot/ReversibleAnimationTree.cs" id="3_35cmf"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_u27nk"]
 radius = 1.2
@@ -22,6 +23,7 @@ animation = &"羽A_RootAction"
 animation = &"羽B_RootAction"
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_3351t"]
+nodes/output/position = Vector2(660, 160)
 nodes/Combined/node = SubResource("AnimationNodeAdd2_y78wp")
 nodes/Combined/position = Vector2(220, 140)
 nodes/Root/node = SubResource("AnimationNodeAnimation_8jv2p")
@@ -34,8 +36,7 @@ nodes/Wing1/node = SubResource("AnimationNodeAnimation_66sb6")
 nodes/Wing1/position = Vector2(-280, 120)
 nodes/Wing2/node = SubResource("AnimationNodeAnimation_mjfmf")
 nodes/Wing2/position = Vector2(-280, 260)
-nodes/output/position = Vector2(660, 160)
-node_connections = [&"Combined", 0, &"Wing Combined", &"Combined", 1, &"Root", &"Seek", 0, &"Combined", &"Wing Combined", 0, &"Wing1", &"Wing Combined", 1, &"Wing2", &"output", 0, &"Seek"]
+node_connections = [&"output", 0, &"Seek", &"Combined", 0, &"Wing Combined", &"Combined", 1, &"Root", &"Seek", 0, &"Combined", &"Wing Combined", 0, &"Wing1", &"Wing Combined", 1, &"Wing2"]
 
 [node name="Drone1" type="RigidBody3D"]
 collision_layer = 16
@@ -60,13 +61,13 @@ transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 0, 0, 0)
 transform = Transform3D(-1.2, 0, -1.81195e-07, 0, 1.2, 0, 1.81195e-07, 0, -1.2, 0, 0, 0)
 
 [node name="羽_Root" parent="Body/Drone1/Root/プロペラ" index="0"]
-transform = Transform3D(0.444468, 1.76485e-16, -0.895793, -6.45106e-17, 1, 1.65007e-16, 0.895793, -1.5552e-17, 0.444468, 0, 0, 0)
+transform = Transform3D(0.99999845, -1.6703742e-22, 1.7484528e-07, 1.6703714e-22, 1, 1.0587897e-22, -1.7484528e-07, -1.058791e-22, 0.99999845, 0, 0, 0)
 
 [node name="羽A_Root" parent="Body/Drone1/Root/プロペラ/羽_Root" index="0"]
-transform = Transform3D(0.302117, 4.66799e-16, -0.953271, 4.31573e-16, 1, 6.26459e-16, 0.953271, -6.0067e-16, 0.302117, 0, 1.2, -0.75)
+transform = Transform3D(0.9900488, -1.6703746e-22, -0.1407252, 1.802751e-22, 1, 8.13191e-23, 0.1407252, -1.058791e-22, 0.9900488, 0, 1.2, -0.75)
 
 [node name="羽B_Root" parent="Body/Drone1/Root/プロペラ/羽_Root" index="1"]
-transform = Transform3D(0.444468, 1.38173e-15, -0.895793, -1.45288e-15, 1, 8.21588e-16, 0.895793, 9.36313e-16, 0.444468, 0, 1.2, 0.75)
+transform = Transform3D(0.99999845, -1.6703746e-22, 1.7484528e-07, 1.6703718e-22, 1, 1.0587897e-22, -1.7484528e-07, -1.058791e-22, 0.99999845, 0, 1.2, 0.75)
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 root_node = NodePath("../Body/Drone1")
@@ -75,5 +76,6 @@ anim_player = NodePath("../Body/Drone1/AnimationPlayer")
 parameters/Combined/add_amount = 1.0
 parameters/Seek/seek_request = -1.0
 "parameters/Wing Combined/add_amount" = 1.0
+script = ExtResource("3_35cmf")
 
 [editable path="Body/Drone1"]

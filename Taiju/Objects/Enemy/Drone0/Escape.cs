@@ -111,12 +111,16 @@ public partial class Escape : EnemyBase {
     return LoadCurrentStatus();
   }
 
+  public override bool _ProcessLeap(double integrateTime) {
+    base._ProcessLeap(integrateTime);
+    return LoadCurrentStatus();
+  }
 
   private bool LoadCurrentStatus() {
     ref readonly var rec = ref record_.Ref;
     Position = rec.Position;
     body_.Rotation = new Vector3(0, 0, Vec.Atan2(-rec.Velocity));
-    animPlayer_.Seek(rec.Animation, true);
+    animPlayer_.Seek(rec.Animation, true, true);
     return true;
   }
 
@@ -124,5 +128,6 @@ public partial class Escape : EnemyBase {
     ref readonly var rec = ref record_.Ref;
     state.LinearVelocity = rec.Velocity;
   }
+
   protected override ref int ShieldMut => ref record_.Mut.Shield;
 }

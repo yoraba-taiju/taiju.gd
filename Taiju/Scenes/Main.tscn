@@ -1,6 +1,7 @@
-[gd_scene load_steps=28 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=29 format=3 uid="uid://ceqv14au1y2ag"]
 
-[ext_resource type="Script" uid="uid://xerpjryc82k5" path="res://Util/Reversible/Godot/ClockNode.cs" id="1_alw2w"]
+[ext_resource type="Script" uid="uid://xerpjryc82k5" path="res://Objects/ClockNode.cs" id="1_alw2w"]
+[ext_resource type="Script" uid="uid://byj8w8pd71fwb" path="res://Objects/Player.cs" id="1_erwvk"]
 [ext_resource type="Script" uid="uid://clc46teldv4rk" path="res://Util/Godot/Camera.cs" id="2_1p5hy"]
 [ext_resource type="Script" uid="uid://xbqbk6n6bjsq" path="res://Util/Godot/Overlay/StretchedSubViewport.cs" id="3_grg3l"]
 [ext_resource type="Texture2D" uid="uid://ci480n5f4lr7t" path="res://assets/Background/Skybox/BlueSky.hdr" id="3_h1m7h"]
@@ -69,6 +70,9 @@ material = ExtResource("12_frkhe")
 [sub_resource type="Environment" id="Environment_grg3l"]
 
 [node name="Root" type="Node3D"]
+
+[node name="Player" type="Node3D" parent="."]
+script = ExtResource("1_erwvk")
 
 [node name="Clock" type="Node3D" parent="."]
 script = ExtResource("1_alw2w")

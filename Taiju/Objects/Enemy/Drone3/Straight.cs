@@ -155,10 +155,15 @@ public partial class Straight : EnemyBase {
     return LoadCurrentStatus(integrateTime);
   }
 
+  public override bool _ProcessLeap(double integrateTime) {
+    base._ProcessLeap(integrateTime);
+    return LoadCurrentStatus(integrateTime);
+  }
+
   private bool LoadCurrentStatus(double integrateTime) {
     ref readonly var rec = ref record_.Ref;
     Position = rec.Position;
-    animPlayer_.Seek(rec.Animation, true);
+    animPlayer_.Seek(rec.Animation, true, true);
     starDust_.Visible = rec.State is State.Prepare or State.Escape;
     return true;
   }

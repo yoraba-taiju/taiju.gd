@@ -1,6 +1,6 @@
 [gd_scene load_steps=23 format=3 uid="uid://gen4oose6k6b"]
 
-[ext_resource type="PackedScene" uid="uid://b4s0wwjyeerm1" path="res://assets/Objects/Witch/Momiji/Model/momiji.glb" id="1_xyw3f"]
+[ext_resource type="PackedScene" uid="uid://xqfigga02og4" path="res://assets/Objects/Witch/Momiji/Model/momiji.glb" id="1_xyw3f"]
 [ext_resource type="Material" uid="uid://cc7o7vjx62g1h" path="res://Objects/Witch/Momiji/boots.tres" id="2_0hyio"]
 [ext_resource type="Texture2D" uid="uid://cud8v3f3xydhq" path="res://assets/Objects/Witch/Momiji/Model/momiji_skin.png" id="2_cbejd"]
 [ext_resource type="Material" uid="uid://cfyst5jris2ot" path="res://Objects/Witch/Momiji/skin.tres" id="2_smntx"]
@@ -8,7 +8,7 @@
 [ext_resource type="Shader" uid="uid://cyd1uggltbuxk" path="res://Objects/Witch/Common/Outline.gdshader" id="4_3x5kf"]
 [ext_resource type="Material" uid="uid://dx7qdaeldmy82" path="res://Objects/Witch/Broom/Ring.tres" id="5_5i3oq"]
 [ext_resource type="Material" uid="uid://feolh361ergm" path="res://Objects/Witch/Broom/Rod.tres" id="5_6e3un"]
-[ext_resource type="Texture2D" uid="uid://os7nt1uplje4" path="res://assets/Objects/Witch/Momiji/Model/textures/eye.png" id="5_dgrys"]
+[ext_resource type="Texture2D" uid="uid://c3038exu5atks" path="res://assets/Objects/Witch/Momiji/Model/textures/eye.png" id="5_dgrys"]
 [ext_resource type="Material" uid="uid://c044bgug32bio" path="res://Objects/Witch/Broom/Hair.tres" id="5_k6huh"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yl8ef"]
