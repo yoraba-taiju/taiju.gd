@@ -1,5 +1,6 @@
 ﻿using System;
 using Godot;
+using Taiju.Objects;
 using Taiju.Util.Reversible.Value;
 using Taiju.Objects.Rush;
 
@@ -9,7 +10,7 @@ public struct ReversibleCompanion<T>
   where T: Node, IReversibleNode
 {
   /// Accessors
-  public Objects.ClockNode ClockNode { get; private set; }
+  public ClockNode ClockNode { get; private set; }
   public Clock Clock { get; private set; }
   /// Clock Stats
   public bool IsAlive { get; set; }

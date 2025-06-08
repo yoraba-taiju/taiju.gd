@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=30 format=3 uid="uid://ceqv14au1y2ag"]
 
 [ext_resource type="Script" uid="uid://xerpjryc82k5" path="res://Objects/ClockNode.cs" id="1_alw2w"]
 [ext_resource type="Script" uid="uid://byj8w8pd71fwb" path="res://Objects/Player.cs" id="1_erwvk"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://cnv7a2ru52o6e" path="res://Scenes/Stage01.tscn" id="10_1rftd"]
 [ext_resource type="Script" uid="uid://cawdxy2pwskny" path="res://Scenes/Stages/Stage01/Stager.cs" id="11_1p5hy"]
 [ext_resource type="Script" uid="uid://c5d37pw5skb8u" path="res://Scenes/Stages/Stage01/Forest.cs" id="11_frkhe"]
+[ext_resource type="Script" uid="uid://ds68boil06e4q" path="res://UI/HUD/Score.cs" id="12_2w5on"]
 [ext_resource type="Material" uid="uid://dxb0h08vdwfrl" path="res://Scenes/Stages/Stage01/Forest.tres" id="12_frkhe"]
 [ext_resource type="Texture2D" uid="uid://m8cnuhlku0wo" path="res://assets/Objects/Enemy/Bullets/CircleBullet/Red.png" id="14_knvo7"]
 [ext_resource type="Texture2D" uid="uid://chx21rgwj6x4c" path="res://assets/Objects/Enemy/Bullets/CircleBullet/Blue.png" id="15_p07sh"]
@@ -131,6 +132,7 @@ script = ExtResource("9_frkhe")
 
 [node name="Score" type="Node2D" parent="Field/HUD"]
 position = Vector2(16, 26)
+script = ExtResource("12_2w5on")
 
 [node name="Label" type="Label" parent="Field/HUD/Score"]
 visibility_layer = 524288

@@ -9,6 +9,8 @@ public partial class SoraBullet : ReversibleRigidBody3D {
   private Vector3 spawnPoint_;
   public int Damage = 0;
   private Dense<Record> record_;
+  // Nodes
+  private Player player_;
   private SoraBulletServer bulletServer_;
   private struct Record {
     public Vector3 Position;
@@ -24,6 +26,7 @@ public partial class SoraBullet : ReversibleRigidBody3D {
     record_ = new Dense<Record>(Clock, new Record {
       Position = Position,
     });
+    player_ = GetNode<Player>("/root/Root/Player")!;
     bulletServer_ = GetNode<SoraBulletServer>("/root/Root/Field/WitchBullet/SoraBulletServer")!;
   }
 
@@ -32,6 +35,7 @@ public partial class SoraBullet : ReversibleRigidBody3D {
       return;
     }
     enemy.Hit(Damage);
+    player_.OnScoreAdded(10);
     bulletServer_.SpawnSparkle(Position + new Vector3(1.5f, 0.0f, 0.0f));
     // FIXME: physics workaround
     // SetDeferred(Node3D.PropertyName.Position, Position - Vector3.Right * 1.5f);

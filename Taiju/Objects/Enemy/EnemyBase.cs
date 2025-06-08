@@ -8,11 +8,13 @@ namespace Taiju.Objects.Enemy;
 
 public abstract partial class EnemyBase : ReversibleRigidBody3D {
   [Export(PropertyHint.Range, "0,100,1")] protected int InitialShield = 2;
+  [Export] protected long Score = 100;
   [Export] protected Vector2 BodySize = new(0, 0);
   [Export] protected float ExplosionScale = 1.0f;
   private PackedScene explosionPack_;
   private PackedScene magicElementItemPack_;
   private Node3D effectNode_;
+  protected Player Player;
   protected Sora Sora { get; private set; }
   private bool displayed_;
 
@@ -21,6 +23,7 @@ public abstract partial class EnemyBase : ReversibleRigidBody3D {
     explosionPack_ = ResourceLoader.Load<PackedScene>("res://Objects/Effect/ReversibleExplosion.tscn")!;
     magicElementItemPack_ = ResourceLoader.Load<PackedScene>("res://Objects/Effect/MagicElementItem.tscn")!;
     effectNode_ = GetNode<Node3D>("/root/Root/Field/EnemyEffect")!;
+    Player = GetNode<Player>("/root/Root/Player")!;
     Sora = GetNode<Sora>("/root/Root/Field/Witch/Sora")!;
     displayed_ = false;
   }
@@ -55,6 +58,7 @@ public abstract partial class EnemyBase : ReversibleRigidBody3D {
     if (shield > 0) {
       return true;
     }
+    Player.OnScoreAdded(Score);
     ExplodeAndDestroy();
     return false;
   }

@@ -67,6 +67,7 @@ public partial class Player : Node3D {
   }
 
   /** Other nodes **/
+  private Score score_;
   private SpellGauge spellGauge_;
 
   public override void _Ready() {
@@ -82,6 +83,8 @@ public partial class Player : Node3D {
         Delta = Vector3.Zero,
       },
     };
+    score_ = GetNode<Score>("/root/Root/Field/HUD/Score")!;
+    score_.Set(0);
     spellGauge_ = GetNode<SpellGauge>("/root/Root/Field/HUD/SpellGauge")!;
   }
 
@@ -269,5 +272,13 @@ public partial class Player : Node3D {
   }
   public void OnAbsorbMagicElementsBySora(int numAbsorbedMagicElements) {
     NumMagicElements = Math.Min(NumMagicElements + numAbsorbedMagicElements, SpellGauge.ItemsPerGauge);
+  }
+
+  /***************************************************************************
+   * By others
+   ***************************************************************************/
+
+  public void OnScoreAdded(long scoreDelta) {
+    score_.Add(scoreDelta);
   }
 }
