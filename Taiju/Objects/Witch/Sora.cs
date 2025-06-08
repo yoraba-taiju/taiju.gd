@@ -12,12 +12,6 @@ namespace Taiju.Objects.Witch;
 public partial class Sora : ReversibleRigidBody3D {
   /* Constants */
   private struct Constant {
-    public const string FireButtonName = "fire";
-    public const string SpellButtonName = "spell";
-    public const string MoveRightButtonName = "move_right";
-    public const string MoveLeftButtonName = "move_left";
-    public const string MoveUpButtonName = "move_up";
-    public const string MoveDownButtonName = "move_down";
     public const double MoveDelta = 16.0;
   }
 
@@ -146,35 +140,14 @@ public partial class Sora : ReversibleRigidBody3D {
     }
 
     /*  Start forwarding */
+    ref readonly var operation = ref player_.CurrentSoraOperation;
     ref var rec = ref record_.Mut;
 
     ref var pos = ref rec.Position;
     { // Position
-      var deltaPos = Vector3.Zero;
-      var moved = false;
-      if (Input.IsActionPressed(Constant.MoveRightButtonName)) {
-        deltaPos.X += 1.0f;
-        moved = true;
-      }
-      if (Input.IsActionPressed(Constant.MoveLeftButtonName)) {
-        deltaPos.X -= 1.0f;
-        moved = true;
-      }
-      if (Input.IsActionPressed(Constant.MoveUpButtonName)) {
-        deltaPos.Y += 1.0f;
-        moved = true;
-      }
-      if (Input.IsActionPressed(Constant.MoveDownButtonName)) {
-        deltaPos.Y -= 1.0f;
-        moved = true;
-      }
-
-      if (moved) {
-        deltaPos = deltaPos.Normalized() * (float)(dt * Constant.MoveDelta);
-        pos += deltaPos;
-        pos.X = Mathf.Clamp(pos.X, -21.0f, 21.0f);
-        pos.Y = Mathf.Clamp(pos.Y, -11.5f, 11.5f);
-      }
+      pos += operation.Delta * (float)(dt * Constant.MoveDelta);
+      pos.X = Mathf.Clamp(pos.X, -21.0f, 21.0f);
+      pos.Y = Mathf.Clamp(pos.Y, -11.5f, 11.5f);
     }
 
     ref var rot = ref rec.SpiritRot;
@@ -183,10 +156,10 @@ public partial class Sora : ReversibleRigidBody3D {
     }
 
     // Handle shot
-    InvokeShot(ref rec, integrateTime, dt);
+    InvokeShot(in operation, ref rec, integrateTime, dt);
 
     // Handle Spell
-    ProcessSpell(ref rec, integrateTime, dt);
+    ProcessSpell(in operation, ref rec, integrateTime, dt);
 
     { // Update using current value.
       Position = pos;
@@ -200,8 +173,12 @@ public partial class Sora : ReversibleRigidBody3D {
   }
 
   public override bool _ProcessLeap(double integrateTime) {
-    var clone = Clone(integrateTime);
-    witchField_.AddChild(clone);
+    ref readonly var operation = ref player_.CurrentSoraOperation;
+
+    if (operation.InvokeClone) {
+      var clone = Clone(integrateTime);
+      witchField_.AddChild(clone);
+    }
     // Cleanup shot ranges.
     var cur = shotRanges_.Last;
     while(cur != null) {
@@ -218,10 +195,10 @@ public partial class Sora : ReversibleRigidBody3D {
   /**
    * Invoke shot button behaviour.
    */
-  private void InvokeShot(ref Record rec, double integrateTime, double dt) {
+  private void InvokeShot(in Player.SoraOperation operation, ref Record rec, double integrateTime, double dt) {
     ref var afterFire = ref rec.AfterFire;
     ref readonly var invoking = ref rec.Spell.Invoking;
-    if (Input.IsActionPressed(Constant.FireButtonName)) {
+    if (operation.InvokeFire) {
       if (double.IsNaN(afterFire)) {
         // Case 1. Beginning.
         shotRanges_.AddLast(new ShotRange {
@@ -262,14 +239,14 @@ public partial class Sora : ReversibleRigidBody3D {
     }
   }
 
-  private void ProcessSpell(ref Record rec, double integrateTime, double dt) {
+  private void ProcessSpell(in Player.SoraOperation operation, ref Record rec, double integrateTime, double dt) {
     ref var spell = ref rec.Spell;
     ref var invoking = ref spell.Invoking;
     ref var leftTime = ref spell.InvocationLeftTime;
     ref var witch = ref rec.Witch;
     if (!invoking) {
       // Not invoked yet.
-      if (Input.IsActionJustPressed(Constant.SpellButtonName)) {
+      if (operation.InvokeSpell) {
         // Invoke Chitose.
         if (witch.Chitose) {
           // Invoke Chitose.
@@ -286,7 +263,7 @@ public partial class Sora : ReversibleRigidBody3D {
         // Switched to Sora back (normal case).
         invoking = false;
         leftTime = 0.0;
-      }else if (Input.IsActionJustPressed(Constant.SpellButtonName)) {
+      }else if (operation.InvokeSpell) {
         // Invoke back (force case).
         invoking = false;
         leftTime = 0.0;

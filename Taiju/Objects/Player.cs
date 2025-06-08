@@ -7,6 +7,18 @@ namespace Taiju.Objects;
 public partial class Player : Node3D {
   [Export] private int numMagicElementsPerTick_ = 1;
   [Export] private int numMinimumMagicElementsToBack_ = 1;
+  /* Constants */
+  private struct Constant {
+    public const string BackButtonName = "time_back";
+    public const string FireButtonName = "fire";
+    public const string SpellButtonName = "spell";
+    public const string MoveRightButtonName = "move_right";
+    public const string MoveLeftButtonName = "move_left";
+    public const string MoveUpButtonName = "move_up";
+    public const string MoveDownButtonName = "move_down";
+  }
+
+  /** Clocks **/
   public enum ClockState {
     Normal,
     OnDamage,
@@ -26,17 +38,27 @@ public partial class Player : Node3D {
     BackTick,
   }
 
+  /** Sora **/
+  public struct SoraOperation {
+    public bool InvokeFire;
+    public bool InvokeSpell;
+    public bool InvokeClone;
+    public Vector3 Delta;
+  }
+ 
   public struct State {
     public int NumMagicElements;
     public ClockState ClockState;
     public ClockOperation ClockOperation;
+    public SoraOperation SoraOperation;
   }
   
   /** Current States **/
   private State state_;
-  public ClockOperation CurrentClockOperation => state_.ClockOperation;
+  public ref readonly ClockOperation CurrentClockOperation => ref state_.ClockOperation;
+  public ref readonly SoraOperation CurrentSoraOperation => ref state_.SoraOperation;
 
-  public int NumMagicElements {
+  private int NumMagicElements {
     get => state_.NumMagicElements;
     set {
       state_.NumMagicElements = value;
@@ -52,6 +74,13 @@ public partial class Player : Node3D {
     state_ = new State {
       NumMagicElements = 0,
       ClockState = ClockState.Normal,
+      ClockOperation = ClockOperation.StartForward,
+      SoraOperation = new SoraOperation {
+        InvokeFire = false,
+        InvokeSpell = false,
+        InvokeClone = false,
+        Delta = Vector3.Zero,
+      },
     };
     spellGauge_ = GetNode<SpellGauge>("/root/Root/Field/HUD/SpellGauge")!;
   }
@@ -64,10 +93,15 @@ public partial class Player : Node3D {
   // Set CurrentClockOperation
   private void ProcessClock() {
     switch (state_.ClockState) {
-      case ClockState.Normal:
+      case ClockState.Normal: {
+        state_.SoraOperation.InvokeClone = false;
         if (ProcessBackButton()) {
           ProcessNormalClock();
         }
+        if (state_.ClockOperation is ClockOperation.StartForward or ClockOperation.Forward) {
+          ProcessNormalSora();
+        }
+      }
         break;
       case ClockState.OnDamage: {
         ProcessDamagedClock();
@@ -85,27 +119,46 @@ public partial class Player : Node3D {
    ***************************************************************************/
   private bool ProcessBackButton() {
     // Backing started
-    if (Input.IsActionJustPressed("time_back")) {
-      state_.ClockOperation =
-        state_.NumMagicElements >= numMinimumMagicElementsToBack_
-          ? ClockOperation.StartBack
-          : ClockOperation.Stop;
+    if (Input.IsActionJustPressed(Constant.BackButtonName)) {
+      if (state_.NumMagicElements < numMinimumMagicElementsToBack_) {
+        return true;
+      }
+      state_.ClockOperation = ClockOperation.StartBack;
       return false;
     }
     // Leaped
-    if (Input.IsActionJustReleased("time_back")) {
+    if (Input.IsActionJustReleased(Constant.BackButtonName)) {
       state_.ClockOperation =
-        CurrentClockOperation is ClockOperation.StartBack or ClockOperation.Back
+        state_.ClockOperation is ClockOperation.StartBack or ClockOperation.Back or ClockOperation.Stop
           ? ClockOperation.Leap
           : ClockOperation.Forward;
+      if (state_.ClockOperation == ClockOperation.Leap) {
+        state_.SoraOperation.InvokeClone = true;
+      }
       return false;
     }
     // Backing
-    if (Input.IsActionPressed("time_back")) {
-      state_.ClockOperation =
-        state_.NumMagicElements < numMagicElementsPerTick_ ?
-          ClockOperation.Stop :
-          ClockOperation.Back;
+    if (Input.IsActionPressed(Constant.BackButtonName)) {
+      switch (state_.ClockOperation) {
+        case ClockOperation.StartForward:
+        case ClockOperation.Forward:
+        case ClockOperation.Leap:
+          state_.ClockOperation =
+            state_.NumMagicElements >= numMagicElementsPerTick_ ?
+              ClockOperation.StartBack :
+              ClockOperation.Forward;
+          break;
+        case ClockOperation.StartBack:
+        case ClockOperation.Back:
+        case ClockOperation.Stop:
+          state_.ClockOperation =
+            state_.NumMagicElements < numMagicElementsPerTick_ ?
+              ClockOperation.Stop :
+              ClockOperation.Back;
+          break;
+        default:
+          throw new ArgumentOutOfRangeException();
+      }
       return false;
     }
     return true;
@@ -136,6 +189,37 @@ public partial class Player : Node3D {
         break;
       default:
         throw new ArgumentOutOfRangeException();
+    }
+  }
+
+  private void ProcessNormalSora() {
+    ref var operation = ref state_.SoraOperation;
+    { // Fire
+      operation.InvokeFire = Input.IsActionPressed(Constant.FireButtonName);
+    }
+    { // Invoke Spell
+      operation.InvokeSpell = Input.IsActionJustPressed(Constant.SpellButtonName);
+    }
+    { // Position
+      var delta = Vector3.Zero;
+      var moved = false;
+      if (Input.IsActionPressed(Constant.MoveRightButtonName)) {
+        delta.X += 1.0f;
+        moved = true;
+      }
+      if (Input.IsActionPressed(Constant.MoveLeftButtonName)) {
+        delta.X -= 1.0f;
+        moved = true;
+      }
+      if (Input.IsActionPressed(Constant.MoveUpButtonName)) {
+        delta.Y += 1.0f;
+        moved = true;
+      }
+      if (Input.IsActionPressed(Constant.MoveDownButtonName)) {
+        delta.Y -= 1.0f;
+        moved = true;
+      }
+      operation.Delta = moved ? delta.Normalized() : Vector3.Zero;
     }
   }
 
