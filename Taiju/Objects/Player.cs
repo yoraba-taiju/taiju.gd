@@ -144,9 +144,9 @@ public partial class Player : Node3D {
         case ClockOperation.Forward:
         case ClockOperation.Leap:
           state_.ClockOperation =
-            state_.NumMagicElements >= numMagicElementsPerTick_ ?
-              ClockOperation.StartBack :
-              ClockOperation.Forward;
+            state_.NumMagicElements < numMagicElementsPerTick_ ?
+              ClockOperation.Forward :
+              ClockOperation.StartBack;
           break;
         case ClockOperation.StartBack:
         case ClockOperation.Back:
