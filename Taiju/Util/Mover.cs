@@ -25,6 +25,7 @@ public static class Mover {
   }
   
   public static Vector3 TrackingForce(in Vector3 fromPos, in Vector3 fromVel, in Vector3 toPos, in Vector3 toVel, double leftPeriod) {
+    // If you forget: https://web.archive.org/web/20250523084916/https://jp.gamesindustry.biz/article/1805/18050901/
     return 2.0f * ((toPos - fromPos) + ((toVel - fromVel) * (float)leftPeriod)) / (float)(leftPeriod * leftPeriod);
   }
 }
