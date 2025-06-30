@@ -1,7 +1,7 @@
 using Godot;
 using Taiju.Util.Reversible.Godot;
 
-namespace Taiju.Scenes.Stages.Chapter01;
+namespace Taiju.Scenes.Stages.Stage01;
 
 public partial class Forest : ReversibleNode3D {
   [Export] private float scrollSpeed_ = 0.075f;
