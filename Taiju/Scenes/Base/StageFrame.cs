@@ -52,7 +52,6 @@ public partial class StageFrame : Node2D {
         break;
     }
   }
-
   private void Instantiate(Spawn spawn, Node3D destination) {
     var transInverse = Transform.Inverse();
     var rush = spawn.GetParentOrNull<Rush>();
