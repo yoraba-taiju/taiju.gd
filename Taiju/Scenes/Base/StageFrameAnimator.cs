@@ -12,9 +12,9 @@ public partial class StageFrameAnimator : ReversibleAnimationPlayer {
   private Node2D frame_;
   public override void _Ready() {
     inGame_ = !Engine.IsEditorHint();
+    frame_ = GetNode<Node2D>("StageFrame")!;
     if (inGame_) {
       base._Ready();
-      frame_ = GetNode<Node2D>("StageFrame")!;
       if (HideOnRun) {
         frame_.Visible = false;
         var parent = GetParentOrNull<Node2D>();
@@ -25,7 +25,6 @@ public partial class StageFrameAnimator : ReversibleAnimationPlayer {
       Play("Stage");
       started_ = true;
     } else {
-      frame_ = GetNode<Node2D>("StageFrame")!;
       CurrentAnimationChanged += OnCurrentAnimationChanged;
     }
   }
