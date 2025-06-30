@@ -350,7 +350,7 @@ public partial class Sora : ReversibleRigidBody3D {
     player_.OnDamageBySora();
   }
 
-  public void AbsorbMagicElement() {
-    player_.OnAbsorbMagicElementsBySora(4);
+  public void AbsorbMagicElement(int numMagicElements) {
+    player_.OnAbsorbMagicElementsBySora(numMagicElements);
   }
 }

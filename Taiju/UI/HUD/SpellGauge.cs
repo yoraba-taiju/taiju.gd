@@ -5,7 +5,7 @@ namespace Taiju.UI.HUD;
 
 public partial class SpellGauge : Node2D {
   // Constants
-  public const int ItemsPerGauge = SpellGaugeSlot.ItemPerSlot * 8;
+  public const int MaxItems = SpellGaugeSlot.ItemPerSlot * 8;
   private int numElements_;
   private SpellGaugeSlot[] gaugeItems_;
   public override void _Ready() {
@@ -21,6 +21,7 @@ public partial class SpellGauge : Node2D {
       GetNode<SpellGaugeSlot>("7")!,
     ];
   }
+
   public void SetGauge(int numElements) {
     var oldNumElements = numElements_;
     numElements_ = Math.Clamp(numElements, 0, SpellGaugeSlot.ItemPerSlot * 8);
@@ -32,13 +33,12 @@ public partial class SpellGauge : Node2D {
     var changed = false;
     for (var i = 0; i < 8; i++) {
       if (i < full) {
-        changed = changed || gaugeItems_[i].SetNumItems(SpellGaugeSlot.ItemPerSlot);
+        changed = gaugeItems_[i].SetNumItems(SpellGaugeSlot.ItemPerSlot) || changed;
+      } else if (i == full) {
+        changed = gaugeItems_[full].SetNumItems(left) || changed;
       } else {
         gaugeItems_[i].SetNumItems(0);
       }
-    }
-    if (full < 8) {
-      changed = changed || gaugeItems_[full].SetNumItems(left);
     }
     if (changed) {
       foreach (var gauge in gaugeItems_) {

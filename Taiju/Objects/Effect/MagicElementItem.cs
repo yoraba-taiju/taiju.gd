@@ -64,7 +64,7 @@ public partial class MagicElementItem : ReversibleNode3D {
     pos += vel * (float)dt;
     leftPeriod -= dt;
     if (leftPeriod <= 0) {
-      sora_.AbsorbMagicElement();
+      sora_.AbsorbMagicElement(4);
       Destroy();
     }
 
