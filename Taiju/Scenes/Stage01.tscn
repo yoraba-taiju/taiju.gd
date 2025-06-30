@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://cnv7a2ru52o6e"]
 
-[ext_resource type="Script" uid="uid://dgn1j8ogsfdmq" path="res://Scenes/Base/StageCamera.cs" id="1_5yd5y"]
+[ext_resource type="Script" uid="uid://dgn1j8ogsfdmq" path="res://Scenes/Base/StageFrameAnimator.cs" id="1_flkwj"]
 [ext_resource type="PackedScene" uid="uid://hynb4av76fkm" path="res://Scenes/Base/StageFrame.tscn" id="2_6lnr3"]
 [ext_resource type="PackedScene" uid="uid://bjjfi6snot25u" path="res://Scenes/Rushes/Rush0.tscn" id="3_yywum"]
 [ext_resource type="PackedScene" uid="uid://cdixlxpk87wi0" path="res://Scenes/Enemies/Drone0_Straight.tscn" id="4_gmlrs"]
@@ -22,13 +22,13 @@ _data = {
 
 [node name="Stage" type="Node2D"]
 
-[node name="StageCamera" type="AnimationPlayer" parent="."]
+[node name="StageFrameAnimator" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_mr52h")
 }
-script = ExtResource("1_5yd5y")
+script = ExtResource("1_flkwj")
 
-[node name="StageFrame" parent="StageCamera" instance=ExtResource("2_6lnr3")]
+[node name="StageFrame" parent="StageFrameAnimator" instance=ExtResource("2_6lnr3")]
 
 [node name="Rush" parent="." instance=ExtResource("3_yywum")]
 position = Vector2(1424, 210)
