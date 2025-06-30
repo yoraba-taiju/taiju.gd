@@ -58,14 +58,6 @@ public partial class Player : Node3D {
   public ref readonly ClockOperation CurrentClockOperation => ref state_.ClockOperation;
   public ref readonly SoraOperation CurrentSoraOperation => ref state_.SoraOperation;
 
-  private int NumMagicElements {
-    get => state_.NumMagicElements;
-    set {
-      state_.NumMagicElements = value;
-      spellGauge_.SetGauge(value);
-    }
-  }
-
   /** Other nodes **/
   private Score score_;
   private SpellGauge spellGauge_;
@@ -252,7 +244,9 @@ public partial class Player : Node3D {
         break;
       case ClockAction.BackTick:
         if (state_.NumMagicElements >= numMagicElementsPerTick_) {
-          NumMagicElements = Math.Max(0, NumMagicElements - numMagicElementsPerTick_);
+          var nextNumMagicElements = state_.NumMagicElements - numMagicElementsPerTick_;
+          state_.NumMagicElements = Math.Max(0, nextNumMagicElements);
+          spellGauge_.SetGauge(state_.NumMagicElements);
         }
         break;
       default:
@@ -271,7 +265,9 @@ public partial class Player : Node3D {
     }
   }
   public void OnAbsorbMagicElementsBySora(int numAbsorbedMagicElements) {
-    NumMagicElements = Math.Min(NumMagicElements + numAbsorbedMagicElements, SpellGauge.ItemsPerGauge);
+    var nextNumMagicElements = state_.NumMagicElements + numAbsorbedMagicElements;
+    state_.NumMagicElements = Math.Min(nextNumMagicElements, SpellGauge.MaxItems);
+    spellGauge_.SetGauge(state_.NumMagicElements);
   }
 
   /***************************************************************************
