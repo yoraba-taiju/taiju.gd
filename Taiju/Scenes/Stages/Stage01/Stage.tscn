@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://cnv7a2ru52o6e"]
+
+[ext_resource type="Script" uid="uid://d0a02vuyy86gm" path="res://Scenes/Base/rush.gd" id="1_vt5n7"]
+[ext_resource type="Script" uid="uid://cl716mx8nhvts" path="res://Scenes/Base/spawn.gd" id="2_w3oro"]
+
+[node name="Stage" type="Node2D"]
+
+[node name="Rush1" type="Node2D" parent="."]
+position = Vector2(1400, 180)
+script = ExtResource("1_vt5n7")
+
+[node name="Spawn" type="Node2D" parent="Rush1"]
+position = Vector2(100, 0)
+script = ExtResource("2_w3oro")
+enemy = "res://Objects/Enemy/Drone0/Drone0_Straight.tscn"
+
+[node name="Rush2" type="Node2D" parent="."]
+position = Vector2(1400, 540)
+script = ExtResource("1_vt5n7")
+
+[node name="Spawn" type="Node2D" parent="Rush2"]
+position = Vector2(100, 0)
+script = ExtResource("2_w3oro")
+enemy = "res://Objects/Enemy/Drone0/Drone0_Straight.tscn"

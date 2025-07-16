@@ -29,6 +29,10 @@ project/assembly_name="Taiju"
 movie_writer/movie_file="C:/Users/kaede/src/code.ledyba.org/yoraba-taiju/taiju.gd/test.avi"
 movie_writer/disable_vsync=true
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/editor/plugin.cfg")
+
 [filesystem]
 
 import/fbx/enabled=false

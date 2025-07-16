@@ -1,7 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://b2dvtrbcp5m34"]
-
-[ext_resource type="PackedScene" uid="uid://bfymqopfaunjr" path="res://Scenes/Base/Spawn.tscn" id="1_x7cq0"]
-[ext_resource type="PackedScene" uid="uid://bc66k31538av8" path="res://Objects/Enemy/Drone1/Drone1_Follow.tscn" id="2_vk1vc"]
-
-[node name="Spawn" instance=ExtResource("1_x7cq0")]
-enemy_ = ExtResource("2_vk1vc")

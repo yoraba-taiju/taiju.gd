@@ -1,0 +1,30 @@
+{
+  "Events": [
+    {
+      "Spawns": [
+        {
+          "Path": "res://Objects/Enemy/Drone0/Drone0_Straight.tscn",
+          "Type": "Spawn",
+          "X": 100.0,
+          "Y": 0.0
+        }
+      ],
+      "Type": "Rush",
+      "X": 1400.0,
+      "Y": 180.0
+    },
+    {
+      "Spawns": [
+        {
+          "Path": "res://Objects/Enemy/Drone0/Drone0_Straight.tscn",
+          "Type": "Spawn",
+          "X": 100.0,
+          "Y": 0.0
+        }
+      ],
+      "Type": "Rush",
+      "X": 1400.0,
+      "Y": 540.0
+    }
+  ]
+}

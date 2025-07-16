@@ -12,7 +12,7 @@ namespace Taiju.Objects.Witch;
 public partial class Sora : ReversibleRigidBody3D {
   /* Constants */
   private struct Constant {
-    public const double MoveDelta = 16.0;
+    public const double MoveDelta = 12.0;
   }
 
   /* Assets */

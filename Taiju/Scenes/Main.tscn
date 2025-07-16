@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=29 format=3 uid="uid://ceqv14au1y2ag"]
 
 [ext_resource type="Script" uid="uid://xerpjryc82k5" path="res://Objects/ClockNode.cs" id="1_alw2w"]
 [ext_resource type="Script" uid="uid://byj8w8pd71fwb" path="res://Objects/Player.cs" id="1_erwvk"]
@@ -10,7 +10,6 @@
 [ext_resource type="PackedScene" uid="uid://cp8q8tkg6dn4i" path="res://UI/SpellGauge.tscn" id="8_grg3l"]
 [ext_resource type="Script" uid="uid://bbu6uiafbe25c" path="res://Objects/BulletServer/Server/CircleBulletServer.cs" id="8_qfb4r"]
 [ext_resource type="Script" uid="uid://dc1iy8ddjwdlx" path="res://UI/HUD/HudParent.cs" id="9_frkhe"]
-[ext_resource type="PackedScene" uid="uid://cnv7a2ru52o6e" path="res://Scenes/Stage01.tscn" id="10_1rftd"]
 [ext_resource type="Script" uid="uid://cawdxy2pwskny" path="res://Scenes/Stages/Stage01/Stager.cs" id="11_1p5hy"]
 [ext_resource type="Script" uid="uid://c5d37pw5skb8u" path="res://Scenes/Stages/Stage01/Forest.cs" id="11_frkhe"]
 [ext_resource type="Script" uid="uid://ds68boil06e4q" path="res://UI/HUD/Score.cs" id="12_2w5on"]
@@ -94,9 +93,6 @@ transform = Transform3D(0.707107, -0.353553, 0.612372, 0, 0.866025, 0.499999, -0
 layers = 1025
 light_cull_mask = 4293919745
 
-[node name="Stage" parent="." instance=ExtResource("10_1rftd")]
-visible = false
-
 [node name="Field" type="Node3D" parent="."]
 
 [node name="Witch" type="Node3D" parent="Field"]
@@ -154,13 +150,13 @@ label_settings = SubResource("LabelSettings_1vqvh")
 visibility_layer = 524288
 position = Vector2(16, 673)
 
-[node name="Background" type="Node3D" parent="."]
+[node name="Stager" type="Node3D" parent="."]
 script = ExtResource("11_1p5hy")
 
-[node name="Forest" type="Node3D" parent="Background"]
+[node name="Forest" type="Node3D" parent="Stager"]
 script = ExtResource("11_frkhe")
 
-[node name="Mesh" type="MeshInstance3D" parent="Background/Forest"]
+[node name="Mesh" type="MeshInstance3D" parent="Stager/Forest"]
 transform = Transform3D(600, 0, 0, 0, 596.713, -62.7171, 0, 62.7171, 596.713, 0, -110, -180)
 material_overlay = SubResource("ShaderMaterial_vj3aa")
 mesh = SubResource("PlaneMesh_17g3q")
