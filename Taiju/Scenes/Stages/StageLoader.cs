@@ -65,7 +65,22 @@ public partial class StageLoader : Node2D {
     }
     preloadScenes_.AddRange(set);
   }
-
+#if DEBUG
+  public override void _Process(double delta) {
+    base._Process(delta);
+    if (Done) {
+      return;
+    }
+    var resource = ResourceLoader.Load(preloadScenes_[currentSceneIndex_]);
+    resourceCache_.Add(preloadScenes_[currentSceneIndex_], resource);
+    currentSceneIndex_++;
+    if (currentSceneIndex_ >= preloadScenes_.Count) {
+      OnFinish();
+      Done = true;
+      loadState_ = LoadState.Loaded;
+    }
+  }
+#else
   public override void _Process(double delta) {
     base._Process(delta);
     if (Done) {
@@ -124,6 +139,7 @@ public partial class StageLoader : Node2D {
         throw new ArgumentOutOfRangeException();
     }
   }
+#endif
 
   private void OnFinish() {
     foreach (var ev in Stage.Events) {
