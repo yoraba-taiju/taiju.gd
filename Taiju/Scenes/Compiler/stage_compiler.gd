@@ -50,6 +50,13 @@ func compile_stage(scene_path: String):
 				"X": raw.position.x,
 				"Y": raw.position.y,
 			})
+		elif raw is Preload:
+			events.append({
+				"Type": "Preload",
+				"X": raw.position.x,
+				"Y": raw.position.y,
+				"Path": raw.path,
+			})
 		else:
 			push_error("Invalid node type encountered")
 			return

@@ -3,7 +3,7 @@ using Godot;
 
 namespace Taiju.Scenes.Loader;
 
-public static class StageLoader {
+public static class StageDeserializer {
   public static Model.Stage Load(string jsonPath) {
     var options = new JsonSerializerOptions {
       Converters = {

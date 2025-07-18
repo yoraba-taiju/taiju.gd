@@ -18,6 +18,7 @@ public class EventConverter : JsonConverter<Model.Event> {
       "Rush" => JsonSerializer.Deserialize<Model.Events.Rush>(root.GetRawText(), options),
       "Spawn" => JsonSerializer.Deserialize<Model.Events.Spawn>(root.GetRawText(), options),
       "Trigger" => JsonSerializer.Deserialize<Model.Events.Trigger>(root.GetRawText(), options),
+      "Preload" => JsonSerializer.Deserialize<Model.Events.Preload>(root.GetRawText(), options),
       _ => throw new JsonException($"Unknown Type: {type}")
     };
   }

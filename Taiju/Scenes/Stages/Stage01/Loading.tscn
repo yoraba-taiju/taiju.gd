@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://bdm6i2ltc8q3s"]
+
+[ext_resource type="Script" uid="uid://qirkx4fhb7ea" path="res://Scenes/Stages/LoadingScreen.cs" id="1_4vg2j"]
+[ext_resource type="Script" uid="uid://ywuh2kq6xcsl" path="res://Scenes/Stages/StageLoader.cs" id="1_iehii"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_4vg2j"]
+font_size = 64
+
+[node name="Root" type="Node2D"]
+script = ExtResource("1_4vg2j")
+
+[node name="StageLoader" type="Node2D" parent="."]
+script = ExtResource("1_iehii")
+stagePath_ = "res://Scenes/Stages/Stage01/Stage.tscn.json"
+StageScenePath = "uid://ceqv14au1y2ag"
+
+[node name="Label" type="Label" parent="."]
+offset_left = 797.0
+offset_top = 601.0
+offset_right = 1253.0
+offset_bottom = 689.0
+text = "Now Loading..."
+label_settings = SubResource("LabelSettings_4vg2j")

@@ -87,7 +87,7 @@ public struct ReversibleCompanion<T>
     }
     ClockNode.QueueDestroy(self);
     IsAlive = false;
-    if (self is not RushBase) {
+    if (self is not Rush) {
       self.PropagateCall("_OnDestroy", null, true);
     }
     self.SetDeferred(Node3D.PropertyName.Visible, false);
@@ -99,7 +99,7 @@ public struct ReversibleCompanion<T>
       return;
     }
     IsAlive = true;
-    if (self is not RushBase) {
+    if (self is not Rush) {
       self.PropagateCall("_OnRescue", null, true);
     }
     self.SetDeferred(Node3D.PropertyName.Visible, true);

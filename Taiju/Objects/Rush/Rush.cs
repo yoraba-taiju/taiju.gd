@@ -4,7 +4,7 @@ using Taiju.Util.Reversible.Godot;
 
 namespace Taiju.Objects.Rush;
 
-public abstract partial class RushBase : ReversibleNode3D {
+public partial class Rush : ReversibleNode3D {
   [Export] private double intervalToCheckAlive_ = 0.1;
   private double timeToCheckAlive_;
   public override bool _ProcessForward(double integrateTime, double dt) {
@@ -42,5 +42,7 @@ public abstract partial class RushBase : ReversibleNode3D {
     }
   }
 
-  protected abstract void OnDestroy();
+  protected void OnDestroy() {
+    
+  }
 }

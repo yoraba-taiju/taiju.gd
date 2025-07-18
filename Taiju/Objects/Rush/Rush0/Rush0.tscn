@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://da2w4wka8kbvi"]
-
-[ext_resource type="Script" path="res://Objects/Rush/Rush0/Rush0.cs" id="1_uvpa5"]
-
-[node name="Rush0" type="Node3D"]
-script = ExtResource("1_uvpa5")
