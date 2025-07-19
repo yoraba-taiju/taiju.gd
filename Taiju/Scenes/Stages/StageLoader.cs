@@ -29,15 +29,18 @@ public partial class StageLoader : Node2D {
   }
 
   public Model.Stage Stage { get; private set; }
+  public int Progress { get; private set; }
   private readonly List<string> preloadScenes_ = new();
   public readonly ResourceManager ResourceManager = new(new Dictionary<string, Resource>());
   private int currentSceneIndex_;
   private LoadState loadState_;
-  private Godot.Collections.Array progressArray_ = new([0]);
+  private double nextPoll_ = 0.1;
+  private double pollBackoff_ = 0.1;
   public bool Done { get; private set; }
 
   public override void _Ready() {
     base._Ready();
+    Progress = 0;
     Stage = Model.StageDeserializer.Load(stagePath_)!;
     Done = false;
     currentSceneIndex_ = 0;
@@ -76,6 +79,7 @@ public partial class StageLoader : Node2D {
     var resource = ResourceLoader.Load(path);
     ResourceManager.Add(path, resource);
     currentSceneIndex_++;
+    Progress = Mathf.RoundToInt(currentSceneIndex_ * 100.0f / preloadScenes_.Count);
     GD.Print($"Loaded: {path}");
     if (currentSceneIndex_ < preloadScenes_.Count) {
       // You can load resources more.
@@ -100,8 +104,16 @@ public partial class StageLoader : Node2D {
       return;
     }
 
+    nextPoll_ -= delta;
+    if (nextPoll_ > 0.0) {
+      return;
+    }
+
     switch (loadState_) {
       case LoadState.NotLoaded: {
+        pollBackoff_ = 0.1;
+        nextPoll_ = pollBackoff_;
+
         var error = ResourceLoader.LoadThreadedRequest(preloadScenes_[currentSceneIndex_], "PackedScene", true);
         loadState_ = LoadState.Loading;
         if (error != Error.Ok) {
@@ -111,12 +123,18 @@ public partial class StageLoader : Node2D {
         break;
       case LoadState.Loading: {
         var path = preloadScenes_[currentSceneIndex_];
-        var status = ResourceLoader.LoadThreadedGetStatus(path, progressArray_);
+        var status = ResourceLoader.LoadThreadedGetStatus(path);
         switch (status)
         {
           case ResourceLoader.ThreadLoadStatus.InProgress:
+            nextPoll_ += pollBackoff_;
+            pollBackoff_ = Math.Min(1.0, pollBackoff_ * 2);
+            GD.Print($"backoff: {pollBackoff_}");
             break;
           case ResourceLoader.ThreadLoadStatus.Loaded: {
+            nextPoll_ = 0;
+            pollBackoff_ = 0.1;
+
             ResourceManager.Add(path, ResourceLoader.LoadThreadedGet(path));
             GD.Print($"Loaded: {path}");
             loadState_ = LoadState.Loaded;
@@ -124,6 +142,9 @@ public partial class StageLoader : Node2D {
           }
           case ResourceLoader.ThreadLoadStatus.Failed:
           case ResourceLoader.ThreadLoadStatus.InvalidResource:
+            nextPoll_ = 0;
+            pollBackoff_ = 0.1;
+
             GD.PrintErr($"Failed to load resource: {path}");
             loadState_ = LoadState.Loaded;
             break;
@@ -131,7 +152,10 @@ public partial class StageLoader : Node2D {
       }
         break;
       case LoadState.Loaded:
+        pollBackoff_ = 0.1;
+        nextPoll_ = 0.0;
         currentSceneIndex_++;
+        Progress = Mathf.RoundToInt(currentSceneIndex_ * 100.0f / preloadScenes_.Count);
         if (currentSceneIndex_ < preloadScenes_.Count) {
           loadState_ = LoadState.NotLoaded;
         } else {

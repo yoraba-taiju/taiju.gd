@@ -15,9 +15,15 @@ stagePath_ = "res://Scenes/Stages/Stage01/Stage.tscn.json"
 StageScenePath = "uid://ceqv14au1y2ag"
 
 [node name="Label" type="Label" parent="."]
-offset_left = 797.0
-offset_top = 601.0
-offset_right = 1253.0
-offset_bottom = 689.0
+offset_left = 796.0
+offset_top = 555.0
+offset_right = 1252.0
+offset_bottom = 643.0
 text = "Now Loading..."
 label_settings = SubResource("LabelSettings_4vg2j")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = 799.0
+offset_top = 648.0
+offset_right = 1258.0
+offset_bottom = 688.0
