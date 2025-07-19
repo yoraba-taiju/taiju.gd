@@ -1,10 +1,9 @@
-﻿using System.Linq;
-
-namespace Taiju.Scenes.Loader.JsonConverters;
-
-using System;
+﻿using System;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+
+namespace Taiju.Scenes.Model.JsonConverters;
 
 public class StageConverter : JsonConverter<Model.Stage> {
   public override Model.Stage Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {

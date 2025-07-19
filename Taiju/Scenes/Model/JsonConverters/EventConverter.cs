@@ -1,8 +1,8 @@
-﻿namespace Taiju.Scenes.Loader.JsonConverters;
-
-using System;
+﻿using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+
+namespace Taiju.Scenes.Model.JsonConverters;
 
 public class EventConverter : JsonConverter<Model.Event> {
   public override Model.Event Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using Godot;
-using Taiju.Scenes.Loader;
 
 namespace Taiju.Scenes.Stages;
 
 public partial class StageLoader : Node2D {
   [Export(PropertyHint.File, "*.json")] private string stagePath_;
   [Export(PropertyHint.File, "*.tscn")] public string StageScenePath { get; private set; }
+  public PackedScene StageScene { get; private set; }
 
   private static readonly string[] CommonPreloadScenes = [
     "res://Objects/Effect/Arrow.tscn",
@@ -38,7 +38,7 @@ public partial class StageLoader : Node2D {
 
   public override void _Ready() {
     base._Ready();
-    Stage = StageDeserializer.Load(stagePath_)!;
+    Stage = Model.StageDeserializer.Load(stagePath_)!;
     Done = false;
     currentSceneIndex_ = 0;
     loadState_ = LoadState.NotLoaded;
@@ -54,7 +54,8 @@ public partial class StageLoader : Node2D {
             set.Add(spawn.Path);
           }
           break;
-        case Model.Events.Trigger trigger:
+        case Model.Events.Trigger:
+          // ignore
           break;
         case Model.Events.Preload preload:
           set.Add(preload.Path);
@@ -71,14 +72,19 @@ public partial class StageLoader : Node2D {
     if (Done) {
       return;
     }
-    var resource = ResourceLoader.Load(preloadScenes_[currentSceneIndex_]);
-    resourceCache_.Add(preloadScenes_[currentSceneIndex_], resource);
+    var path = preloadScenes_[currentSceneIndex_];
+    var resource = ResourceLoader.Load(path);
+    resourceCache_.Add(path, resource);
     currentSceneIndex_++;
-    if (currentSceneIndex_ >= preloadScenes_.Count) {
-      OnFinish();
-      Done = true;
-      loadState_ = LoadState.Loaded;
+    GD.Print($"Loaded: {path}");
+    if (currentSceneIndex_ < preloadScenes_.Count) {
+      // You can load resources more.
+      return;
     }
+    OnFinish();
+    Done = true;
+    loadState_ = LoadState.Loaded;
+    GD.Print($"{currentSceneIndex_} Resources Loaded.");
   }
 #else
   public override void _Process(double delta) {
@@ -129,7 +135,7 @@ public partial class StageLoader : Node2D {
         if (currentSceneIndex_ < preloadScenes_.Count) {
           loadState_ = LoadState.NotLoaded;
         } else {
-          GD.Print($"Loaded: {resourceCache_.Count} Paths.");
+          GD.Print($"{resourceCache_.Count} Resources Loaded.");
           OnFinish();
           Done = true;
           loadState_ = LoadState.Loaded;
@@ -142,6 +148,7 @@ public partial class StageLoader : Node2D {
 #endif
 
   private void OnFinish() {
+    StageScene = (PackedScene)resourceCache_[StageScenePath];
     foreach (var ev in Stage.Events) {
       switch (ev) {
         case Model.Events.Spawn spawn:

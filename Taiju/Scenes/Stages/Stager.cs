@@ -44,10 +44,6 @@ public abstract partial class Stager : ReversibleNode3D {
     DefaultRush = GetNode<Node3D>("/root/Root/Field/Enemy/DefaultRush")!;
   }
 
-  protected void LoadStage(string jsonPath) {
-    Stage = Loader.StageDeserializer.Load(jsonPath);
-  }
-
   protected void Move(Vector3 delta, double dt) {
     ref var rec = ref record_.Mut;
     rec.Transform = rec.Transform.TranslatedLocal(delta * (float)dt);

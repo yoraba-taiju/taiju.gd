@@ -7,7 +7,6 @@ public partial class Stager : Stages.Stager {
   private bool initialized_;
   public override void _Ready() {
     base._Ready();
-    LoadStage("res://Scenes/Stages/Stage01/Stage.tscn.json");
     initialized_ = false;
   }
 
