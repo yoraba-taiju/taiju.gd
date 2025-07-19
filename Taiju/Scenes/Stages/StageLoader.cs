@@ -129,7 +129,6 @@ public partial class StageLoader : Node2D {
           case ResourceLoader.ThreadLoadStatus.InProgress:
             nextPoll_ += pollBackoff_;
             pollBackoff_ = Math.Min(1.0, pollBackoff_ * 2);
-            GD.Print($"backoff: {pollBackoff_}");
             break;
           case ResourceLoader.ThreadLoadStatus.Loaded: {
             nextPoll_ = 0;
