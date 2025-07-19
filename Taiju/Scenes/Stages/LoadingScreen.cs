@@ -17,6 +17,7 @@ public partial class LoadingScreen : Node2D {
       var scene = stageLoader_.StageScene.Instantiate<Node3D>()!;
       var stager = scene.GetNode<Stager>("Stager")!;
       stager.Stage = stageLoader_.Stage.ForStager();
+      stager.ResourceManager = stageLoader_.ResourceManager;
       root.RemoveChild(this);
       QueueFree();
       root.AddChild(scene);

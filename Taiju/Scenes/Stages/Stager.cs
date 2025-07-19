@@ -29,6 +29,7 @@ public abstract partial class Stager : ReversibleNode3D {
   protected Node3D DefaultRush { get; private set; }
   // Stage
   internal Model.Stage Stage { get; set; }
+  public ResourceManager ResourceManager { get; internal set; }
 
   public override void _Ready() {
     base._Ready();
@@ -99,7 +100,7 @@ public abstract partial class Stager : ReversibleNode3D {
   }
 
   private void OnSpawn(double stagePosition, Model.Events.Spawn spawn) {
-    var node = ResourceLoader.Load<PackedScene>(spawn.Path, null, ResourceLoader.CacheMode.Reuse).Instantiate<Node3D>();
+    var node = ResourceManager.Load<PackedScene>(spawn.Path).Instantiate<Node3D>();
     node.Position = ScreenToWorld(new Vector2((float)(spawn.X - stagePosition), spawn.Y));
     DefaultRush.AddChild(node);
   }
@@ -109,7 +110,7 @@ public abstract partial class Stager : ReversibleNode3D {
     Enemy.AddChild(rushNode);
     var basePos = new Vector2((float)(rush.X - stagePosition), rush.Y);
     foreach (var spawn in rush.Spawns) {
-      var node = ResourceLoader.Load<PackedScene>(spawn.Path, null, ResourceLoader.CacheMode.Reuse).Instantiate<Node3D>();
+      var node = ResourceManager.Load<PackedScene>(spawn.Path).Instantiate<Node3D>();
       rushNode.AddChild(node);
       var pos = new Vector2(spawn.X, spawn.Y) + basePos;
       node.Position = ScreenToWorld(pos);

@@ -2,6 +2,7 @@
 using Godot;
 using Taiju.Objects.Effect;
 using Taiju.Objects.Witch;
+using Taiju.Scenes.Stages;
 using Taiju.Util.Reversible.Godot;
 
 namespace Taiju.Objects.Enemy; 
@@ -11,6 +12,8 @@ public abstract partial class EnemyBase : ReversibleRigidBody3D {
   [Export] protected long Score = 100;
   [Export] protected Vector2 BodySize = new(0, 0);
   [Export] protected float ExplosionScale = 1.0f;
+  private Stager stager_;
+  private ResourceManager resourceManager_;
   private PackedScene explosionPack_;
   private PackedScene magicElementItemPack_;
   private Node3D effectNode_;
@@ -20,8 +23,10 @@ public abstract partial class EnemyBase : ReversibleRigidBody3D {
 
   public override void _Ready() {
     base._Ready();
-    explosionPack_ = ResourceLoader.Load<PackedScene>("res://Objects/Effect/ReversibleExplosion.tscn")!;
-    magicElementItemPack_ = ResourceLoader.Load<PackedScene>("res://Objects/Effect/MagicElementItem.tscn")!;
+    stager_ = GetNode<Stager>("/root/Root/Stager")!;
+    resourceManager_ = stager_.ResourceManager;
+    explosionPack_ = resourceManager_.Load<PackedScene>("res://Objects/Effect/ReversibleExplosion.tscn")!;
+    magicElementItemPack_ = resourceManager_.Load<PackedScene>("res://Objects/Effect/MagicElementItem.tscn")!;
     effectNode_ = GetNode<Node3D>("/root/Root/Field/EnemyEffect")!;
     Player = GetNode<Player>("/root/Root/Player")!;
     Sora = GetNode<Sora>("/root/Root/Field/Witch/Sora")!;

@@ -30,7 +30,7 @@ public partial class StageLoader : Node2D {
 
   public Model.Stage Stage { get; private set; }
   private readonly List<string> preloadScenes_ = new();
-  private readonly Dictionary<string, Resource> resourceCache_ =  new();
+  public readonly ResourceManager ResourceManager = new(new Dictionary<string, Resource>());
   private int currentSceneIndex_;
   private LoadState loadState_;
   private Godot.Collections.Array progressArray_ = new([0]);
@@ -74,7 +74,7 @@ public partial class StageLoader : Node2D {
     }
     var path = preloadScenes_[currentSceneIndex_];
     var resource = ResourceLoader.Load(path);
-    resourceCache_.Add(path, resource);
+    ResourceManager.Add(path, resource);
     currentSceneIndex_++;
     GD.Print($"Loaded: {path}");
     if (currentSceneIndex_ < preloadScenes_.Count) {
@@ -117,7 +117,7 @@ public partial class StageLoader : Node2D {
           case ResourceLoader.ThreadLoadStatus.InProgress:
             break;
           case ResourceLoader.ThreadLoadStatus.Loaded: {
-            resourceCache_[path] = ResourceLoader.LoadThreadedGet(path);
+            ResourceManager.Add(path, ResourceLoader.LoadThreadedGet(path));
             GD.Print($"Loaded: {path}");
             loadState_ = LoadState.Loaded;
             break;
@@ -135,7 +135,7 @@ public partial class StageLoader : Node2D {
         if (currentSceneIndex_ < preloadScenes_.Count) {
           loadState_ = LoadState.NotLoaded;
         } else {
-          GD.Print($"{resourceCache_.Count} Resources Loaded.");
+          GD.Print($"{ResourceManager.Count} Resources Loaded.");
           OnFinish();
           Done = true;
           loadState_ = LoadState.Loaded;
@@ -148,22 +148,22 @@ public partial class StageLoader : Node2D {
 #endif
 
   private void OnFinish() {
-    StageScene = (PackedScene)resourceCache_[StageScenePath];
+    StageScene = ResourceManager.Load<PackedScene>(StageScenePath);
     foreach (var ev in Stage.Events) {
       switch (ev) {
         case Model.Events.Spawn spawn:
-          spawn.Scene = (PackedScene)resourceCache_[spawn.Path];
+          spawn.Scene = ResourceManager.Load<PackedScene>(spawn.Path);
           break;
         case Model.Events.Rush rush:
           foreach (var spawn in rush.Spawns) {
-            spawn.Scene = (PackedScene)resourceCache_[spawn.Path];
+            spawn.Scene = (PackedScene)ResourceManager.Load<PackedScene>(spawn.Path);
           }
           break;
         case Model.Events.Trigger:
           // ignore.
           break;
         case Model.Events.Preload preload:
-          preload.Scene = (PackedScene)resourceCache_[preload.Path];
+          preload.Scene = ResourceManager.Load<PackedScene>(preload.Path);
           break;
         default:
           throw new InvalidCastException($"Unknown Type: {ev.GetType()}");
