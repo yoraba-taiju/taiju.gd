@@ -56,8 +56,6 @@ public partial class Straight : EnemyBase {
     // Animation
     var model = body_.GetNode<Node3D>("Drone3")!;
     animPlayer_ = model.GetNode<AnimationPlayer>("AnimationPlayer")!;
-    var anim = animPlayer_.GetAnimation("BarretRoll")!;
-    anim.LoopMode = Animation.LoopModeEnum.Linear;
     animPlayer_.PlaybackActive = true;
     animPlayer_.Play("BarretRoll");
 

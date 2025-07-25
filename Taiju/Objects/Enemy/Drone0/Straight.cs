@@ -40,8 +40,6 @@ public partial class Straight : EnemyBase {
     });
     var model = body_.GetNode<Node3D>("Model")!;
     animPlayer_ = model.GetNode<AnimationPlayer>("AnimationPlayer")!;
-    var anim = animPlayer_.GetAnimation("Rotate")!;
-    anim.LoopMode = Animation.LoopModeEnum.Linear;
     animPlayer_.PlaybackActive = true;
     animPlayer_.Play("Rotate");
     bulletServer_ = GetNode<CircleBulletServer>("/root/Root/Field/EnemyBullet/RedCircleBulletServer")!;

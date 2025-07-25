@@ -47,8 +47,6 @@ public partial class Escape : EnemyBase {
     });
     var model = body_.GetNode<Node3D>("Model")!;
     animPlayer_ = model.GetNode<AnimationPlayer>("AnimationPlayer")!;
-    var anim = animPlayer_.GetAnimation("Rotate")!;
-    anim.LoopMode = Animation.LoopModeEnum.Linear;
     animPlayer_.PlaybackActive = true;
     animPlayer_.Play("Rotate");
     defaultEscapeDirection_ = ((int)(rand_.Randi() % 2) * 2) - 1;

@@ -49,6 +49,31 @@
       ],
       "X": 1400.0,
       "Y": 540.0
+    },
+    {
+      "EventType": "Rush",
+      "Spawns": [
+        {
+          "EventType": "Spawn",
+          "Path": "res://Objects/Enemy/Drone1/Drone1_Follow.tscn",
+          "X": 100.0,
+          "Y": 0.0
+        },
+        {
+          "EventType": "Spawn",
+          "Path": "res://Objects/Enemy/Drone1/Drone1_Follow.tscn",
+          "X": 200.0,
+          "Y": 63.0
+        },
+        {
+          "EventType": "Spawn",
+          "Path": "res://Objects/Enemy/Drone1/Drone1_Follow.tscn",
+          "X": 200.0,
+          "Y": -63.0
+        }
+      ],
+      "X": 1800.0,
+      "Y": 360.0
     }
   ]
 }
