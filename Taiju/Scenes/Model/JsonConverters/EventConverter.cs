@@ -9,7 +9,7 @@ public class EventConverter : JsonConverter<Model.Event> {
     using var jsonDoc = JsonDocument.ParseValue(ref reader);
     var root = jsonDoc.RootElement;
 
-    if (!root.TryGetProperty("Type", out var typeProp) || typeProp.ValueKind != JsonValueKind.String) {
+    if (!root.TryGetProperty("EventType", out var typeProp) || typeProp.ValueKind != JsonValueKind.String) {
       throw new JsonException("Type property is missing or invalid.");
     }
 

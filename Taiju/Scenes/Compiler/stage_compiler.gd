@@ -11,51 +11,53 @@ func compile():
 
 func compile_stage(scene_path: String):
 	var scene = load(scene_path).instantiate()
-	var raws = []
+	var nodes: Array[Event] = []
+
 	for node in scene.get_children():
-		if node is Rush:
-			raws.append(node)
-	
+		if node is Event:
+			nodes.append(node)
+
 	# Sort raws by X position
-	raws.sort_custom(func(a, b): return a.position.x < b.position.x)
-	
+	nodes.sort_custom(func(a, b): return a.position.x < b.position.x)
+
 	var events = []
-	for raw in raws:
-		if raw is Rush:
+	for node in nodes:
+		if node is Rush:
 			var spawns = []
-			for child in raw.get_children():
+			for child in node.get_children():
 				var spawn = child as Spawn
 				spawns.append({
-					"Type": "Spawn",
+					"EventType": "Spawn",
 					"X": spawn.position.x,
 					"Y": spawn.position.y,
-					"Path": spawn.enemy
+					"Path": spawn.path
 				})
 			events.append({
-				"Type": "Rush",
-				"X": raw.position.x,
-				"Y": raw.position.y,
+				"EventType": "Rush",
+				"X": node.position.x,
+				"Y": node.position.y,
 				"Spawns": spawns
 			})
-		elif raw is Spawn:
+		elif node is Spawn:
 			events.append({
-				"Type": "Spawn",
-				"X": raw.position.x,
-				"Y": raw.position.y,
-				"Path": raw.enemy
+				"EventType": "Spawn",
+				"X": node.position.x,
+				"Y": node.position.y,
+				"Path": node.path,
 			})
-		elif raw is Signal:
+		elif node is Trigger:
 			events.append({
-				"Type": "Signal",
-				"X": raw.position.x,
-				"Y": raw.position.y,
+				"EventType": "Trigger",
+				"X": node.position.x,
+				"Y": node.position.y,
+				"Type": node.type,
 			})
-		elif raw is Preload:
+		elif node is Preload:
 			events.append({
-				"Type": "Preload",
-				"X": raw.position.x,
-				"Y": raw.position.y,
-				"Path": raw.path,
+				"EventType": "Preload",
+				"X": node.position.x,
+				"Y": node.position.y,
+				"Path": node.path,
 			})
 		else:
 			push_error("Invalid node type encountered")

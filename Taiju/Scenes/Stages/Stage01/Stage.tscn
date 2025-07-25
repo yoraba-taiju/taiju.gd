@@ -12,7 +12,17 @@ script = ExtResource("1_vt5n7")
 [node name="Spawn" type="Node2D" parent="Rush1"]
 position = Vector2(100, 0)
 script = ExtResource("2_w3oro")
-enemy = "res://Objects/Enemy/Drone0/Drone0_Straight.tscn"
+path = "res://Objects/Enemy/Drone0/Drone0_Straight.tscn"
+
+[node name="Spawn2" type="Node2D" parent="Rush1"]
+position = Vector2(200, 63)
+script = ExtResource("2_w3oro")
+path = "res://Objects/Enemy/Drone0/Drone0_Straight.tscn"
+
+[node name="Spawn3" type="Node2D" parent="Rush1"]
+position = Vector2(200, -63)
+script = ExtResource("2_w3oro")
+path = "res://Objects/Enemy/Drone0/Drone0_StraightShot.tscn"
 
 [node name="Rush2" type="Node2D" parent="."]
 position = Vector2(1400, 540)
@@ -21,4 +31,14 @@ script = ExtResource("1_vt5n7")
 [node name="Spawn" type="Node2D" parent="Rush2"]
 position = Vector2(100, 0)
 script = ExtResource("2_w3oro")
-enemy = "res://Objects/Enemy/Drone0/Drone0_Straight.tscn"
+path = "res://Objects/Enemy/Drone0/Drone0_Straight.tscn"
+
+[node name="Spawn2" type="Node2D" parent="Rush2"]
+position = Vector2(200, 63)
+script = ExtResource("2_w3oro")
+path = "res://Objects/Enemy/Drone0/Drone0_StraightShot.tscn"
+
+[node name="Spawn3" type="Node2D" parent="Rush2"]
+position = Vector2(200, -63)
+script = ExtResource("2_w3oro")
+path = "res://Objects/Enemy/Drone0/Drone0_Straight.tscn"

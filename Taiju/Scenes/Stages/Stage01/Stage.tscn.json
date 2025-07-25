@@ -1,28 +1,52 @@
 {
   "Events": [
     {
+      "EventType": "Rush",
       "Spawns": [
         {
+          "EventType": "Spawn",
           "Path": "res://Objects/Enemy/Drone0/Drone0_Straight.tscn",
-          "Type": "Spawn",
           "X": 100.0,
           "Y": 0.0
+        },
+        {
+          "EventType": "Spawn",
+          "Path": "res://Objects/Enemy/Drone0/Drone0_Straight.tscn",
+          "X": 200.0,
+          "Y": 63.0
+        },
+        {
+          "EventType": "Spawn",
+          "Path": "res://Objects/Enemy/Drone0/Drone0_StraightShot.tscn",
+          "X": 200.0,
+          "Y": -63.0
         }
       ],
-      "Type": "Rush",
       "X": 1400.0,
       "Y": 180.0
     },
     {
+      "EventType": "Rush",
       "Spawns": [
         {
+          "EventType": "Spawn",
           "Path": "res://Objects/Enemy/Drone0/Drone0_Straight.tscn",
-          "Type": "Spawn",
           "X": 100.0,
           "Y": 0.0
+        },
+        {
+          "EventType": "Spawn",
+          "Path": "res://Objects/Enemy/Drone0/Drone0_StraightShot.tscn",
+          "X": 200.0,
+          "Y": 63.0
+        },
+        {
+          "EventType": "Spawn",
+          "Path": "res://Objects/Enemy/Drone0/Drone0_Straight.tscn",
+          "X": 200.0,
+          "Y": -63.0
         }
       ],
-      "Type": "Rush",
       "X": 1400.0,
       "Y": 540.0
     }

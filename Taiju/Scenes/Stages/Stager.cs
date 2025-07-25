@@ -10,7 +10,7 @@ namespace Taiju.Scenes.Stages;
 public abstract partial class Stager : ReversibleNode3D {
   // const
   private const double StageWidth = 1280;
-  private const double StageSpeed = 100.0;
+  private const double StageSpeed = 120.0;
 
   // Record
   private struct Record {
