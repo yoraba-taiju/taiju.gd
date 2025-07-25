@@ -27,6 +27,7 @@ public abstract partial class Stager : ReversibleNode3D {
   protected Player Player { get; private set; }
   protected Node3D Enemy { get; private set; }
   protected Node3D DefaultRush { get; private set; }
+
   // Stage
   internal Model.Stage Stage { get; set; }
   public ResourceManager ResourceManager { get; internal set; }
