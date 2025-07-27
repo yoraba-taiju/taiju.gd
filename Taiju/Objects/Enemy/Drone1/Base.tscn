@@ -1,7 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bc66k31538av8"]
+[gd_scene load_steps=15 format=3 uid="uid://7xifyi2dvodl"]
 
-[ext_resource type="Script" uid="uid://bqy2jycxniq8u" path="res://Objects/Enemy/Drone1/Follow.cs" id="1_70det"]
-[ext_resource type="PackedScene" uid="uid://7xifyi2dvodl" path="res://Objects/Enemy/Drone1/Base.tscn" id="1_lb8qo"]
+[ext_resource type="PackedScene" uid="uid://c7xy606gjxyr8" path="res://assets/Objects/Enemy/Drones/Drone1.blend" id="2_7noea"]
+[ext_resource type="Script" uid="uid://5qe07ww5qt3j" path="res://Util/Reversible/Godot/ReversibleAnimationTree.cs" id="3_w2pfa"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_u27nk"]
+radius = 1.2
 
 [sub_resource type="Animation" id="Animation_58wah"]
 resource_name = "羽_根本_回転"
@@ -88,10 +91,66 @@ _data = {
 &"羽_根本_回転": SubResource("Animation_58wah")
 }
 
-[node name="Drone1" instance=ExtResource("1_lb8qo")]
-script = ExtResource("1_70det")
+[sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_y78wp"]
 
-[node name="AnimationTree" parent="." index="2"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8jv2p"]
+animation = &"羽_根本_回転"
+
+[sub_resource type="AnimationNodeTimeSeek" id="AnimationNodeTimeSeek_wbcon"]
+
+[sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_ab1xr"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_66sb6"]
+animation = &"羽A_回転"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_mjfmf"]
+animation = &"羽B_回転"
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_3351t"]
+graph_offset = Vector2(-601.713, 5.5544586)
+nodes/output/position = Vector2(660, 160)
+nodes/Combined/node = SubResource("AnimationNodeAdd2_y78wp")
+nodes/Combined/position = Vector2(220, 140)
+nodes/Root/node = SubResource("AnimationNodeAnimation_8jv2p")
+nodes/Root/position = Vector2(-280, 400)
+nodes/Seek/node = SubResource("AnimationNodeTimeSeek_wbcon")
+nodes/Seek/position = Vector2(460, 140)
+"nodes/Wing Combined/node" = SubResource("AnimationNodeAdd2_ab1xr")
+"nodes/Wing Combined/position" = Vector2(-20, 140)
+nodes/Wing1/node = SubResource("AnimationNodeAnimation_66sb6")
+nodes/Wing1/position = Vector2(-280, 100)
+nodes/Wing2/node = SubResource("AnimationNodeAnimation_mjfmf")
+nodes/Wing2/position = Vector2(-280, 260)
+node_connections = [&"output", 0, &"Seek", &"Combined", 0, &"Wing Combined", &"Combined", 1, &"Root", &"Seek", 0, &"Combined", &"Wing Combined", 0, &"Wing1", &"Wing Combined", 1, &"Wing2"]
+
+[node name="Drone1" type="RigidBody3D"]
+collision_layer = 16
+collision_mask = 6
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+mass = 150.0
+gravity_scale = 0.0
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 0, 0)
+shape = SubResource("SphereShape3D_u27nk")
+
+[node name="Body" type="Node3D" parent="."]
+transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 0, 0, 0)
+
+[node name="Drone1" parent="Body" instance=ExtResource("2_7noea")]
+transform = Transform3D(-1.2, 0, -1.81195e-07, 0, 1.2, 0, 1.81195e-07, 0, -1.2, 0, 0, 0)
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("../Body/Drone1")
 libraries = {
 &"": SubResource("AnimationLibrary_3dwc6")
 }
+tree_root = SubResource("AnimationNodeBlendTree_3351t")
+anim_player = NodePath("../Body/Drone1/AnimationPlayer")
+parameters/Combined/add_amount = 1.0
+parameters/Seek/seek_request = -1.0
+"parameters/Wing Combined/add_amount" = 1.0
+script = ExtResource("3_w2pfa")
