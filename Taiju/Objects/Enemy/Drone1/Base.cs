@@ -19,9 +19,8 @@ where
   protected CircleBulletServer BulletServer;
 
   // Nodes
-  protected Node3D Body;
-  protected AnimationTree AnimationTree;
-  protected Dense<RecordType> Record;
+  private Node3D body_;
+  private AnimationTree animationTree_;
 
   protected record struct RecordType {
     public int Shield;
@@ -29,13 +28,14 @@ where
     public Vector3 Velocity;
     public TParam Param;
   }
+  protected Dense<RecordType> Record;
 
   public override void _Ready() {
     base._Ready();
-    Body = GetNode<Node3D>("Body")!;
+    body_ = GetNode<Node3D>("Body")!;
 
-    AnimationTree = GetNode<AnimationTree>("AnimationTree")!;
-    AnimationTree.Active = true;
+    animationTree_ = GetNode<AnimationTree>("AnimationTree")!;
+    animationTree_.Active = true;
 
     Velocity = Vec.Rotate(initialVelocity_, Rotation.Z);
     Rotation = new Vector3(Rotation.X, Rotation.Y, 0.0f);
@@ -48,7 +48,7 @@ where
     });
 
     BulletServer = GetNode<CircleBulletServer>("/root/Root/Field/EnemyBullet/RedCircleBulletServer")!;
-    AnimationTree.Set(SeekReq, 0f);
+    animationTree_.Set(SeekReq, 0f);
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
@@ -60,7 +60,7 @@ where
     // Save states
     rec.Velocity = Velocity;
     { // Update godot states
-      Body.Rotation = new Vector3(0, 0, Vec.Atan2(-rec.Velocity));
+      body_.Rotation = new Vector3(0, 0, Vec.Atan2(-rec.Velocity));
     }
 
     return base._ProcessForward(integrateTime, dt);
@@ -79,8 +79,8 @@ where
   private bool LoadCurrentStatus(double integrateTime) {
     ref readonly var rec = ref Record.Ref;
     Position = rec.Position;
-    Body.Rotation = new Vector3(0, 0, Vec.Atan2(-rec.Velocity));
-    AnimationTree.Set(SeekReq, integrateTime);
+    body_.Rotation = new Vector3(0, 0, Vec.Atan2(-rec.Velocity));
+    animationTree_.Set(SeekReq, integrateTime);
     return true;
   }
 
