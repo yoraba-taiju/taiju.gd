@@ -16,6 +16,11 @@ public partial class Straight : Base<Straight.Param> {
 
   public override void _Ready() {
     base._Ready();
+    Name = "Drone0/Straight";
+    ref var param = ref Record.Mut.Param;
+    param = new Param {
+      ShotToSora = shotToSora_,
+    };
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {

@@ -6,74 +6,47 @@ using Taiju.Util.Reversible.Value;
 
 namespace Taiju.Objects.Enemy.Drone1;
 
-public partial class Follow : EnemyBase {
-  [Export] private Vector3 initialVelocity_ = new(-10.0f, 0.0f, 0.0f);
-  private Vector3 rotatedInitialVelocity_;
+public partial class Follow : Base<Follow.Param> {
   [Export(PropertyHint.Range, "0,360,")] private float maxRotateDegreePerSec_ = 240.0f;
   [Export(PropertyHint.Range, "0,20,")] private float returnDistance_ = 12.0f;
   [Export(PropertyHint.Range, "0,20,")] private float escapeDistance_ = 13.0f;
   [Export(PropertyHint.Range, "0,30,")] private float bulletSpeed_ = 15.0f;
-  private const string SeekReq = "parameters/Seek/seek_request";
-  private CircleBulletServer bulletServer_;
 
   //
-  private enum State {
+  public enum State {
     Init,
     Seek,
     Return,
     Escape,
   }
 
-  private Node3D body_;
-  private AnimationTree animationTree_;
-  private Dense<Record> record_;
-  private int defaultEscapeDirection_;
-
-  private record struct Record {
+  public struct Param {
     public State State;
-    public int Shield;
-    public Vector3 Position;
-    public Vector3 Velocity;
   }
+
+  private int defaultEscapeDirection_;
 
   public override void _Ready() {
     base._Ready();
     Name = "Drone1/Follow";
-    body_ = GetNode<Node3D>("Body")!;
 
-    animationTree_ = GetNode<AnimationTree>("AnimationTree")!;
-    animationTree_.Active = true;
-
-    rotatedInitialVelocity_ = Vec.Rotate(initialVelocity_, Rotation.Z);
-    Rotation = new Vector3(Rotation.X, Rotation.Y, 0.0f);
-
-    record_ = new Dense<Record>(Clock, new Record {
-      State = State.Init,
-      Shield = InitialShield,
-      Position = Position,
-      Velocity = rotatedInitialVelocity_,
-    });
+    ref var param = ref Record.Mut.Param;
+    param.State = State.Init;
 
     defaultEscapeDirection_ = ((Random.Shared.Next() % 2) * 2) - 1;
-    bulletServer_ = GetNode<CircleBulletServer>("/root/Root/Field/EnemyBullet/RedCircleBulletServer")!;
-    animationTree_.Set(SeekReq, 0f);
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
-    base._ProcessForward(integrateTime, dt);
-    ref var rec = ref record_.Mut;
-    { // Record godot states
-      rec.Position = Position;
-    }
-    var currentPosition = rec.Position;
+    ref var rec = ref Record.Mut;
+    ref var param = ref rec.Param;
+    var currentPosition = Position;
     var soraPosition = Sora.Position;
     var maxAngle = (float)(dt * Mathf.DegToRad(maxRotateDegreePerSec_));
 
-    switch (rec.State) {
+    switch (param.State) {
       case State.Init: {
-        rec.Velocity = rotatedInitialVelocity_;
         if (Position.X <= 18.0f) {
-          rec.State = State.Seek;
+          param.State = State.Seek;
         }
       }
         break;
@@ -81,10 +54,10 @@ public partial class Follow : EnemyBase {
       case State.Seek: {
         var delta = soraPosition - currentPosition;
         if (Mathf.Abs(delta.X) > returnDistance_) {
-          rec.Velocity = Mover.Follow(delta, rec.Velocity, maxAngle);
+          Velocity = Mover.Follow(delta, rec.Velocity, maxAngle);
         } else {
-          rec.State = State.Return;
-          bulletServer_.SpawnToSora(rec.Position, bulletSpeed_);
+          param.State = State.Return;
+          BulletServer.SpawnToSora(rec.Position, bulletSpeed_);
         }
       }
         break;
@@ -97,51 +70,22 @@ public partial class Follow : EnemyBase {
           if (sign == 0) {
             sign = defaultEscapeDirection_;
           }
-          rec.Velocity = Vec.Rotate(rec.Velocity, sign * maxAngle) * Mathf.Exp((float)dt / 2);
+          Velocity = Vec.Rotate(rec.Velocity, sign * maxAngle) * Mathf.Exp((float)dt / 2);
         } else if (length > escapeDistance_ * 1.1f) {
-          bulletServer_.SpawnToSora(rec.Position, 15.0f);
-          rec.State = State.Escape;
+          BulletServer.SpawnToSora(rec.Position, 15.0f);
+          param.State = State.Escape;
         }
       }
         break;
 
       case State.Escape: {
-        rec.Velocity = Mover.Follow(Vector3.Right, rec.Velocity, maxAngle);
+        Velocity = Mover.Follow(Vector3.Right, rec.Velocity, maxAngle);
       }
         break;
 
       default:
         throw new ArgumentOutOfRangeException();
     }
-
-    { // Update godot states
-      body_.Rotation = new Vector3(0, 0, Vec.Atan2(-rec.Velocity));
-    }
-
-    return true;
+    return base._ProcessForward(integrateTime, dt);
   }
-
-  public override bool _ProcessBack(double integrateTime) {
-    base._ProcessBack(integrateTime);
-    return LoadCurrentStatus(integrateTime);
-  }
-
-  public override bool _ProcessLeap(double integrateTime) {
-    base._ProcessLeap(integrateTime);
-    return LoadCurrentStatus(integrateTime);
-  }
-
-  private bool LoadCurrentStatus(double integrateTime) {
-    ref readonly var rec = ref record_.Ref;
-    Position = rec.Position;
-    body_.Rotation = new Vector3(0, 0, Vec.Atan2(-rec.Velocity));
-    animationTree_.Set(SeekReq, integrateTime);
-    return true;
-  }
-
-  public override void _IntegrateForces(PhysicsDirectBodyState3D state) {
-    ref readonly var rec = ref record_.Ref;
-    state.LinearVelocity = rec.Velocity;
-  }
-  protected override ref int ShieldMut => ref record_.Mut.Shield;
 }

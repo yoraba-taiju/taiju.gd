@@ -6,7 +6,6 @@ using Taiju.Util.Reversible.Value;
 namespace Taiju.Objects.Enemy.Drone0;
 
 public partial class Escape : Base<Escape.Param> {
-  [Export] private Vector3 initialVelocity_ = new(-10.0f, 0.0f, 0.0f);
   [Export(PropertyHint.Range, "0,180,")] private float maxRotateDegreePerSec_ = 60.0f;
   [Export(PropertyHint.Range, "0,20,")] private float escapeDistance_ = 12.0f;
 
@@ -28,7 +27,9 @@ public partial class Escape : Base<Escape.Param> {
     base._Ready();
     Name = "Drone0/Escape";
     ref var param = ref Record.Mut.Param;
-    param.State = State.Init;
+    param = new Param {
+      State = State.Init,
+    };
     defaultEscapeDirection_ = ((int)(rand_.Randi() % 2) * 2) - 1;
   }
 
@@ -42,7 +43,6 @@ public partial class Escape : Base<Escape.Param> {
 
     switch (param.State) {
       case State.Init: {
-        rec.Velocity = initialVelocity_;
         if (Position.X <= 18.0f) {
           param.State = State.Seek;
         }
