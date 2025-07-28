@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://vspygtuqr03c"]
+
+[ext_resource type="PackedScene" uid="uid://0salxttr6xmm" path="res://assets/Objects/Enemy/Drones/Drone4.blend" id="1_2nw6l"]
+[ext_resource type="Script" uid="uid://d0rnxea4tnwns" path="res://Objects/Enemy/Drone4/Kamikaze.cs" id="1_wqth8"]
+[ext_resource type="PackedScene" uid="uid://581jt6ajonyu" path="res://Objects/Effect/StarDust.tscn" id="2_0sq22"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0sq22"]
+radius = 1.05
+height = 3.05
+
+[node name="Drone4" type="RigidBody3D"]
+collision_layer = 16
+collision_mask = 6
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+mass = 100.0
+gravity_scale = 0.0
+script = ExtResource("1_wqth8")
+
+[node name="Body" type="Node3D" parent="."]
+
+[node name="Drone4" parent="Body" instance=ExtResource("1_2nw6l")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="Shaft" parent="Body/Drone4" index="1"]
+transform = Transform3D(1, 0, 0, 0, -0.9513994, 0.30795974, 0, -0.30795974, -0.9513994, 0, 0, 0)
+
+[node name="StarDust" parent="Body" instance=ExtResource("2_0sq22")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 0, 0)
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, -0.44, 0, 0)
+shape = SubResource("CapsuleShape3D_0sq22")
+
+[editable path="Body/Drone4"]

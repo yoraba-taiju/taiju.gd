@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=30 format=3 uid="uid://ceqv14au1y2ag"]
 
 [ext_resource type="Script" uid="uid://xerpjryc82k5" path="res://Objects/ClockNode.cs" id="1_alw2w"]
 [ext_resource type="Script" uid="uid://byj8w8pd71fwb" path="res://Objects/Player.cs" id="1_erwvk"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://xbqbk6n6bjsq" path="res://Util/Godot/Overlay/StretchedSubViewport.cs" id="3_grg3l"]
 [ext_resource type="Texture2D" uid="uid://ci480n5f4lr7t" path="res://assets/Background/Skybox/BlueSky.hdr" id="3_h1m7h"]
 [ext_resource type="PackedScene" uid="uid://co8ax7f470wis" path="res://Objects/Witch/Sora.tscn" id="4_h45ke"]
+[ext_resource type="PackedScene" uid="uid://vspygtuqr03c" path="res://Objects/Enemy/Drone4/Drone4_Kamikaze.tscn" id="7_fdhvb"]
 [ext_resource type="Script" uid="uid://cxxvayvisde34" path="res://Objects/Witch/SoraBulletServer.cs" id="7_hxyi1"]
 [ext_resource type="PackedScene" uid="uid://cp8q8tkg6dn4i" path="res://UI/SpellGauge.tscn" id="8_grg3l"]
 [ext_resource type="Script" uid="uid://bbu6uiafbe25c" path="res://Objects/BulletServer/Server/CircleBulletServer.cs" id="8_qfb4r"]
@@ -109,6 +110,9 @@ script = ExtResource("7_hxyi1")
 [node name="Enemy" type="Node3D" parent="Field"]
 
 [node name="DefaultRush" type="Node3D" parent="Field/Enemy"]
+
+[node name="Drone4" parent="Field/Enemy/DefaultRush" instance=ExtResource("7_fdhvb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.0361743, 0, 0)
 
 [node name="EnemyEffect" type="Node3D" parent="Field"]
 

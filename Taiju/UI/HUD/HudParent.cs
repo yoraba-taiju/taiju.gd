@@ -4,6 +4,8 @@ namespace Taiju.UI.HUD;
 
 public partial class HudParent : CanvasLayer {
   private Vector2I currentWindowSize_;
+
+  // Nodes & info
   private Node2D scoreNode_;
   private Vector2 originalScoreNodePositionRatio_;
   private SpellGauge spellGauge_;

@@ -4,6 +4,7 @@ using Godot;
 using Taiju.Objects.Effect;
 using Taiju.Objects.Enemy;
 using Taiju.UI.HUD;
+using Taiju.Util.Godot;
 using Taiju.Util.Reversible.Godot;
 using Taiju.Util.Reversible.Value;
 
@@ -15,12 +16,17 @@ public partial class Sora : ReversibleRigidBody3D {
     public const double MoveDelta = 12.0;
   }
 
-  /* Assets */
+  /* Params */
   [Export(PropertyHint.Range, "0,0.2,")] private double nextBulletDuration_ = 0.08;
+
+  /* Nodes */
   private Player player_;
   private Node3D witchField_;
   private SoraBulletServer bulletServer_;
   private Node3D bulletNode_;
+  private Camera camera_;
+
+  /* Assets */
   private PackedScene arrowAsset_;
 
   /* Spell Related Types */
@@ -89,6 +95,8 @@ public partial class Sora : ReversibleRigidBody3D {
     witchField_ = GetNode<Node3D>("/root/Root/Field/Witch")!;
     bulletServer_ = GetNode<SoraBulletServer>("/root/Root/Field/WitchBullet/SoraBulletServer")!;
     bulletNode_ = GetNode<Node3D>("/root/Root/Field/WitchBullet")!;
+    camera_ = GetNode<Camera>("/root/Root/MainCamera")!;
+
     arrowAsset_ = ResourceLoader.Load<PackedScene>("res://Objects/Effect/Arrow.tscn")!;
     // Initial State
     record_ = new Dense<Record>(Clock, new Record {
@@ -145,9 +153,10 @@ public partial class Sora : ReversibleRigidBody3D {
 
     ref var pos = ref rec.Position;
     { // Position
+      var halfScreenSize = camera_.HalfScreenSize - new Vector2(1.5f, 1.5f);
       pos += operation.Delta * (float)(dt * Constant.MoveDelta);
-      pos.X = Mathf.Clamp(pos.X, -21.0f, 21.0f);
-      pos.Y = Mathf.Clamp(pos.Y, -11.5f, 11.5f);
+      pos.X = Mathf.Clamp(pos.X, -halfScreenSize.X, halfScreenSize.X);
+      pos.Y = Mathf.Clamp(pos.Y, -halfScreenSize.Y, halfScreenSize.Y);
     }
 
     ref var rot = ref rec.SpiritRot;

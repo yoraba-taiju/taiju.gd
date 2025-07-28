@@ -15,7 +15,7 @@ public abstract partial class ReversibleParticle3D<TParam> : ReversibleNode3D
   [Export] public bool Emitting = true;
   [Export] protected Mesh Mesh;
   [Export] protected int MeshCount = 16;
-  [Export] protected float MaxSpeed = 10.0f;
+  [Export] public float MaxSpeed = 10.0f;
   [Export(PropertyHint.Range, "1.0, 60.0")] protected double EmitPerSecond = 10;
   protected IReversibleNode EmitterNode;
   [Export] private Node3D residueNode_;

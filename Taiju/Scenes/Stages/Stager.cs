@@ -2,6 +2,7 @@
 using Godot;
 using Taiju.Objects;
 using Taiju.Objects.Witch;
+using Taiju.Util.Godot;
 using Taiju.Util.Reversible.Godot;
 using Taiju.Util.Reversible.Value;
 
@@ -22,7 +23,7 @@ public abstract partial class Stager : ReversibleNode3D {
   private Dense<Record> record_;
 
   // Nodes
-  protected Camera3D MainCamera { get; private set; }
+  protected Camera MainCamera { get; private set; }
   protected Sora Sora { get; private set; }
   protected Player Player { get; private set; }
   protected Node3D Enemy { get; private set; }
@@ -40,7 +41,7 @@ public abstract partial class Stager : ReversibleNode3D {
       StageIndex = 0,
       StagePosition = 0,
     });
-    MainCamera = GetNode<Camera3D>("/root/Root/MainCamera")!;
+    MainCamera = GetNode<Camera>("/root/Root/MainCamera")!;
     Sora = GetNode<Sora>("/root/Root/Field/Witch/Sora")!;
     Enemy = GetNode<Node3D>("/root/Root/Field/Enemy")!;
     DefaultRush = GetNode<Node3D>("/root/Root/Field/Enemy/DefaultRush")!;
