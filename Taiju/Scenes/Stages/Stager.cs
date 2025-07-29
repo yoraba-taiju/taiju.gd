@@ -12,7 +12,11 @@ public abstract partial class Stager : ReversibleNode3D {
   // const
   private const float StageWidth = 1280.0f;
   private const float StageHeight = 720.0f;
+  private readonly Vector2 StageSize = new(StageWidth, StageHeight);
   private const double StageSpeed = 120.0;
+  
+  // Current status
+  private Vector2 viewportSize_ = Vector2.Zero;
 
   // Record
   private struct Record {
@@ -22,6 +26,7 @@ public abstract partial class Stager : ReversibleNode3D {
     public double StagePosition;
   }
   private Dense<Record> record_;
+  
 
   // Nodes
   protected Camera MainCamera { get; private set; }
@@ -46,6 +51,22 @@ public abstract partial class Stager : ReversibleNode3D {
     Sora = GetNode<Sora>("/root/Root/Field/Witch/Sora")!;
     Enemy = GetNode<Node3D>("/root/Root/Field/Enemy")!;
     DefaultRush = GetNode<Node3D>("/root/Root/Field/Enemy/DefaultRush")!;
+    OnViewportSizeChanged();
+  }
+
+  public override void _EnterTree() {
+    base._EnterTree();
+    GetViewport().SizeChanged += OnViewportSizeChanged;
+  }
+
+  public override void _ExitTree() {
+    base._ExitTree();
+    GetViewport().SizeChanged -= OnViewportSizeChanged;
+  }
+
+  private void OnViewportSizeChanged() {
+    var viewportSize = GetViewport().GetVisibleRect().Size;
+    viewportSize_ = viewportSize;
   }
 
   protected void Move(Vector3 delta, double dt) {
@@ -122,9 +143,10 @@ public abstract partial class Stager : ReversibleNode3D {
 
   protected abstract void OnTrigger(double stagePosition, Model.Events.Trigger trigger);
 
-  private Vector3 ScreenToWorld(Vector2 screen) {
-    var rayOrigin = MainCamera.ProjectRayOrigin(screen);
-    var rayNormal = MainCamera.ProjectRayNormal(screen);
+  private Vector3 ScreenToWorld(Vector2 stage) {
+    var viewport = stage * viewportSize_ / StageSize;
+    var rayOrigin = MainCamera.ProjectRayOrigin(viewport);
+    var rayNormal = MainCamera.ProjectRayNormal(viewport);
     if (Mathf.IsZeroApprox(rayNormal.Z)) {
       throw new InvalidDataException("Ray is parallel to Z=0 plane");
     }
