@@ -12,11 +12,7 @@ public abstract partial class Stager : ReversibleNode3D {
   // const
   private const float StageWidth = 1280.0f;
   private const float StageHeight = 720.0f;
-  private readonly Vector2 StageSize = new(StageWidth, StageHeight);
   private const double StageSpeed = 120.0;
-  
-  // Current status
-  private Vector2 screenSize_;
 
   // Record
   private struct Record {
@@ -50,21 +46,6 @@ public abstract partial class Stager : ReversibleNode3D {
     Sora = GetNode<Sora>("/root/Root/Field/Witch/Sora")!;
     Enemy = GetNode<Node3D>("/root/Root/Field/Enemy")!;
     DefaultRush = GetNode<Node3D>("/root/Root/Field/Enemy/DefaultRush")!;
-    screenSize_ = GetWindow().Size;
-  }
-
-  public override void _EnterTree() {
-    base._EnterTree();
-    GetWindow().SizeChanged += OnWindowSizeChanged;
-  }
-
-  public override void _ExitTree() {
-    base._ExitTree();
-    GetWindow().SizeChanged -= OnWindowSizeChanged;
-  }
-
-  private void OnWindowSizeChanged() {
-    screenSize_ = GetWindow().Size;
   }
 
   protected void Move(Vector3 delta, double dt) {
@@ -141,8 +122,7 @@ public abstract partial class Stager : ReversibleNode3D {
 
   protected abstract void OnTrigger(double stagePosition, Model.Events.Trigger trigger);
 
-  private Vector3 ScreenToWorld(Vector2 stage) {
-    var screen = stage * (screenSize_ / StageSize);
+  private Vector3 ScreenToWorld(Vector2 screen) {
     var rayOrigin = MainCamera.ProjectRayOrigin(screen);
     var rayNormal = MainCamera.ProjectRayNormal(screen);
     if (Mathf.IsZeroApprox(rayNormal.Z)) {
