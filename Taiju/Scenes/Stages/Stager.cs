@@ -65,7 +65,9 @@ public abstract partial class Stager : ReversibleNode3D {
   }
 
   private void OnViewportSizeChanged() {
-    var viewportSize = GetViewport().GetVisibleRect().Size;
+    var viewport = GetViewport();
+    var rect = viewport.GetVisibleRect();
+    var viewportSize = rect.Size;
     viewportSize_ = viewportSize;
   }
 
