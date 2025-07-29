@@ -90,6 +90,7 @@ _data = {
 
 [node name="Drone1" instance=ExtResource("1_lb8qo")]
 script = ExtResource("1_70det")
+InitialShield = 10
 
 [node name="AnimationTree" parent="." index="2"]
 libraries = {

@@ -112,7 +112,7 @@ script = ExtResource("7_hxyi1")
 [node name="DefaultRush" type="Node3D" parent="Field/Enemy"]
 
 [node name="Drone4" parent="Field/Enemy/DefaultRush" instance=ExtResource("7_fdhvb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.151, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.151, 12.377068, 0)
 
 [node name="EnemyEffect" type="Node3D" parent="Field"]
 
@@ -136,6 +136,7 @@ script = ExtResource("12_2w5on")
 
 [node name="Label" type="Label" parent="Field/HUD/Score"]
 visibility_layer = 524288
+anchors_preset = -1
 offset_right = 94.0
 offset_bottom = 45.0
 text = "Score:"
@@ -143,6 +144,7 @@ label_settings = SubResource("LabelSettings_1vqvh")
 
 [node name="Counter" type="Label" parent="Field/HUD/Score"]
 visibility_layer = 524288
+anchors_preset = -1
 offset_left = 100.0
 offset_top = 2.0
 offset_right = 283.0
@@ -170,6 +172,7 @@ skeleton = NodePath("../..")
 
 [node name="OverlayViewportContainer" type="SubViewportContainer" parent="OverlayLayer"]
 clip_contents = true
+anchors_preset = -1
 offset_right = 1280.0
 offset_bottom = 720.0
 stretch = true
