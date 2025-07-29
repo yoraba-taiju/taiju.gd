@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Godot;
 using Taiju.Objects.Effect;
 using Taiju.Objects.Enemy;
+using Taiju.Scenes.Stages;
 using Taiju.UI.HUD;
 using Taiju.Util.Godot;
 using Taiju.Util.Reversible.Godot;
@@ -25,6 +26,9 @@ public partial class Sora : ReversibleRigidBody3D {
   private SoraBulletServer bulletServer_;
   private Node3D bulletNode_;
   private Camera camera_;
+  private Stager stager_;
+  private ResourceManager resourceManager_;
+  private SoraClone soraClone_;
 
   /* Assets */
   private PackedScene arrowAsset_;
@@ -83,7 +87,7 @@ public partial class Sora : ReversibleRigidBody3D {
    * Child nodes
    * ******************************************************************************************************************/
 
-  private CollisionShape3D collisionShape_;
+  private CollisionShape3D shape_;
   private Node3D soraModel_;
   private Node3D soraSoul_;
   private Node3D chitoseModel_;
@@ -96,6 +100,8 @@ public partial class Sora : ReversibleRigidBody3D {
     bulletServer_ = GetNode<SoraBulletServer>("/root/Root/Field/WitchBullet/SoraBulletServer")!;
     bulletNode_ = GetNode<Node3D>("/root/Root/Field/WitchBullet")!;
     camera_ = GetNode<Camera>("/root/Root/MainCamera")!;
+    stager_ = GetNode<Stager>("/root/Root/Stager")!;
+    resourceManager_ = stager_.ResourceManager;
 
     arrowAsset_ = ResourceLoader.Load<PackedScene>("res://Objects/Effect/Arrow.tscn")!;
     // Initial State
@@ -119,7 +125,7 @@ public partial class Sora : ReversibleRigidBody3D {
     meta_ = new MetaRecord {
       CloneType = CloneType.Momiji,
     };
-    collisionShape_ = GetNode<CollisionShape3D>("Shape");
+    shape_ = GetNode<CollisionShape3D>("Shape");
     soraModel_ = GetNode<Node3D>("SoraModel")!;
     soraSoul_ = soraModel_.GetNode<Node3D>("Soul")!;
     chitoseModel_ = GetNode<Node3D>("ChitoseModel")!;
@@ -305,10 +311,10 @@ public partial class Sora : ReversibleRigidBody3D {
       soraModel_.Visible = true;
       soraSoul_.Visible = true;
       chitoseModel_.Visible = false;
-      collisionShape_.Disabled = false;
+      shape_.Disabled = false;
       return;
     }
-    collisionShape_.Disabled = true;
+    shape_.Disabled = true;
     switch (spell.InvocationLeftTime) {
       case >= 1.1:
         soraModel_.Visible = false;
@@ -333,7 +339,7 @@ public partial class Sora : ReversibleRigidBody3D {
   }
 
   private SoraClone Clone(double integrateTime) {
-    var asset = ResourceLoader.Load<PackedScene>("res://Objects/Witch/SoraClone.tscn")!;
+    var asset = resourceManager_.Load<PackedScene>("res://Objects/Witch/SoraClone.tscn")!;
     var soraClone = asset.Instantiate<SoraClone>();
     soraClone.Position = Position;
     // Copy replay status
