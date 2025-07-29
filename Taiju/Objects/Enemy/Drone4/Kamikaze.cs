@@ -77,7 +77,9 @@ public partial class Kamikaze : Base<Kamikaze.Param> {
         param.TimeToNext -= dt;
         if (param.TimeToNext < 0.0) {
           param.State = State.Kamikaze;
+
           StarDust.Visible = true;
+          StarDust.MaxSpeed = kamikazeStarDustSpeed_;
           rec.Speed = kamikazeSpeed_;
         }
         break;
