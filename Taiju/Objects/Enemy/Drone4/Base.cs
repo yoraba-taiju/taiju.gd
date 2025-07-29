@@ -9,14 +9,13 @@ public abstract partial class Base<TParam> : EnemyBase
   where
 TParam: struct
 {
-  [Export] private int initialShield_ = 6;
-  
   // Nodes
   protected AnimationPlayer AnimPlayer;
   protected StarDust StarDust;
   
   // Childs
   protected Node3D Body;
+  protected CollisionShape3D Shape;
 
   public struct RecordType {
     public int Shield;
@@ -32,7 +31,7 @@ TParam: struct
   public override void _Ready() {
     base._Ready();
     Record = new Dense<RecordType>(Clock, new RecordType {
-      Shield = initialShield_,
+      Shield = InitialShield,
       Position = Position,
       Speed = 0.0f, // Please set in subclass.
       Direction = new Vector3(), // also
@@ -42,6 +41,7 @@ TParam: struct
     AnimPlayer.CurrentAnimation = "Shaft_Rotate";
     StarDust = GetNode<StarDust>("Body/StarDust")!;
     Body = GetNode<Node3D>("Body")!;
+    Shape = GetNode<CollisionShape3D>("Shape")!;
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
@@ -51,7 +51,9 @@ TParam: struct
       rec.Animation = AnimPlayer.CurrentAnimationPosition;
     }
     { // Set Godot Status
-      Body.Rotation = new Vector3(0, 0, Vec.Atan2(-rec.Direction));
+      var rot = new Vector3(0, 0, Vec.Atan2(-rec.Direction));
+      Body.Rotation = rot;
+      Shape.Rotation = rot;
     }
     return base._ProcessForward(integrateTime, dt);
   }
@@ -70,7 +72,9 @@ TParam: struct
     ref readonly var rec = ref Record.Ref;
     Position = rec.Position;
     AnimPlayer.Seek(rec.Animation);
-    Body.Rotation = new Vector3(0, 0, Vec.Atan2(-rec.Direction));
+    var rot = new Vector3(0, 0, Vec.Atan2(-rec.Direction));
+    Body.Rotation = rot;
+    Shape.Rotation = rot;
   }
 
   public override void _IntegrateForces(PhysicsDirectBodyState3D state) {
@@ -79,5 +83,4 @@ TParam: struct
   }
 
   protected override ref int ShieldMut => ref Record.Mut.Shield;
-  
 }
