@@ -51,9 +51,20 @@ public abstract partial class Stager : ReversibleNode3D {
     Enemy = GetNode<Node3D>("/root/Root/Field/Enemy")!;
     DefaultRush = GetNode<Node3D>("/root/Root/Field/Enemy/DefaultRush")!;
     screenSize_ = GetWindow().Size;
-    GetWindow().SizeChanged += () => {
-      screenSize_ = GetWindow().Size;
-    };
+  }
+
+  public override void _EnterTree() {
+    base._EnterTree();
+    GetWindow().SizeChanged += OnWindowSizeChanged;
+  }
+
+  public override void _ExitTree() {
+    base._ExitTree();
+    GetWindow().SizeChanged -= OnWindowSizeChanged;
+  }
+
+  private void OnWindowSizeChanged() {
+    screenSize_ = GetWindow().Size;
   }
 
   protected void Move(Vector3 delta, double dt) {
