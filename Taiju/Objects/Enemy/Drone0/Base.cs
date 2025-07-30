@@ -43,7 +43,7 @@ TParam: struct
     animPlayer_.Play("Rotate");
     BulletServer = GetNode<CircleBulletServer>("/root/Root/Field/EnemyBullet/RedCircleBulletServer")!;
   }
-  
+
   public override bool _ProcessForward(double integrateTime, double dt) {
     base._ProcessForward(integrateTime, dt);
     ref var rec = ref Record.Mut;

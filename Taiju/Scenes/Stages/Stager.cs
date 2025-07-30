@@ -137,9 +137,10 @@ public abstract partial class Stager : ReversibleNode3D {
     var basePos = new Vector2((float)(rush.X - stagePosition), rush.Y);
     foreach (var spawn in rush.Spawns) {
       var node = ResourceManager.Load<PackedScene>(spawn.Path).Instantiate<Node3D>();
-      rushNode.AddChild(node);
       var pos = new Vector2(spawn.X, spawn.Y) + basePos;
+      // Set position **before** AddChild.
       node.Position = ScreenToWorld(pos);
+      rushNode.AddChild(node);
     }
   }
 
