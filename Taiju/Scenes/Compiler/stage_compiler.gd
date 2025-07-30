@@ -25,13 +25,7 @@ func compile_stage(scene_path: String):
 		if node is Rush:
 			var spawns = []
 			for child in node.get_children():
-				var spawn = child as Spawn
-				spawns.append({
-					"EventType": "Spawn",
-					"X": spawn.position.x,
-					"Y": spawn.position.y,
-					"Path": spawn.path
-				})
+				spawns.append(compile_spawn(child as Spawn))
 			events.append({
 				"EventType": "Rush",
 				"X": node.position.x,
@@ -39,12 +33,7 @@ func compile_stage(scene_path: String):
 				"Spawns": spawns
 			})
 		elif node is Spawn:
-			events.append({
-				"EventType": "Spawn",
-				"X": node.position.x,
-				"Y": node.position.y,
-				"Path": node.path,
-			})
+			events.append(compile_spawn(node as Spawn))
 		elif node is Trigger:
 			events.append({
 				"EventType": "Trigger",
@@ -74,3 +63,29 @@ func compile_stage(scene_path: String):
 		print("Saved: ", stage_path)
 	else:
 		print("Failed to open file for writing")
+
+func compile_spawn(node: Spawn):
+	var obj = {
+		"EventType": "Spawn",
+		"X": node.position.x,
+		"Y": node.position.y,
+		"Path": node.path,
+	}
+	for child in node.get_children():
+		if child is Path2D:
+			var curves = []
+			var curve = child.curve
+			for i in range(0, curve.point_count):
+				curves.append({
+					"Position": compile_point(curve.get_point_position(i)),
+					"In": compile_point(curve.get_point_in(i)),
+					"Out": compile_point(curve.get_point_out(i)),
+				})
+			obj["Curve"] = curves
+	return obj
+
+func compile_point(v: Vector2):
+	return {
+		"X": v.x,
+		"Y": v.y,
+	}
