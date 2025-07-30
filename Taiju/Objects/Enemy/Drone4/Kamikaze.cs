@@ -8,14 +8,12 @@ namespace Taiju.Objects.Enemy.Drone4;
 public partial class Kamikaze : Base<Kamikaze.Param> {
   [Export] private float initialSpeed_ = 10.0f;
   [Export] private float kamikazeSpeed_ = 40.0f;
+  [Export(PropertyHint.Range, "0,10,")] private float initialStarDustSpeed_ = 5.0f;
+  [Export(PropertyHint.Range, "0,30,")] private float kamikazeStarDustSpeed_ = 25.0f;
   [Export(PropertyHint.Range, "0,360,")] private float maxRotateDegreePerSec_ = 60.0f;
   [Export(PropertyHint.Range, "0,20,")] private float prepareDistance_ = 15.0f;
   [Export(PropertyHint.Range, "0,20,")] private double timeOfPrepare_ = 0.5;
   [Export(PropertyHint.Range, "0,20,")] private double timeOfPreKamikaze_ = 0.3;
-  [Export(PropertyHint.Range, "0,10,")] private float kamikazeStarDustSpeed_ = 25.0f;
-
-  // Current State
-  private float initialStarDustSpeed_;
 
   // Param
   public enum State {
@@ -41,7 +39,7 @@ public partial class Kamikaze : Base<Kamikaze.Param> {
       State = State.Init,
       TimeToNext = 0.0,
     };
-    initialStarDustSpeed_ = StarDust.MaxSpeed;
+    StarDust.MaxSpeed = initialStarDustSpeed_;
   }
 
   public override bool _ProcessForward(double integrateTime, double dt) {
