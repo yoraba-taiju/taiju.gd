@@ -1,4 +1,5 @@
-﻿using Taiju.Scenes.Model.Events;
+﻿using Godot;
+using Taiju.Scenes.Model.Events;
 using Taiju.UI.HUD;
 
 namespace Taiju.Scenes.Stages.Stage01;
@@ -19,7 +20,7 @@ public partial class Stager : Stages.Stager {
     return true;
   }
 
-  protected override void OnTrigger(double stagePosition, Trigger trigger) {
+  protected override void OnTrigger(Vector2 basePosition, Trigger trigger) {
     throw new System.NotImplementedException();
   }
 }

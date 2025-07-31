@@ -89,8 +89,9 @@ public abstract partial class Stager : ReversibleNode3D {
       stagePosition += StageSpeed * dt;
       var invokePosition = stagePosition + StageWidth;
       ref var stageIndex = ref rec.StageIndex;
+      var basePos = new Vector2((float)-stagePosition, 0.0f);
       while (stageIndex < Stage.Events.Length && Stage.Events[stageIndex].X < invokePosition) {
-        InvokeEvent(stagePosition, Stage.Events[stageIndex]);
+        InvokeEvent(basePos, Stage.Events[stageIndex]);
         stageIndex++;
       }
     }
@@ -109,42 +110,57 @@ public abstract partial class Stager : ReversibleNode3D {
     return true;
   }
 
-  private void InvokeEvent(double stagePosition, Model.Event ev) {
+  private void InvokeEvent(Vector2 basePosition, Model.Event ev) {
     switch (ev) {
       case Model.Events.Rush rush:
-        OnRush(stagePosition, rush);
+        OnRush(basePosition, rush);
         break;
       case Model.Events.Spawn spawn:
-        OnSpawn(stagePosition, spawn);
+        OnSpawn(basePosition, spawn);
         break;
       case Model.Events.Trigger trigger:
-        OnTrigger(stagePosition, trigger);
+        OnTrigger(basePosition, trigger);
         break;
       case Model.Events.Preload:
         break;
     }
   }
 
-  private void OnSpawn(double stagePosition, Model.Events.Spawn spawn) {
-    var node = ResourceManager.Load<PackedScene>(spawn.Path).Instantiate<Node3D>();
-    node.Position = ScreenToWorld(new Vector2((float)(spawn.X - stagePosition), spawn.Y));
-    DefaultRush.AddChild(node);
+  private void OnSpawn(Vector2 basePosition, Model.Events.Spawn spawn) {
+    DefaultRush.AddChild(LoadSpawn(spawn, basePosition));
   }
 
-  private void OnRush(double stagePosition, Model.Events.Rush rush) {
+  private void OnRush(Vector2 basePosition, Model.Events.Rush rush) {
     var rushNode = new Objects.Rush.Rush();
     Enemy.AddChild(rushNode);
-    var basePos = new Vector2((float)(rush.X - stagePosition), rush.Y);
+    var rushBasePos = basePosition + new Vector2(rush.X, rush.Y);
     foreach (var spawn in rush.Spawns) {
-      var node = ResourceManager.Load<PackedScene>(spawn.Path).Instantiate<Node3D>();
-      var pos = new Vector2(spawn.X, spawn.Y) + basePos;
-      // Set position **before** AddChild.
-      node.Position = ScreenToWorld(pos);
-      rushNode.AddChild(node);
+      rushNode.AddChild(LoadSpawn(spawn, rushBasePos));
     }
   }
 
-  protected abstract void OnTrigger(double stagePosition, Model.Events.Trigger trigger);
+  protected abstract void OnTrigger(Vector2 stagePosition, Model.Events.Trigger trigger);
+
+  private Node3D LoadSpawn(Model.Events.Spawn spawn, Vector2 basePos) {
+    var node = ResourceManager.Load<PackedScene>(spawn.Path).Instantiate<Node3D>();
+    var pos = new Vector2(spawn.X, spawn.Y) + basePos;
+    // Set position **before** AddChild.
+    node.Position = ScreenToWorld(pos);
+    if (spawn.Curve != null) {
+      var curvePoints = spawn.Curve;
+      var curve = new Curve3D();
+      foreach (var point in curvePoints) {
+        curve.AddPoint(
+          ScreenToWorld(pos + new Vector2(point.Position.X, point.Position.Y)),
+          ScreenToWorld(pos + new Vector2(point.In.X, point.In.Y)),
+          ScreenToWorld(pos + new Vector2(point.Out.X, point.Out.Y))
+        );
+      }
+      // TODO: Set curve to obj.
+      GD.Print(node.Position, curve.GetBakedLength(), curve.SampleBaked(0.0f));
+    }
+    return node;
+  }
 
   private Vector3 ScreenToWorld(Vector2 stage) {
     var viewport = stage * viewportSize_ / StageSize;
@@ -154,7 +170,9 @@ public abstract partial class Stager : ReversibleNode3D {
       throw new InvalidDataException("Ray is parallel to Z=0 plane");
     }
 
-    float t = -rayOrigin.Z / rayNormal.Z;
-    return rayOrigin + rayNormal * t;
+    var t = -rayOrigin.Z / rayNormal.Z;
+    var pos = rayOrigin + rayNormal * t;
+    pos.Z = 0.0f;
+    return pos;
   }
 }
