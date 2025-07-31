@@ -46,6 +46,7 @@ public partial class StageLoader : Node2D {
     currentSceneIndex_ = 0;
     loadState_ = LoadState.NotLoaded;
     var set = new HashSet<string>(CommonPreloadScenes);
+    // Initially, add stage scene.
     set.Add(StageScenePath);
     foreach (var ev in Stage.Events) {
       switch (ev) {

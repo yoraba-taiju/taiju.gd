@@ -1,11 +1,14 @@
-﻿using System.Text.Json.Serialization;
+﻿#nullable enable
+using System.Text.Json.Serialization;
 using Godot;
 
 namespace Taiju.Scenes.Model.Events;
 
 public class Spawn : Event {
   [JsonPropertyName("Path")]
-  public string Path { get; set; }
+  public required string Path { get; init; }
+  [JsonPropertyName("Curve")]
+  public CurvePoint[]? Curve { get; init; }
 
-  public PackedScene Scene;
+  public PackedScene? Scene { get; set; }
 }

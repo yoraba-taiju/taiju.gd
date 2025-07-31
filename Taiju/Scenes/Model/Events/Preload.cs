@@ -1,9 +1,10 @@
-﻿using Godot;
+﻿#nullable enable
+using Godot;
 
 namespace Taiju.Scenes.Model.Events;
 
 public class Preload : Event {
-  [Export(PropertyHint.File, "*.tscn")] public string Path { get; set; }
+  public required string Path { get; init; }
 
-  public PackedScene Scene;
+  public PackedScene? Scene { get; set; }
 }

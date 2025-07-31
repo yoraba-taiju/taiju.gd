@@ -1,7 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://cnv7a2ru52o6e"]
+[gd_scene load_steps=5 format=3 uid="uid://cnv7a2ru52o6e"]
 
 [ext_resource type="Script" uid="uid://d0a02vuyy86gm" path="res://Scenes/Base/rush.gd" id="1_vt5n7"]
 [ext_resource type="Script" uid="uid://cl716mx8nhvts" path="res://Scenes/Base/spawn.gd" id="2_w3oro"]
+
+[sub_resource type="Curve2D" id="Curve2D_w3oro"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 280.39502, 155.03278, 0, 0, 0, 0, 156.14807, 155.03278, 0, 0, 0, 0, 41.135742, 152.62292, 59.221294, 9.622477, 0, 0, -240.09875, 126.91803, 0, 45.063934, 0, -45.063934, -343.35803, 77.91803, -45.8127, 13.899132, 45.8127, -13.899132, -263.60498, 20.885223, 0, 0, 0, 0, 0, 0)
+}
+point_count = 7
+
+[sub_resource type="Curve2D" id="Curve2D_vt5n7"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 129, -176, 0, 0, 0, 0, -45, -178, 43.923004, -6.6550007, -43.923004, 6.6550007, -306, -163, -5.389273, -40.552452, 5.389273, 40.552452, -425, -86, -57.233006, -9.317, 57.233006, 9.317, -263, -25, 0, 0, 0, 0, 0, 0)
+}
+point_count = 6
 
 [node name="Stage" type="Node2D"]
 
@@ -57,7 +69,14 @@ position = Vector2(200, 63)
 script = ExtResource("2_w3oro")
 path = "res://Objects/Enemy/Drone1/Drone1_Follow.tscn"
 
+[node name="Path2D" type="Path2D" parent="Rush3/Spawn2"]
+scale = Vector2(1.1911764, 1.244898)
+curve = SubResource("Curve2D_w3oro")
+
 [node name="Spawn3" type="Node2D" parent="Rush3"]
 position = Vector2(200, -63)
 script = ExtResource("2_w3oro")
 path = "res://Objects/Enemy/Drone1/Drone1_Follow.tscn"
+
+[node name="Path2D" type="Path2D" parent="Rush3/Spawn3"]
+curve = SubResource("Curve2D_vt5n7")

@@ -75,11 +75,12 @@ func compile_spawn(node: Spawn):
 		if child is Path2D:
 			var curves = []
 			var curve = child.curve
-			for i in range(0, curve.point_count):
+			for i in range(curve.point_count, 0, -1):
+				var idx = i - 1
 				curves.append({
-					"Position": compile_point(curve.get_point_position(i)),
-					"In": compile_point(curve.get_point_in(i)),
-					"Out": compile_point(curve.get_point_out(i)),
+					"Position": compile_point(curve.get_point_position(idx)),
+					"In": compile_point(curve.get_point_in(idx)),
+					"Out": compile_point(curve.get_point_out(idx)),
 				})
 			obj["Curve"] = curves
 	return obj
