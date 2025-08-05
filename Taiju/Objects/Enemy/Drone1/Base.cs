@@ -6,7 +6,7 @@ using Taiju.Util.Reversible.Value;
 
 namespace Taiju.Objects.Enemy.Drone1;
 
-public abstract partial class Base<TParam> : EnemyBase
+public abstract partial class Base<TParam> : EnemyBaseWithCurve
 where
   TParam: struct
 {

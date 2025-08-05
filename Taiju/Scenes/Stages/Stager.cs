@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using Godot;
 using Taiju.Objects;
+using Taiju.Objects.Enemy;
 using Taiju.Objects.Witch;
 using Taiju.Util.Godot;
 using Taiju.Util.Reversible.Godot;
@@ -156,8 +157,12 @@ public abstract partial class Stager : ReversibleNode3D {
           ScreenToWorld(pos + new Vector2(point.Out.X, point.Out.Y))
         );
       }
-      // TODO: Set curve to obj.
-      GD.Print(node.Position, curve.GetBakedLength(), curve.SampleBaked(0.0f));
+
+      if (node is EnemyBaseWithCurve enemy) {
+        enemy.Curve = curve;
+      } else {
+        GD.PrintErr($"Curve is set, but node is not have a curve: {node.GetType().FullName}");
+      }
     }
     return node;
   }
