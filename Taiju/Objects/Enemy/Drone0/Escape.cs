@@ -6,6 +6,7 @@ using Taiju.Util.Reversible.Value;
 namespace Taiju.Objects.Enemy.Drone0;
 
 public partial class Escape : Base<Escape.Param> {
+  [Export] private Vector3 initialVelocity_ = new(-10.0f, 0.0f, 0.0f);
   [Export(PropertyHint.Range, "0,180,")] private float maxRotateDegreePerSec_ = 60.0f;
   [Export(PropertyHint.Range, "0,20,")] private float escapeDistance_ = 12.0f;
 
@@ -21,6 +22,7 @@ public partial class Escape : Base<Escape.Param> {
 
   public record struct Param {
     public State State;
+    public Vector3 Velocity;
   }
 
   public override void _Ready() {
@@ -29,6 +31,7 @@ public partial class Escape : Base<Escape.Param> {
     ref var param = ref Record.Mut.Param;
     param = new Param {
       State = State.Init,
+      Velocity = Vec.Rotate(initialVelocity_, Rotation.Z),
     };
     defaultEscapeDirection_ = ((int)(rand_.Randi() % 2) * 2) - 1;
   }
@@ -52,7 +55,7 @@ public partial class Escape : Base<Escape.Param> {
       case State.Seek: {
         var delta = soraPosition - currentPosition;
         if (Mathf.Abs(delta.X) > escapeDistance_) {
-          Velocity = Mover.Follow(delta, rec.Velocity, maxAngle);
+          param.Velocity = Mover.Follow(delta, param.Velocity, maxAngle);
         }
         else {
           param.State = State.Seek;
@@ -67,7 +70,7 @@ public partial class Escape : Base<Escape.Param> {
           if (sign == 0) {
             sign = defaultEscapeDirection_;
           }
-          Velocity = Vec.Rotate(rec.Velocity, sign * maxAngle) * Mathf.Exp((float)dt / 2);
+          param.Velocity = Vec.Rotate(param.Velocity, sign * maxAngle) * Mathf.Exp((float)dt / 2);
         }
       }
         break;
@@ -76,6 +79,14 @@ public partial class Escape : Base<Escape.Param> {
         throw new ArgumentOutOfRangeException();
     }
 
+    { // Update godot states
+      Body.Rotation = new Vector3(0, 0, Vec.Atan2(-param.Velocity));
+    }
+
     return base._ProcessForward(integrateTime, dt);
+  }
+  public override void _IntegrateForces(PhysicsDirectBodyState3D state) {
+    ref readonly var rec = ref Record.Ref;
+    state.LinearVelocity = rec.Param.Velocity;
   }
 }
