@@ -72,7 +72,9 @@ where
     ref readonly var rec = ref Record.Ref;
     Position = rec.Position;
     Body.Rotation = rec.Rotation;
+    animationTree_.CallbackModeMethod = AnimationMixer.AnimationCallbackModeMethod.Immediate;
     animationTree_.Set(SeekReq, integrateTime);
+    animationTree_.CallbackModeMethod = AnimationMixer.AnimationCallbackModeMethod.Deferred;
     return true;
   }
 
