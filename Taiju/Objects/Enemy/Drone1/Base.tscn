@@ -106,7 +106,6 @@ animation = &"羽_根本_回転"
 [sub_resource type="AnimationNodeTimeSeek" id="AnimationNodeTimeSeek_o5h41"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_v14sf"]
-graph_offset = Vector2(-872.0391, 5.4214134)
 nodes/Seek/node = SubResource("AnimationNodeTimeSeek_o5h41")
 nodes/Seek/position = Vector2(140, 120)
 nodes/Mix1/node = SubResource("AnimationNodeAdd2_u48q4")
