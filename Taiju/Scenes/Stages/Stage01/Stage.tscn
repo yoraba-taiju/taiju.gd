@@ -79,4 +79,5 @@ script = ExtResource("2_w3oro")
 path = "res://Objects/Enemy/Drone1/Drone1_FollowCurve.tscn"
 
 [node name="Path2D" type="Path2D" parent="Rush3/Spawn3"]
+visible = false
 curve = SubResource("Curve2D_vt5n7")
