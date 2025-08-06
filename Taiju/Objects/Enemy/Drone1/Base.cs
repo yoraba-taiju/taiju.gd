@@ -6,44 +6,39 @@ using Taiju.Util.Reversible.Value;
 
 namespace Taiju.Objects.Enemy.Drone1;
 
-public abstract partial class Base<TParam> : EnemyBaseWithCurve
+public abstract partial class Base<TParam> : EnemyBase
 where
   TParam: struct
 {
   private const string SeekReq = "parameters/Seek/seek_request";
 
-  [Export] private Vector3 initialVelocity_ = new(-10.0f, 0.0f, 0.0f);
-
-  // Current Status
-  protected Vector3 Velocity;
+  // Node
   protected CircleBulletServer BulletServer;
 
-  // Nodes
-  private Node3D body_;
+  // Child Nodes
+  protected Node3D Body;
   private AnimationTree animationTree_;
 
   protected record struct RecordType {
     public int Shield;
     public Vector3 Position;
-    public Vector3 Velocity;
     public TParam Param;
   }
   protected Dense<RecordType> Record;
 
   public override void _Ready() {
     base._Ready();
-    body_ = GetNode<Node3D>("Body")!;
 
+    // Child nodes
+    Body = GetNode<Node3D>("Body")!;
     animationTree_ = GetNode<AnimationTree>("AnimationTree")!;
     animationTree_.Active = true;
 
-    Velocity = Vec.Rotate(initialVelocity_, Rotation.Z);
     Rotation = new Vector3(Rotation.X, Rotation.Y, 0.0f);
 
     Record = new Dense<RecordType>(Clock, new RecordType {
       Shield = InitialShield,
       Position = Position,
-      Velocity = Velocity,
       Param = new TParam(),
     });
 
@@ -57,10 +52,7 @@ where
     { // Record godot states
       rec.Position = Position;
     }
-    // Save states
-    rec.Velocity = Velocity;
     { // Update godot states
-      body_.Rotation = new Vector3(0, 0, Vec.Atan2(-rec.Velocity));
     }
 
     return base._ProcessForward(integrateTime, dt);
@@ -76,17 +68,12 @@ where
     return LoadCurrentStatus(integrateTime);
   }
 
-  private bool LoadCurrentStatus(double integrateTime) {
+  protected virtual bool LoadCurrentStatus(double integrateTime) {
     ref readonly var rec = ref Record.Ref;
     Position = rec.Position;
-    body_.Rotation = new Vector3(0, 0, Vec.Atan2(-rec.Velocity));
     animationTree_.Set(SeekReq, integrateTime);
     return true;
   }
 
-  public override void _IntegrateForces(PhysicsDirectBodyState3D state) {
-    ref readonly var rec = ref Record.Ref;
-    state.LinearVelocity = rec.Velocity;
-  }
   protected override ref int ShieldMut => ref Record.Mut.Shield;
 }

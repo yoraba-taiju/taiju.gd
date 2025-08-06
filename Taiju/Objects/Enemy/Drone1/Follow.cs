@@ -7,6 +7,7 @@ using Taiju.Util.Reversible.Value;
 namespace Taiju.Objects.Enemy.Drone1;
 
 public partial class Follow : Base<Follow.Param> {
+  [Export] private Vector3 initialVelocity_ = new(-10.0f, 0.0f, 0.0f);
   [Export(PropertyHint.Range, "0,360,")] private float maxRotateDegreePerSec_ = 240.0f;
   [Export(PropertyHint.Range, "0,20,")] private float returnDistance_ = 12.0f;
   [Export(PropertyHint.Range, "0,20,")] private float escapeDistance_ = 13.0f;
@@ -22,6 +23,7 @@ public partial class Follow : Base<Follow.Param> {
 
   public struct Param {
     public State State;
+    public Vector3 Velocity;
   }
 
   private int defaultEscapeDirection_;
@@ -30,8 +32,11 @@ public partial class Follow : Base<Follow.Param> {
     base._Ready();
     Name = "Drone1/Follow";
 
-    ref var param = ref Record.Mut.Param;
+    ref var rec = ref Record.Mut;
+    ref var param = ref rec.Param;
+    
     param.State = State.Init;
+    param.Velocity = Vec.Rotate(initialVelocity_, Rotation.Z);
 
     defaultEscapeDirection_ = ((Random.Shared.Next() % 2) * 2) - 1;
   }
@@ -54,7 +59,7 @@ public partial class Follow : Base<Follow.Param> {
       case State.Seek: {
         var delta = soraPosition - currentPosition;
         if (Mathf.Abs(delta.X) > returnDistance_) {
-          Velocity = Mover.Follow(delta, rec.Velocity, maxAngle);
+          param.Velocity = Mover.Follow(delta, param.Velocity, maxAngle);
         } else {
           param.State = State.Return;
           BulletServer.SpawnToSora(rec.Position, bulletSpeed_);
@@ -70,7 +75,7 @@ public partial class Follow : Base<Follow.Param> {
           if (sign == 0) {
             sign = defaultEscapeDirection_;
           }
-          Velocity = Vec.Rotate(rec.Velocity, sign * maxAngle) * Mathf.Exp((float)dt / 2);
+          param.Velocity = Vec.Rotate(param.Velocity, sign * maxAngle) * Mathf.Exp((float)dt / 2);
         } else if (length > escapeDistance_ * 1.1f) {
           BulletServer.SpawnToSora(rec.Position, 15.0f);
           param.State = State.Escape;
@@ -79,13 +84,25 @@ public partial class Follow : Base<Follow.Param> {
         break;
 
       case State.Escape: {
-        Velocity = Mover.Follow(Vector3.Right, rec.Velocity, maxAngle);
+        param.Velocity = Mover.Follow(Vector3.Right, param.Velocity, maxAngle);
       }
         break;
 
       default:
         throw new ArgumentOutOfRangeException();
     }
+
+    { // Update godot states
+      Body.Rotation = new Vector3(0, 0, Vec.Atan2(-param.Velocity));
+    }
+
     return base._ProcessForward(integrateTime, dt);
   }
+  
+  public override void _IntegrateForces(PhysicsDirectBodyState3D state) {
+    ref readonly var rec = ref Record.Ref;
+    ref readonly var param = ref rec.Param;
+    state.LinearVelocity = param.Velocity;
+  }
+  
 }

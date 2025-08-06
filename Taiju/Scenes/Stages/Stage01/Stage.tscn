@@ -5,15 +5,15 @@
 
 [sub_resource type="Curve2D" id="Curve2D_w3oro"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 280.39502, 155.03278, 0, 0, 0, 0, 156.14807, 155.03278, 0, 0, 0, 0, 41.135742, 152.62292, 59.221294, 9.622477, 0, 0, -240.09875, 126.91803, 0, 45.063934, 0, -45.063934, -343.35803, 77.91803, -45.8127, 13.899132, 45.8127, -13.899132, -263.60498, 20.885223, 0, 0, 0, 0, 0, 0)
+"points": PackedVector2Array(0, 0, 0, 0, 183, 191, 93.170006, 7.986001, -93.170006, -7.986001, -348, 171, 0, 45.063934, 0, -45.063934, -532, 110, -47.1437, 8.575131, 47.1437, -8.575131, -361, 30, 0, 0, 0, 0, 7, 2)
 }
-point_count = 7
+point_count = 5
 
 [sub_resource type="Curve2D" id="Curve2D_vt5n7"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 129, -176, 0, 0, 0, 0, -45, -178, 43.923004, -6.6550007, -43.923004, 6.6550007, -306, -163, -5.389273, -40.552452, 5.389273, 40.552452, -425, -86, -57.233006, -9.317, 57.233006, 9.317, -263, -25, 0, 0, 0, 0, 0, 0)
+"points": PackedVector2Array(0, 0, 0, 0, 184, -189, 43.923004, -6.6550007, -43.923004, 6.6550007, -351, -163, -5.389273, -40.552452, 5.389273, 40.552452, -534, -90, -57.233006, -9.317, 57.233006, 9.317, -351, -21, 0, 0, 0, 0, 0, 0)
 }
-point_count = 6
+point_count = 5
 
 [node name="Stage" type="Node2D"]
 
@@ -65,18 +65,17 @@ script = ExtResource("2_w3oro")
 path = "res://Objects/Enemy/Drone1/Drone1_Follow.tscn"
 
 [node name="Spawn2" type="Node2D" parent="Rush3"]
-position = Vector2(200, 63)
+position = Vector2(10, 63)
 script = ExtResource("2_w3oro")
-path = "res://Objects/Enemy/Drone1/Drone1_Follow.tscn"
+path = "res://Objects/Enemy/Drone1/Drone1_FollowCurve.tscn"
 
 [node name="Path2D" type="Path2D" parent="Rush3/Spawn2"]
-scale = Vector2(1.1911764, 1.244898)
 curve = SubResource("Curve2D_w3oro")
 
 [node name="Spawn3" type="Node2D" parent="Rush3"]
-position = Vector2(200, -63)
+position = Vector2(10, -63)
 script = ExtResource("2_w3oro")
-path = "res://Objects/Enemy/Drone1/Drone1_Follow.tscn"
+path = "res://Objects/Enemy/Drone1/Drone1_FollowCurve.tscn"
 
 [node name="Path2D" type="Path2D" parent="Rush3/Spawn3"]
 curve = SubResource("Curve2D_vt5n7")

@@ -1,0 +1,98 @@
+[gd_scene load_steps=7 format=3 uid="uid://cyu5q8h3d62r8"]
+
+[ext_resource type="PackedScene" uid="uid://7xifyi2dvodl" path="res://Objects/Enemy/Drone1/Base.tscn" id="1_0xkht"]
+[ext_resource type="Script" uid="uid://r55mq2rqlk4w" path="res://Objects/Enemy/Drone1/FollowCurve.cs" id="2_wmmix"]
+
+[sub_resource type="Animation" id="Animation_58wah"]
+resource_name = "羽_根本_回転"
+length = 1.5
+loop_mode = 1
+tracks/0/type = "rotation_3d"
+tracks/0/imported = true
+tracks/0/enabled = true
+tracks/0/path = NodePath("Root/プロペラ/羽_Root")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.033333335, 1, 3.2412487e-17, 0.035291478, 3.371545e-17, 0.9993771, 0.73333335, 1, 5.0560035e-17, 0.9985986, 3.094975e-17, 0.052923456, 0.76666665, 1, 1.6860408e-17, -0.99984425, -5.529869e-18, 0.01764854, 1.4666667, 1, -8.239896e-17, -0.07053895, -6.7388876e-17, 0.99750906, 1.5, 1, -5.293956e-23, 8.742278e-08, 8.351871e-23, 1)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = true
+tracks/1/enabled = true
+tracks/1/path = NodePath("Root/プロペラ/羽_Root/羽A_Root")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, -0.035291176, 0, 0.9993771)
+tracks/2/type = "rotation_3d"
+tracks/2/imported = true
+tracks/2/enabled = true
+tracks/2/path = NodePath("Root/プロペラ/羽_Root/羽B_Root")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0, 1, 0, -0.035291176, 0, 0.9993771)
+
+[sub_resource type="Animation" id="Animation_xw8vx"]
+resource_name = "羽A_回転"
+length = 1.5
+loop_mode = 1
+tracks/0/type = "rotation_3d"
+tracks/0/imported = true
+tracks/0/enabled = true
+tracks/0/path = NodePath("Root/プロペラ/羽_Root/羽A_Root")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.033333335, 1, 1.8711211e-17, 0.035291478, -1.7486456e-15, 0.9993771, 0.73333335, 1, -9.32349e-16, 0.9985986, 2.6324275e-16, 0.05292345, 0.76666665, 1, -1.4470177e-17, -0.99984425, 4.8883565e-17, 0.01764854, 1.4666667, 1, -2.691331e-16, -0.07053897, -5.666653e-17, 0.99750906, 1.5, 1, -5.293956e-23, 8.742278e-08, 8.351873e-23, 1)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = true
+tracks/1/enabled = true
+tracks/1/path = NodePath("Root/プロペラ/羽_Root/羽B_Root")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, -0.035291176, 0, 0.9993771)
+tracks/2/type = "rotation_3d"
+tracks/2/imported = true
+tracks/2/enabled = true
+tracks/2/path = NodePath("Root/プロペラ/羽_Root")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0, 1, 0, -0.035291176, 0, 0.9993771)
+
+[sub_resource type="Animation" id="Animation_xm8kt"]
+resource_name = "羽B_回転"
+length = 1.5
+loop_mode = 1
+tracks/0/type = "rotation_3d"
+tracks/0/imported = true
+tracks/0/enabled = true
+tracks/0/path = NodePath("Root/プロペラ/羽_Root/羽B_Root")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.033333335, 1, 1.8711211e-17, 0.035291478, -1.7486456e-15, 0.9993771, 0.73333335, 1, -9.32349e-16, 0.9985986, 2.6324275e-16, 0.05292345, 0.76666665, 1, -1.4470177e-17, -0.99984425, 4.8883565e-17, 0.01764854, 1.4666667, 1, -2.691331e-16, -0.07053897, -5.666653e-17, 0.99750906, 1.5, 1, -5.293956e-23, 8.742278e-08, 8.351873e-23, 1)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = true
+tracks/1/enabled = true
+tracks/1/path = NodePath("Root/プロペラ/羽_Root/羽A_Root")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, -0.035291176, 0, 0.9993771)
+tracks/2/type = "rotation_3d"
+tracks/2/imported = true
+tracks/2/enabled = true
+tracks/2/path = NodePath("Root/プロペラ/羽_Root")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0, 1, 0, -0.035291176, 0, 0.9993771)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3dwc6"]
+_data = {
+&"羽A_回転": SubResource("Animation_xw8vx"),
+&"羽B_回転": SubResource("Animation_xm8kt"),
+&"羽_根本_回転": SubResource("Animation_58wah")
+}
+
+[node name="Drone1" instance=ExtResource("1_0xkht")]
+script = ExtResource("2_wmmix")
+InitialShield = 8
+
+[node name="AnimationTree" parent="." index="2"]
+libraries = {
+&"": SubResource("AnimationLibrary_3dwc6")
+}

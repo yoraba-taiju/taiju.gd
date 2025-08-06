@@ -150,15 +150,20 @@ public abstract partial class Stager : ReversibleNode3D {
     if (spawn.Curve != null) {
       var curvePoints = spawn.Curve;
       var curve = new Curve3D();
+      var halfStageSize = StageSize / 2;
       foreach (var point in curvePoints) {
+        var position2d = new Vector2(point.Position.X, point.Position.Y);
+        var position3d = ScreenToWorld(pos + position2d);
+        var in3d = ScreenToWorld(new Vector2(point.In.X, point.In.Y) + halfStageSize);
+        var out3d = ScreenToWorld(new Vector2(point.Out.X, point.Out.Y) + halfStageSize);
         curve.AddPoint(
-          ScreenToWorld(pos + new Vector2(point.Position.X, point.Position.Y)),
-          ScreenToWorld(pos + new Vector2(point.In.X, point.In.Y)),
-          ScreenToWorld(pos + new Vector2(point.Out.X, point.Out.Y))
+          position3d,
+          in3d,
+          out3d
         );
       }
 
-      if (node is EnemyBaseWithCurve enemy) {
+      if (node is IEnemyWithCurve enemy) {
         enemy.Curve = curve;
       } else {
         GD.PrintErr($"Curve is set, but node is not have a curve: {node.GetType().FullName}");
