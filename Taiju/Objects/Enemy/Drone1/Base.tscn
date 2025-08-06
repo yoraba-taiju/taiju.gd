@@ -141,18 +141,8 @@ transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 0, 0, 0)
 [node name="Drone1" parent="Body" instance=ExtResource("2_7noea")]
 transform = Transform3D(-1.2, 0, -1.81195e-07, 0, 1.2, 0, 1.81195e-07, 0, -1.2, 0, 0, 0)
 
-[node name="羽_Root" parent="Body/Drone1/Root/プロペラ" index="0"]
-transform = Transform3D(-0.41381246, 4.2824563e-17, 0.9103622, 1.4102588e-16, 1, 1.7063214e-17, -0.9103622, 1.354456e-16, -0.41381246, 0, 0, 0)
-
-[node name="羽A_Root" parent="Body/Drone1/Root/プロペラ/羽_Root" index="0"]
-transform = Transform3D(-0.41381234, -8.8278213e-16, 0.9103622, -1.9149933e-15, 1, 9.9228904e-17, -0.9103622, -1.7022753e-15, -0.41381234, 0, 1.2, -0.75)
-
-[node name="羽B_Root" parent="Body/Drone1/Root/プロペラ/羽_Root" index="1"]
-transform = Transform3D(-0.41381234, -7.6050737e-16, 0.9103622, -1.9172227e-15, 1, -3.609885e-17, -0.9103622, -1.7603051e-15, -0.41381234, 0, 1.2, 0.75)
-
 [node name="AnimationTree" type="AnimationTree" parent="."]
 root_node = NodePath("../Body/Drone1")
-callback_mode_method = 1
 libraries = {
 &"": SubResource("AnimationLibrary_3dwc6")
 }
@@ -161,5 +151,3 @@ anim_player = NodePath("../Body/Drone1/AnimationPlayer")
 parameters/Seek/seek_request = -1.0
 parameters/Mix1/add_amount = 1.0
 parameters/Mix2/add_amount = 1.0
-
-[editable path="Body/Drone1"]
