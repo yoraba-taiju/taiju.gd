@@ -22,6 +22,7 @@ where
   protected record struct RecordType {
     public int Shield;
     public Vector3 Position;
+    public Vector3 Rotation;
     public TParam Param;
   }
   protected Dense<RecordType> Record;
@@ -51,8 +52,7 @@ where
 
     { // Record godot states
       rec.Position = Position;
-    }
-    { // Update godot states
+      rec.Rotation = Body.Rotation;
     }
 
     return base._ProcessForward(integrateTime, dt);
@@ -71,6 +71,7 @@ where
   protected virtual bool LoadCurrentStatus(double integrateTime) {
     ref readonly var rec = ref Record.Ref;
     Position = rec.Position;
+    Body.Rotation = rec.Rotation;
     animationTree_.Set(SeekReq, integrateTime);
     return true;
   }

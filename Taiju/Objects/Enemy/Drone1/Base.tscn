@@ -1,127 +1,49 @@
-[gd_scene load_steps=15 format=3 uid="uid://7xifyi2dvodl"]
+[gd_scene load_steps=5 format=3 uid="uid://7xifyi2dvodl"]
 
 [ext_resource type="PackedScene" uid="uid://c7xy606gjxyr8" path="res://assets/Objects/Enemy/Drones/Drone1.blend" id="2_7noea"]
-[ext_resource type="Script" uid="uid://5qe07ww5qt3j" path="res://Util/Reversible/Godot/ReversibleAnimationTree.cs" id="3_w2pfa"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_u27nk"]
 radius = 1.2
 
-[sub_resource type="Animation" id="Animation_58wah"]
-resource_name = "羽_根本_回転"
+[sub_resource type="Animation" id="Animation_dmekr"]
+resource_name = "Anim"
 length = 1.5
-loop_mode = 1
-tracks/0/type = "rotation_3d"
-tracks/0/imported = true
+step = 0.0333333
+tracks/0/type = "animation"
+tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Root/プロペラ/羽_Root")
+tracks/0/path = NodePath("Body/Drone1/AnimationPlayer")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.033333335, 1, 3.2412487e-17, 0.035291478, 3.371545e-17, 0.9993771, 0.73333335, 1, 5.0560035e-17, 0.9985986, 3.094975e-17, 0.052923456, 0.76666665, 1, 1.6860408e-17, -0.99984425, -5.529869e-18, 0.01764854, 1.4666667, 1, -8.239896e-17, -0.07053895, -6.7388876e-17, 0.99750906, 1.5, 1, -5.293956e-23, 8.742278e-08, 8.351871e-23, 1)
-tracks/1/type = "rotation_3d"
-tracks/1/imported = true
+tracks/0/keys = {
+"clips": PackedStringArray("羽_根本_回転"),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "animation"
+tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Root/プロペラ/羽_Root/羽A_Root")
+tracks/1/path = NodePath("Body/Drone1/AnimationPlayer")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
-tracks/1/keys = PackedFloat32Array(0, 1, 0, -0.035291176, 0, 0.9993771)
-tracks/2/type = "rotation_3d"
-tracks/2/imported = true
+tracks/1/keys = {
+"clips": PackedStringArray("羽A_回転"),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "animation"
+tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Root/プロペラ/羽_Root/羽B_Root")
+tracks/2/path = NodePath("Body/Drone1/AnimationPlayer")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
-tracks/2/keys = PackedFloat32Array(0, 1, 0, -0.035291176, 0, 0.9993771)
-
-[sub_resource type="Animation" id="Animation_xw8vx"]
-resource_name = "羽A_回転"
-length = 1.5
-loop_mode = 1
-tracks/0/type = "rotation_3d"
-tracks/0/imported = true
-tracks/0/enabled = true
-tracks/0/path = NodePath("Root/プロペラ/羽_Root/羽A_Root")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.033333335, 1, 1.8711211e-17, 0.035291478, -1.7486456e-15, 0.9993771, 0.73333335, 1, -9.32349e-16, 0.9985986, 2.6324275e-16, 0.05292345, 0.76666665, 1, -1.4470177e-17, -0.99984425, 4.8883565e-17, 0.01764854, 1.4666667, 1, -2.691331e-16, -0.07053897, -5.666653e-17, 0.99750906, 1.5, 1, -5.293956e-23, 8.742278e-08, 8.351873e-23, 1)
-tracks/1/type = "rotation_3d"
-tracks/1/imported = true
-tracks/1/enabled = true
-tracks/1/path = NodePath("Root/プロペラ/羽_Root/羽B_Root")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = PackedFloat32Array(0, 1, 0, -0.035291176, 0, 0.9993771)
-tracks/2/type = "rotation_3d"
-tracks/2/imported = true
-tracks/2/enabled = true
-tracks/2/path = NodePath("Root/プロペラ/羽_Root")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = PackedFloat32Array(0, 1, 0, -0.035291176, 0, 0.9993771)
-
-[sub_resource type="Animation" id="Animation_xm8kt"]
-resource_name = "羽B_回転"
-length = 1.5
-loop_mode = 1
-tracks/0/type = "rotation_3d"
-tracks/0/imported = true
-tracks/0/enabled = true
-tracks/0/path = NodePath("Root/プロペラ/羽_Root/羽B_Root")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.033333335, 1, 1.8711211e-17, 0.035291478, -1.7486456e-15, 0.9993771, 0.73333335, 1, -9.32349e-16, 0.9985986, 2.6324275e-16, 0.05292345, 0.76666665, 1, -1.4470177e-17, -0.99984425, 4.8883565e-17, 0.01764854, 1.4666667, 1, -2.691331e-16, -0.07053897, -5.666653e-17, 0.99750906, 1.5, 1, -5.293956e-23, 8.742278e-08, 8.351873e-23, 1)
-tracks/1/type = "rotation_3d"
-tracks/1/imported = true
-tracks/1/enabled = true
-tracks/1/path = NodePath("Root/プロペラ/羽_Root/羽A_Root")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = PackedFloat32Array(0, 1, 0, -0.035291176, 0, 0.9993771)
-tracks/2/type = "rotation_3d"
-tracks/2/imported = true
-tracks/2/enabled = true
-tracks/2/path = NodePath("Root/プロペラ/羽_Root")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = PackedFloat32Array(0, 1, 0, -0.035291176, 0, 0.9993771)
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_3dwc6"]
-_data = {
-&"羽A_回転": SubResource("Animation_xw8vx"),
-&"羽B_回転": SubResource("Animation_xm8kt"),
-&"羽_根本_回転": SubResource("Animation_58wah")
+tracks/2/keys = {
+"clips": PackedStringArray("羽B_回転"),
+"times": PackedFloat32Array(0)
 }
 
-[sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_y78wp"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8jv2p"]
-animation = &"羽_根本_回転"
-
-[sub_resource type="AnimationNodeTimeSeek" id="AnimationNodeTimeSeek_wbcon"]
-
-[sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_ab1xr"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_66sb6"]
-animation = &"羽A_回転"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_mjfmf"]
-animation = &"羽B_回転"
-
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_3351t"]
-graph_offset = Vector2(-601.713, 5.5544586)
-nodes/output/position = Vector2(660, 160)
-nodes/Combined/node = SubResource("AnimationNodeAdd2_y78wp")
-nodes/Combined/position = Vector2(220, 140)
-nodes/Root/node = SubResource("AnimationNodeAnimation_8jv2p")
-nodes/Root/position = Vector2(-280, 400)
-nodes/Seek/node = SubResource("AnimationNodeTimeSeek_wbcon")
-nodes/Seek/position = Vector2(460, 140)
-"nodes/Wing Combined/node" = SubResource("AnimationNodeAdd2_ab1xr")
-"nodes/Wing Combined/position" = Vector2(-20, 140)
-nodes/Wing1/node = SubResource("AnimationNodeAnimation_66sb6")
-nodes/Wing1/position = Vector2(-280, 100)
-nodes/Wing2/node = SubResource("AnimationNodeAnimation_mjfmf")
-nodes/Wing2/position = Vector2(-280, 260)
-node_connections = [&"output", 0, &"Seek", &"Combined", 0, &"Wing Combined", &"Combined", 1, &"Root", &"Seek", 0, &"Combined", &"Wing Combined", 0, &"Wing1", &"Wing Combined", 1, &"Wing2"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wwhag"]
+_data = {
+&"Anim": SubResource("Animation_dmekr")
+}
 
 [node name="Drone1" type="RigidBody3D"]
 collision_layer = 16
@@ -143,14 +65,18 @@ transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 0, 0, 0)
 [node name="Drone1" parent="Body" instance=ExtResource("2_7noea")]
 transform = Transform3D(-1.2, 0, -1.81195e-07, 0, 1.2, 0, 1.81195e-07, 0, -1.2, 0, 0, 0)
 
-[node name="AnimationTree" type="AnimationTree" parent="."]
-root_node = NodePath("../Body/Drone1")
+[node name="羽_Root" parent="Body/Drone1/Root/プロペラ" index="0"]
+transform = Transform3D(0.99750906, 0, -0.07053839, 0, 1, 0, 0.07053839, 0, 0.99750906, 0, 0, 0)
+
+[node name="羽A_Root" parent="Body/Drone1/Root/プロペラ/羽_Root" index="0"]
+transform = Transform3D(0.99750906, 0, -0.07053839, 0, 1, 0, 0.07053839, 0, 0.99750906, 0, 1.2, -0.75)
+
+[node name="羽B_Root" parent="Body/Drone1/Root/プロペラ/羽_Root" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0.75)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-&"": SubResource("AnimationLibrary_3dwc6")
+&"": SubResource("AnimationLibrary_wwhag")
 }
-tree_root = SubResource("AnimationNodeBlendTree_3351t")
-anim_player = NodePath("../Body/Drone1/AnimationPlayer")
-parameters/Combined/add_amount = 1.0
-parameters/Seek/seek_request = -1.0
-"parameters/Wing Combined/add_amount" = 1.0
-script = ExtResource("3_w2pfa")
+
+[editable path="Body/Drone1"]

@@ -1,223 +1,223 @@
 {
   "Events": [
-    {
-      "EventType": "Rush",
-      "Spawns": [
-        {
-          "EventType": "Spawn",
-          "Path": "res://Objects/Enemy/Drone0/Drone0_Straight.tscn",
-          "X": 100.0,
-          "Y": 0.0
-        },
-        {
-          "EventType": "Spawn",
-          "Path": "res://Objects/Enemy/Drone0/Drone0_Straight.tscn",
-          "X": 200.0,
-          "Y": 63.0
-        },
-        {
-          "EventType": "Spawn",
-          "Path": "res://Objects/Enemy/Drone0/Drone0_StraightShot.tscn",
-          "X": 200.0,
-          "Y": -63.0
-        }
-      ],
-      "X": 1400.0,
-      "Y": 180.0
-    },
-    {
-      "EventType": "Rush",
-      "Spawns": [
-        {
-          "EventType": "Spawn",
-          "Path": "res://Objects/Enemy/Drone0/Drone0_Straight.tscn",
-          "X": 100.0,
-          "Y": 0.0
-        },
-        {
-          "EventType": "Spawn",
-          "Path": "res://Objects/Enemy/Drone0/Drone0_StraightShot.tscn",
-          "X": 200.0,
-          "Y": 63.0
-        },
-        {
-          "EventType": "Spawn",
-          "Path": "res://Objects/Enemy/Drone0/Drone0_Straight.tscn",
-          "X": 200.0,
-          "Y": -63.0
-        }
-      ],
-      "X": 1400.0,
-      "Y": 540.0
-    },
-    {
-      "EventType": "Rush",
-      "Spawns": [
-        {
-          "EventType": "Spawn",
-          "Path": "res://Objects/Enemy/Drone1/Drone1_Follow.tscn",
-          "X": 100.0,
-          "Y": 0.0
-        },
-        {
-          "Curve": [
-            {
-              "In": {
-                "X": 0.0,
-                "Y": 0.0
-              },
-              "Out": {
-                "X": 0.0,
-                "Y": 0.0
-              },
-              "Position": {
-                "X": 7.0,
-                "Y": 2.0
-              }
-            },
-            {
-              "In": {
-                "X": 47.1436996459961,
-                "Y": -8.5751314163208
-              },
-              "Out": {
-                "X": -47.1436996459961,
-                "Y": 8.5751314163208
-              },
-              "Position": {
-                "X": -361.0,
-                "Y": 30.0
-              }
-            },
-            {
-              "In": {
-                "X": 0.0,
-                "Y": -45.0639343261719
-              },
-              "Out": {
-                "X": 0.0,
-                "Y": 45.0639343261719
-              },
-              "Position": {
-                "X": -532.0,
-                "Y": 110.0
-              }
-            },
-            {
-              "In": {
-                "X": -93.1700057983398,
-                "Y": -7.98600101470947
-              },
-              "Out": {
-                "X": 93.1700057983398,
-                "Y": 7.98600101470947
-              },
-              "Position": {
-                "X": -348.0,
-                "Y": 171.0
-              }
-            },
-            {
-              "In": {
-                "X": 0.0,
-                "Y": 0.0
-              },
-              "Out": {
-                "X": 0.0,
-                "Y": 0.0
-              },
-              "Position": {
-                "X": 183.0,
-                "Y": 191.0
-              }
-            }
-          ],
-          "EventType": "Spawn",
-          "Path": "res://Objects/Enemy/Drone1/Drone1_FollowCurve.tscn",
-          "X": 10.0,
-          "Y": 63.0
-        },
-        {
-          "Curve": [
-            {
-              "In": {
-                "X": 0.0,
-                "Y": 0.0
-              },
-              "Out": {
-                "X": 0.0,
-                "Y": 0.0
-              },
-              "Position": {
-                "X": 0.0,
-                "Y": 0.0
-              }
-            },
-            {
-              "In": {
-                "X": 57.2330055236816,
-                "Y": 9.31700038909912
-              },
-              "Out": {
-                "X": -57.2330055236816,
-                "Y": -9.31700038909912
-              },
-              "Position": {
-                "X": -351.0,
-                "Y": -21.0
-              }
-            },
-            {
-              "In": {
-                "X": 5.38927316665649,
-                "Y": 40.5524520874023
-              },
-              "Out": {
-                "X": -5.38927316665649,
-                "Y": -40.5524520874023
-              },
-              "Position": {
-                "X": -534.0,
-                "Y": -90.0
-              }
-            },
-            {
-              "In": {
-                "X": -43.9230041503906,
-                "Y": 6.65500068664551
-              },
-              "Out": {
-                "X": 43.9230041503906,
-                "Y": -6.65500068664551
-              },
-              "Position": {
-                "X": -351.0,
-                "Y": -163.0
-              }
-            },
-            {
-              "In": {
-                "X": 0.0,
-                "Y": 0.0
-              },
-              "Out": {
-                "X": 0.0,
-                "Y": 0.0
-              },
-              "Position": {
-                "X": 184.0,
-                "Y": -189.0
-              }
-            }
-          ],
-          "EventType": "Spawn",
-          "Path": "res://Objects/Enemy/Drone1/Drone1_FollowCurve.tscn",
-          "X": 10.0,
-          "Y": -63.0
-        }
-      ],
-      "X": 1800.0,
-      "Y": 360.0
-    }
+	{
+	  "EventType": "Rush",
+	  "Spawns": [
+		{
+		  "EventType": "Spawn",
+		  "Path": "res://Objects/Enemy/Drone0/Drone0_Straight.tscn",
+		  "X": 100.0,
+		  "Y": 0.0
+		},
+		{
+		  "EventType": "Spawn",
+		  "Path": "res://Objects/Enemy/Drone0/Drone0_Straight.tscn",
+		  "X": 200.0,
+		  "Y": 63.0
+		},
+		{
+		  "EventType": "Spawn",
+		  "Path": "res://Objects/Enemy/Drone0/Drone0_StraightShot.tscn",
+		  "X": 200.0,
+		  "Y": -63.0
+		}
+	  ],
+	  "X": 1400.0,
+	  "Y": 180.0
+	},
+	{
+	  "EventType": "Rush",
+	  "Spawns": [
+		{
+		  "EventType": "Spawn",
+		  "Path": "res://Objects/Enemy/Drone0/Drone0_Straight.tscn",
+		  "X": 100.0,
+		  "Y": 0.0
+		},
+		{
+		  "EventType": "Spawn",
+		  "Path": "res://Objects/Enemy/Drone0/Drone0_StraightShot.tscn",
+		  "X": 200.0,
+		  "Y": 63.0
+		},
+		{
+		  "EventType": "Spawn",
+		  "Path": "res://Objects/Enemy/Drone0/Drone0_Straight.tscn",
+		  "X": 200.0,
+		  "Y": -63.0
+		}
+	  ],
+	  "X": 1400.0,
+	  "Y": 540.0
+	},
+	{
+	  "EventType": "Rush",
+	  "Spawns": [
+		{
+		  "EventType": "Spawn",
+		  "Path": "res://Objects/Enemy/Drone1/Drone1_Follow.tscn",
+		  "X": 100.0,
+		  "Y": 0.0
+		},
+		{
+		  "Curve": [
+			{
+			  "In": {
+				"X": 0.0,
+				"Y": 0.0
+			  },
+			  "Out": {
+				"X": 0.0,
+				"Y": 0.0
+			  },
+			  "Position": {
+				"X": 7.0,
+				"Y": 2.0
+			  }
+			},
+			{
+			  "In": {
+				"X": 47.1436996459961,
+				"Y": -8.5751314163208
+			  },
+			  "Out": {
+				"X": -47.1436996459961,
+				"Y": 8.5751314163208
+			  },
+			  "Position": {
+				"X": -361.0,
+				"Y": 30.0
+			  }
+			},
+			{
+			  "In": {
+				"X": 0.0,
+				"Y": -45.0639343261719
+			  },
+			  "Out": {
+				"X": 0.0,
+				"Y": 45.0639343261719
+			  },
+			  "Position": {
+				"X": -532.0,
+				"Y": 110.0
+			  }
+			},
+			{
+			  "In": {
+				"X": -93.1700057983398,
+				"Y": -7.98600101470947
+			  },
+			  "Out": {
+				"X": 93.1700057983398,
+				"Y": 7.98600101470947
+			  },
+			  "Position": {
+				"X": -348.0,
+				"Y": 171.0
+			  }
+			},
+			{
+			  "In": {
+				"X": 0.0,
+				"Y": 0.0
+			  },
+			  "Out": {
+				"X": 0.0,
+				"Y": 0.0
+			  },
+			  "Position": {
+				"X": 183.0,
+				"Y": 191.0
+			  }
+			}
+		  ],
+		  "EventType": "Spawn",
+		  "Path": "res://Objects/Enemy/Drone1/Drone1_FollowCurve.tscn",
+		  "X": 10.0,
+		  "Y": 63.0
+		},
+		{
+		  "Curve": [
+			{
+			  "In": {
+				"X": 0.0,
+				"Y": 0.0
+			  },
+			  "Out": {
+				"X": 0.0,
+				"Y": 0.0
+			  },
+			  "Position": {
+				"X": 0.0,
+				"Y": 0.0
+			  }
+			},
+			{
+			  "In": {
+				"X": 57.2330055236816,
+				"Y": 9.31700038909912
+			  },
+			  "Out": {
+				"X": -57.2330055236816,
+				"Y": -9.31700038909912
+			  },
+			  "Position": {
+				"X": -351.0,
+				"Y": -21.0
+			  }
+			},
+			{
+			  "In": {
+				"X": 5.38927316665649,
+				"Y": 40.5524520874023
+			  },
+			  "Out": {
+				"X": -5.38927316665649,
+				"Y": -40.5524520874023
+			  },
+			  "Position": {
+				"X": -534.0,
+				"Y": -90.0
+			  }
+			},
+			{
+			  "In": {
+				"X": -43.9230041503906,
+				"Y": 6.65500068664551
+			  },
+			  "Out": {
+				"X": 43.9230041503906,
+				"Y": -6.65500068664551
+			  },
+			  "Position": {
+				"X": -351.0,
+				"Y": -163.0
+			  }
+			},
+			{
+			  "In": {
+				"X": 0.0,
+				"Y": 0.0
+			  },
+			  "Out": {
+				"X": 0.0,
+				"Y": 0.0
+			  },
+			  "Position": {
+				"X": 184.0,
+				"Y": -189.0
+			  }
+			}
+		  ],
+		  "EventType": "Spawn",
+		  "Path": "res://Objects/Enemy/Drone1/Drone1_FollowCurve.tscn",
+		  "X": 10.0,
+		  "Y": -63.0
+		}
+	  ],
+	  "X": 1800.0,
+	  "Y": 360.0
+	}
   ]
 }
