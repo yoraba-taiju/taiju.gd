@@ -31,7 +31,7 @@ public partial class StageLoader : Node2D {
   public Model.Stage Stage { get; private set; }
   public int Progress { get; private set; }
   private readonly List<string> preloadScenes_ = new();
-  public readonly ResourceManager ResourceManager = new(new Dictionary<string, Resource>());
+  public readonly ResourceManager ResourceManager = new();
   private int currentSceneIndex_;
   private LoadState loadState_;
   private double nextPoll_ = 0.1;
@@ -83,7 +83,7 @@ public partial class StageLoader : Node2D {
     Progress = Mathf.RoundToInt(currentSceneIndex_ * 100.0f / preloadScenes_.Count);
     GD.Print($"Loaded: {path}");
     if (currentSceneIndex_ < preloadScenes_.Count) {
-      // You can load resources more.
+      // You can load more resources.
       return;
     }
     OnFinish();
@@ -177,10 +177,12 @@ public partial class StageLoader : Node2D {
       switch (ev) {
         case Model.Events.Spawn spawn:
           spawn.Scene = ResourceManager.Load<PackedScene>(spawn.Path);
+          spawn.NodeCache = spawn.Scene?.Instantiate();
           break;
         case Model.Events.Rush rush:
           foreach (var spawn in rush.Spawns) {
-            spawn.Scene = (PackedScene)ResourceManager.Load<PackedScene>(spawn.Path);
+            spawn.Scene = ResourceManager.Load<PackedScene>(spawn.Path);
+            spawn.NodeCache = spawn.Scene?.Instantiate();
           }
           break;
         case Model.Events.Trigger:
@@ -188,6 +190,7 @@ public partial class StageLoader : Node2D {
           break;
         case Model.Events.Preload preload:
           preload.Scene = ResourceManager.Load<PackedScene>(preload.Path);
+          preload.NodeCache = preload.Scene?.Instantiate();
           break;
         default:
           throw new InvalidCastException($"Unknown Type: {ev.GetType()}");

@@ -1,17 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://cnv7a2ru52o6e"]
+[gd_scene load_steps=6 format=3 uid="uid://cnv7a2ru52o6e"]
 
 [ext_resource type="Script" uid="uid://d0a02vuyy86gm" path="res://Scenes/Base/rush.gd" id="1_vt5n7"]
 [ext_resource type="Script" uid="uid://cl716mx8nhvts" path="res://Scenes/Base/spawn.gd" id="2_w3oro"]
+[ext_resource type="Curve2D" uid="uid://dympfy1qfa1we" path="res://Scenes/Stages/Stage01/Common/Curve_Up01.tres" id="3_2lrrn"]
+[ext_resource type="Curve2D" uid="uid://c1ao1k5777l8r" path="res://Scenes/Stages/Stage01/Common/Curve_Bottom01.tres" id="4_bqdux"]
 
-[sub_resource type="Curve2D" id="Curve2D_w3oro"]
+[sub_resource type="Curve2D" id="Curve2D_2lrrn"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 183, 186, 55.770004, 0.2860012, -55.770004, -0.2860012, -412, 186, 0, 45.063934, 0, -45.063934, -532, 95.74, -52.6437, 0.87513113, 52.6437, -0.87513113, -362, 2, 0, 0, 0, 0, 7, 2)
-}
-point_count = 5
-
-[sub_resource type="Curve2D" id="Curve2D_vt5n7"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, 184, -187, 40.623005, -3.3550005, -40.623005, 3.3550005, -404, -187, 0, -41.652, 0, 41.652, -535, -99.23, -57.233006, -2.717, 57.233006, 2.717, -427, -5, 0, 0, 0, 0, 0, 0)
+"points": PackedVector2Array(0, 0, 0, 0, -584, 531, -16.5, 89.1, 16.5, -89.1, -609, 260, -62.54581, 56.86901, 62.54581, -56.86901, -522.54675, 50.760986, -44.284313, 1.2054579, 44.284313, -1.2054579, -408.68445, 4.933655, 0, 0, 0, 0, 0, 0)
 }
 point_count = 5
 
@@ -62,22 +58,27 @@ script = ExtResource("1_vt5n7")
 [node name="Spawn" type="Node2D" parent="Rush3"]
 position = Vector2(100, 0)
 script = ExtResource("2_w3oro")
-path = "res://Objects/Enemy/Drone1/Drone1_Follow.tscn"
+path = "res://Objects/Enemy/Drone1/Drone1_FollowCurve.tscn"
+
+[node name="Path2D" type="Path2D" parent="Rush3/Spawn"]
+position = Vector2(0, 0.047759056)
+scale = Vector2(0.983644, 1.003768)
+curve = SubResource("Curve2D_2lrrn")
 
 [node name="Spawn2" type="Node2D" parent="Rush3"]
-position = Vector2(10, 63)
+position = Vector2(200, 63)
 script = ExtResource("2_w3oro")
 path = "res://Objects/Enemy/Drone1/Drone1_FollowCurve.tscn"
 
 [node name="Path2D" type="Path2D" parent="Rush3/Spawn2"]
 visible = false
-curve = SubResource("Curve2D_w3oro")
+curve = ExtResource("3_2lrrn")
 
 [node name="Spawn3" type="Node2D" parent="Rush3"]
-position = Vector2(10, -63)
+position = Vector2(200, -63)
 script = ExtResource("2_w3oro")
 path = "res://Objects/Enemy/Drone1/Drone1_FollowCurve.tscn"
 
 [node name="Path2D" type="Path2D" parent="Rush3/Spawn3"]
 visible = false
-curve = SubResource("Curve2D_vt5n7")
+curve = ExtResource("4_bqdux")

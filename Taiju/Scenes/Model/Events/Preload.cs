@@ -7,4 +7,13 @@ public class Preload : Event {
   public required string Path { get; init; }
 
   public PackedScene? Scene { get; set; }
+  public Node? NodeCache { get; set; }
+  public T Instantiate<T>() where T : Node, new() {
+    if (NodeCache == null) {
+      return Scene!.Instantiate<T>();
+    }
+    var node = NodeCache;
+    NodeCache = null;
+    return (T)node;
+  }
 }

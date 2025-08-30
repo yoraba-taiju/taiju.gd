@@ -78,10 +78,13 @@ func compile_spawn(node: Spawn):
 			for idx in range(curve.point_count - 1, -1, -1):
 				curves.append({
 					"Position": compile_point(curve.get_point_position(idx)),
+					# Reverse curve, so swap in and out.
 					"In": compile_point(curve.get_point_out(idx)),
 					"Out": compile_point(curve.get_point_in(idx)),
 				})
 			obj["Curve"] = curves
+		else:
+			printerr("Unkown child node type: %s" % child.get_class())
 	return obj
 
 func compile_point(v: Vector2):

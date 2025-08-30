@@ -3,20 +3,19 @@ using Godot;
 
 namespace Taiju.Scenes.Stages;
 
-public class ResourceManager(
-  Dictionary<string, Resource> resourceCache
-) {
+public class ResourceManager {
+  private readonly Dictionary<string, Resource> resourceCache_ = new();
   public T Load<T>(string path) where T : Resource, new() {
     if (path.StartsWith("uid://")) {
       var uid = path;
       path = ResourceUid.UidToPath(uid);
     }
-    if (resourceCache.TryGetValue(path, out var value)) {
+    if (resourceCache_.TryGetValue(path, out var value)) {
       return (T)value;
     }
     GD.PushWarning($"{path} does not exists.");
     var resource = ResourceLoader.Load<T>(path);
-    resourceCache.Add(path, resource);
+    resourceCache_.Add(path, resource);
     return resource;
   }
 
@@ -26,8 +25,8 @@ public class ResourceManager(
       path = ResourceUid.UidToPath(uid);
       GD.Print($"{uid} ->  {path}");
     }
-    resourceCache.Add(path, resource);
+    resourceCache_.Add(path, resource);
   }
   
-  public int Count => resourceCache.Count;
+  public int Count => resourceCache_.Count;
 }

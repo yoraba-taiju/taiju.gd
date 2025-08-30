@@ -50,7 +50,7 @@ public partial class SoraBullet : ReversibleRigidBody3D {
     ref var state = ref record_.Mut;
     ref var pos = ref state.Position;
     
-    if (Mathf.Abs(pos.X) >= 20.3f || Mathf.Abs(pos.Y) >= 11.6f) {
+    if (Mathf.Abs(pos.X) >= 20.5f || Mathf.Abs(pos.Y) >= 11.6f) {
       Destroy();
     }
 

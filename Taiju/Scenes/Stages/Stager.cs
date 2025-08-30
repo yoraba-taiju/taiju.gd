@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Godot;
 using Taiju.Objects;
 using Taiju.Objects.Enemy;
@@ -13,7 +14,7 @@ public abstract partial class Stager : ReversibleNode3D {
   // const
   private const float StageWidth = 1280.0f;
   private const float StageHeight = 720.0f;
-  private readonly Vector2 StageSize = new(StageWidth, StageHeight);
+  private readonly Vector2 stageSize_ = new(StageWidth, StageHeight);
   private const double StageSpeed = 120.0;
   
   // Current status
@@ -63,6 +64,31 @@ public abstract partial class Stager : ReversibleNode3D {
   public override void _ExitTree() {
     base._ExitTree();
     GetViewport().SizeChanged -= OnViewportSizeChanged;
+    FreeNodeCache();
+  }
+  
+  private void FreeNodeCache() {
+    foreach (var ev in Stage.Events) {
+      switch (ev) {
+        case Model.Events.Rush rush: {
+          foreach (var spawn in rush.Spawns) {
+            spawn.NodeCache?.QueueFree();
+          }
+        }
+          break;
+        case Model.Events.Spawn spawn:
+          spawn.NodeCache?.QueueFree();
+          break;
+        case Model.Events.Trigger trigger:
+          // Do nothing.
+          break;
+        case Model.Events.Preload preload:
+          preload.NodeCache?.QueueFree();
+          break;
+        default:
+          throw new InvalidCastException($"Unknown Type: {ev.GetType()}");
+      }
+    }
   }
 
   private void OnViewportSizeChanged() {
@@ -143,14 +169,14 @@ public abstract partial class Stager : ReversibleNode3D {
   protected abstract void OnTrigger(Vector2 stagePosition, Model.Events.Trigger trigger);
 
   private Node3D LoadSpawn(Model.Events.Spawn spawn, Vector2 basePos) {
-    var node = ResourceManager.Load<PackedScene>(spawn.Path).Instantiate<Node3D>();
+    var node = spawn.Instantiate<Node3D>();
     var pos = new Vector2(spawn.X, spawn.Y) + basePos;
     // Set position **before** AddChild.
     node.Position = ScreenToWorld(pos);
     if (spawn.Curve != null) {
       var curvePoints = spawn.Curve;
       var curve = new Curve3D();
-      var halfStageSize = StageSize / 2;
+      var halfStageSize = stageSize_ / 2;
       foreach (var point in curvePoints) {
         var position2d = new Vector2(point.Position.X, point.Position.Y);
         var position3d = ScreenToWorld(pos + position2d);
@@ -173,7 +199,7 @@ public abstract partial class Stager : ReversibleNode3D {
   }
 
   private Vector3 ScreenToWorld(Vector2 stage) {
-    var viewport = stage * viewportSize_ / StageSize;
+    var viewport = stage * viewportSize_ / stageSize_;
     var rayOrigin = MainCamera.ProjectRayOrigin(viewport);
     var rayNormal = MainCamera.ProjectRayNormal(viewport);
     if (Mathf.IsZeroApprox(rayNormal.Z)) {
@@ -185,4 +211,5 @@ public abstract partial class Stager : ReversibleNode3D {
     pos.Z = 0.0f;
     return pos;
   }
+  
 }
