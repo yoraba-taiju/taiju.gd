@@ -77,13 +77,13 @@ public abstract partial class Stager : ReversibleNode3D {
         }
           break;
         case Model.Events.Spawn spawn:
-          spawn.NodeCache?.QueueFree();
+          spawn.NodeCache?.Free();
           break;
         case Model.Events.Trigger trigger:
           // Do nothing.
           break;
         case Model.Events.Preload preload:
-          preload.NodeCache?.QueueFree();
+          preload.NodeCache?.Free();
           break;
         default:
           throw new InvalidCastException($"Unknown Type: {ev.GetType()}");
