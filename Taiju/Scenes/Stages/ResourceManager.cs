@@ -13,9 +13,9 @@ public class ResourceManager {
   private string NormalizePath(string path) {
     if (path.StartsWith("uid://")) {
       return ResourceUid.UidToPath(path);
-    } else {
-      return path;
     }
+
+    return path;
   }
   public T Load<T>(string path) where T : Resource, new() {
     path = NormalizePath(path);
