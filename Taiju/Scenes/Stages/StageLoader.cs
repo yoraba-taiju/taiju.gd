@@ -7,7 +7,7 @@ namespace Taiju.Scenes.Stages;
 public partial class StageLoader : Node2D {
   [Export(PropertyHint.File, "*.json")] private string stagePath_;
   [Export(PropertyHint.File, "*.tscn")] public string StageScenePath { get; private set; }
-  public PackedScene StageScene { get; private set; }
+  public Node3D StageScene { get; private set; }
 
   private static readonly string[] CommonPreloadScenes = [
     "res://Objects/Effect/Arrow.tscn",
@@ -172,29 +172,6 @@ public partial class StageLoader : Node2D {
 #endif
 
   private void OnFinish() {
-    StageScene = ResourceManager.Load<PackedScene>(StageScenePath);
-    foreach (var ev in Stage.Events) {
-      switch (ev) {
-        case Model.Events.Spawn spawn:
-          spawn.Scene = ResourceManager.Load<PackedScene>(spawn.Path);
-          spawn.NodeCache = spawn.Scene?.Instantiate();
-          break;
-        case Model.Events.Rush rush:
-          foreach (var spawn in rush.Spawns) {
-            spawn.Scene = ResourceManager.Load<PackedScene>(spawn.Path);
-            spawn.NodeCache = spawn.Scene?.Instantiate();
-          }
-          break;
-        case Model.Events.Trigger:
-          // ignore.
-          break;
-        case Model.Events.Preload preload:
-          preload.Scene = ResourceManager.Load<PackedScene>(preload.Path);
-          preload.NodeCache = preload.Scene?.Instantiate();
-          break;
-        default:
-          throw new InvalidCastException($"Unknown Type: {ev.GetType()}");
-      }
-    }
+    StageScene = ResourceManager.Load<PackedScene>(StageScenePath).Instantiate<Node3D>();
   }
 }

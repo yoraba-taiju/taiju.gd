@@ -17,7 +17,7 @@ public partial class LoadingScreen : Node2D {
     progressBar_.Value = stageLoader_.Progress;
     if (stageLoader_.Done) {
       var root = GetTree().GetRoot();
-      var scene = stageLoader_.StageScene.Instantiate<Node3D>()!;
+      var scene = stageLoader_.StageScene;
       var stager = scene.GetNode<Stager>("Stager")!;
       stager.Stage = stageLoader_.Stage.ForStager();
       stager.ResourceManager = stageLoader_.ResourceManager;
