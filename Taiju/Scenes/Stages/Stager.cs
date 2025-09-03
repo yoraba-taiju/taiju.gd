@@ -64,31 +64,7 @@ public abstract partial class Stager : ReversibleNode3D {
   public override void _ExitTree() {
     base._ExitTree();
     GetViewport().SizeChanged -= OnViewportSizeChanged;
-    FreeNodeCache();
-  }
-  
-  private void FreeNodeCache() {
-    foreach (var ev in Stage.Events) {
-      switch (ev) {
-        case Model.Events.Rush rush: {
-          foreach (var spawn in rush.Spawns) {
-            spawn.NodeCache?.QueueFree();
-          }
-        }
-          break;
-        case Model.Events.Spawn spawn:
-          spawn.NodeCache?.Free();
-          break;
-        case Model.Events.Trigger trigger:
-          // Do nothing.
-          break;
-        case Model.Events.Preload preload:
-          preload.NodeCache?.Free();
-          break;
-        default:
-          throw new InvalidCastException($"Unknown Type: {ev.GetType()}");
-      }
-    }
+    ResourceManager.Free();
   }
 
   private void OnViewportSizeChanged() {
@@ -159,6 +135,7 @@ public abstract partial class Stager : ReversibleNode3D {
 
   private void OnRush(Vector2 basePosition, Model.Events.Rush rush) {
     var rushNode = new Objects.Rush.Rush();
+    rushNode.Name = "Rush";
     Enemy.AddChild(rushNode);
     var rushBasePos = basePosition + new Vector2(rush.X, rush.Y);
     foreach (var spawn in rush.Spawns) {
@@ -169,7 +146,7 @@ public abstract partial class Stager : ReversibleNode3D {
   protected abstract void OnTrigger(Vector2 stagePosition, Model.Events.Trigger trigger);
 
   private Node3D LoadSpawn(Model.Events.Spawn spawn, Vector2 basePos) {
-    var node = spawn.Instantiate<Node3D>();
+    var node = ResourceManager.Instantiate<Node3D>(spawn.Path);
     var pos = new Vector2(spawn.X, spawn.Y) + basePos;
     // Set position **before** AddChild.
     node.Position = ScreenToWorld(pos);

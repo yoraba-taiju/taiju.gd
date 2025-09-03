@@ -12,10 +12,10 @@ public abstract partial class EnemyBase : ReversibleRigidBody3D {
   [Export] protected long Score = 100;
   [Export] protected Vector2 BodySize = new(0, 0);
   [Export] protected float ExplosionScale = 1.0f;
+  private const string ReversibleExplosionPath = "res://Objects/Effect/ReversibleExplosion.tscn";
+  private const string MagicElementItemPath = "res://Objects/Effect/MagicElementItem.tscn";
   private Stager stager_;
   private ResourceManager resourceManager_;
-  private PackedScene explosionPack_;
-  private PackedScene magicElementItemPack_;
   private Node3D effectNode_;
   protected Player Player;
   protected Sora Sora { get; private set; }
@@ -25,8 +25,6 @@ public abstract partial class EnemyBase : ReversibleRigidBody3D {
     base._Ready();
     stager_ = GetNode<Stager>("/root/Root/Stager")!;
     resourceManager_ = stager_.ResourceManager;
-    explosionPack_ = resourceManager_.Load<PackedScene>("res://Objects/Effect/ReversibleExplosion.tscn")!;
-    magicElementItemPack_ = resourceManager_.Load<PackedScene>("res://Objects/Effect/MagicElementItem.tscn")!;
     effectNode_ = GetNode<Node3D>("/root/Root/Field/EnemyEffect")!;
     Player = GetNode<Player>("/root/Root/Player")!;
     Sora = GetNode<Sora>("/root/Root/Field/Witch/Sora")!;
@@ -74,7 +72,7 @@ public abstract partial class EnemyBase : ReversibleRigidBody3D {
     Destroy();
     var scale = Vector3.One * ExplosionScale;
     {
-      var explosion = explosionPack_.Instantiate<ReversibleExplosion>();
+      var explosion = resourceManager_.Instantiate<ReversibleExplosion>(ReversibleExplosionPath);
       explosion.Position = Position;
       explosion.Scale = scale;
       effectNode_.AddChild(explosion);
@@ -82,7 +80,7 @@ public abstract partial class EnemyBase : ReversibleRigidBody3D {
     {
       var max = Math.Max(InitialShield / 4, 1);
       for (var i = 0; i < max; i++) {
-        var magicElement = magicElementItemPack_.Instantiate<MagicElementItem>();
+        var magicElement = resourceManager_.Instantiate<MagicElementItem>(MagicElementItemPath);
         magicElement.Position = Position;
         magicElement.Scale = scale;
         effectNode_.AddChild(magicElement);
