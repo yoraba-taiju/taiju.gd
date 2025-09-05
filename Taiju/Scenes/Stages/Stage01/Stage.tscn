@@ -7,7 +7,7 @@
 
 [sub_resource type="Curve2D" id="Curve2D_2lrrn"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -584, 531, -16.5, 89.1, 16.5, -89.1, -609, 260, -62.54581, 56.86901, 62.54581, -56.86901, -522.54675, 50.760986, -44.284313, 1.2054579, 44.284313, -1.2054579, -408.68445, 4.933655, 0, 0, 0, 0, 0, 0)
+"points": PackedVector2Array(0, 0, 0, 0, -609, 531, 0, 87.774, 0, -87.774, -609, 260, -45, 45, 45, -45, -539.82947, 65.70468, -44.284, 0, 44.284, 0, -408.684, 0, 0, 0, 0, 0, 0, 0)
 }
 point_count = 5
 
@@ -61,6 +61,7 @@ script = ExtResource("2_w3oro")
 path = "res://Objects/Enemy/Drone1/Drone1_FollowCurve.tscn"
 
 [node name="Path2D" type="Path2D" parent="Rush3/Spawn"]
+visible = false
 position = Vector2(0, 0.047759056)
 scale = Vector2(0.983644, 1.003768)
 curve = SubResource("Curve2D_2lrrn")
