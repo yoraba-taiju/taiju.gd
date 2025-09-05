@@ -30,7 +30,7 @@ public partial class StageLoader : Node2D {
 
   public Model.Stage Stage { get; private set; }
   public int Progress { get; private set; }
-  private readonly List<string> preloadScenes_ = new();
+  private readonly List<string> preloadScenes_ = [];
   public readonly ResourceManager ResourceManager = new();
   private int currentSceneIndex_;
   private LoadState loadState_;
