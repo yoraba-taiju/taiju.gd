@@ -15,6 +15,8 @@ public partial class Sora : ReversibleRigidBody3D {
   /* Constants */
   private struct Constant {
     public const double MoveDelta = 12.0;
+    public const string ClonePath = "res://Objects/Witch/SoraClone.tscn";
+    public const string ArrowPath = "res://Objects/Effect/Arrow.tscn";
   }
 
   /* Params */
@@ -28,15 +30,6 @@ public partial class Sora : ReversibleRigidBody3D {
   private Camera camera_;
   private Stager stager_;
   private ResourceManager resourceManager_;
-
-  /* Assets */
-  private PackedScene soraCloneAsset_;
-  private PackedScene arrowAsset_;
-  
-  /* Caches */
-  private SoraClone soraClone_;
-  // FIXME: Leaking bug.
-  // private Arrow arrow_;
 
   /* Spell Related Types */
   private struct SpellConstant {
@@ -108,12 +101,6 @@ public partial class Sora : ReversibleRigidBody3D {
     stager_ = GetNode<Stager>("/root/Root/Stager")!;
     resourceManager_ = stager_.ResourceManager;
 
-    soraCloneAsset_ = resourceManager_.Load<PackedScene>("res://Objects/Witch/SoraClone.tscn")!;
-    arrowAsset_ = resourceManager_.Load<PackedScene>("res://Objects/Effect/Arrow.tscn")!;
-
-    soraClone_ = soraCloneAsset_.Instantiate<SoraClone>();
-    // arrow_ = arrowAsset_.Instantiate<Arrow>();
-
     // Initial State
     record_ = new Dense<Record>(Clock, new Record {
       Position = Position,
@@ -143,12 +130,6 @@ public partial class Sora : ReversibleRigidBody3D {
     ContactMonitor = true;
     MaxContactsReported = 1;
     BodyEntered += OnBodyEntered;
-  }
-
-  public override void _ExitTree() {
-    base._ExitTree();
-    soraClone_.Free();
-    // arrow_.Free();
   }
 
   private void OnBodyEntered(Node node) {
@@ -304,7 +285,7 @@ public partial class Sora : ReversibleRigidBody3D {
   }
 
   private void InvokeArrow() {
-    var arrow = InstantiateArrow();
+    var arrow = resourceManager_.Instantiate<Arrow>(Constant.ArrowPath);
     arrow.InitialPosition = Position;
     arrow.InitialVelocity = Vector3.Left * Arrow.DefaultSpeed;
     bulletNode_.AddChild(arrow);
@@ -355,7 +336,7 @@ public partial class Sora : ReversibleRigidBody3D {
   }
 
   private SoraClone Clone(double integrateTime) {
-    var soraClone = InstantiateSoraClone();
+    var soraClone = resourceManager_.Instantiate<SoraClone>(Constant.ClonePath);
     soraClone.Position = Position;
     // Copy replay status
     soraClone.CloneType = meta_.CloneType;
@@ -382,18 +363,5 @@ public partial class Sora : ReversibleRigidBody3D {
 
   public void AbsorbMagicElement(int numMagicElements) {
     player_.OnAbsorbMagicElementsBySora(numMagicElements);
-  }
-
-  private SoraClone InstantiateSoraClone() {
-    var soraClone = soraClone_;
-    soraClone_ = soraCloneAsset_.Instantiate<SoraClone>();
-    return soraClone;
-  }
-
-  private Arrow InstantiateArrow() {
-    // var arrow = arrow_;
-    // arrow_ = arrowAsset_.Instantiate<Arrow>();
-    // return arrow;
-    return arrowAsset_.Instantiate<Arrow>();
   }
 }
