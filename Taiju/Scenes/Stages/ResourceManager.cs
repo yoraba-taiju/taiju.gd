@@ -10,7 +10,7 @@ public class ResourceManager {
     public required Node? NodeCache;
   }
   private readonly Dictionary<string, Entry> resourceCache_ = new();
-  private string NormalizePath(string path) {
+  private static string NormalizePath(string path) {
     if (path.StartsWith("uid://")) {
       return ResourceUid.UidToPath(path);
     }
