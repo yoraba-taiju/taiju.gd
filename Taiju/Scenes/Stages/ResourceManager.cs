@@ -34,7 +34,7 @@ public class ResourceManager {
       Resource = resource,
       NodeCache = null,
     };
-    if (resource is PackedScene scene) {
+    if (resource is PackedScene scene && path != "res://Objects/Effect/Arrow.tscn") {
       entry.NodeCache = scene.Instantiate<Node>();
     }
     resourceCache_.Add(path, entry);
@@ -43,9 +43,10 @@ public class ResourceManager {
   public T Instantiate<T>(string path) where T : Node, new() {
     path = NormalizePath(path);
     if (resourceCache_.TryGetValue(path, out var entry)) {
-      entry.NodeCache ??= ((PackedScene)entry.Resource).Instantiate<T>();
+      var resource = (PackedScene)entry.Resource;
+      entry.NodeCache ??= resource.Instantiate<T>();
       var node = (T)entry.NodeCache;
-      entry.NodeCache = ((PackedScene)entry.Resource).Instantiate<T>();
+      entry.NodeCache = resource.Instantiate<T>();
       return node;
     }
     GD.PushWarning($"{path} does not exists in cache");
