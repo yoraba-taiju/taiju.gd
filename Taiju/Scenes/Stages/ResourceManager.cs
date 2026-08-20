@@ -34,6 +34,18 @@ public class ResourceManager {
       Resource = resource,
       NodeCache = null,
     };
+    // TODO: Arrow だけは先読みキャッシュを作らない。
+    // 作ると終了時（× ボタン）に必ずこれが出る:
+    //   WARNING: 1 ObjectDB instance was leaked at exit
+    // 原因は未特定。有力な候補は ReversibleTubeTrail の
+    //   private MeshInstance3D meshInstance_ = new();
+    // で、これは Instantiate() の時点で親なしの Node を 1 個作り、AddChild は _Ready() の中。
+    // ツリーに入らないキャッシュでは _Ready() が走らないので孤児のまま残り、Arrow 本体を
+    // Free() しても子ではないので巻き添えにならない。漏れる数が 1 なのとも符合するし、
+    // フィールド初期化子で Node を作っているのは ReversibleTubeTrail だけで、その派生は
+    // Arrow だけ、というのも合う。ただし未検証。
+    // これが原因なら _Ready() 生成に寄せるか NotificationPredelete で自前解放すれば
+    // この条件は消せる。→ TODO.md
     if (resource is PackedScene scene && path != "res://Objects/Effect/Arrow.tscn") {
       entry.NodeCache = scene.Instantiate<Node>();
     }
