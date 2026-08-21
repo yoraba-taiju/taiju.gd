@@ -69,7 +69,7 @@ Stager._ProcessForward: stagePosition が進み、X < stagePosition + 1280 の�
   entry.NodeCache = resource.Instantiate<T>();   // 次回ぶんを先に作っておく
   return node;
   ```
-  出現時のスパイクを避けるため。**`Arrow.tscn` だけは明示的に除外されている**（`Add` の中でパス直書きの比較）。キャッシュを作ると終了時に `WARNING: 1 ObjectDB instance was leaked at exit` が必ず出るため。**原因は未特定**だが、`ReversibleTubeTrail` の `private MeshInstance3D meshInstance_ = new();` が `Instantiate()` 時点で親なし Node を作り `AddChild` は `_Ready()` の中、という構造が候補（ツリーに入らないキャッシュでは孤児のまま残る）。詳細と直し方の候補は [TODO.md](../../TODO.md)。
+  出現時のスパイクを避けるため。**`Arrow.tscn` だけは明示的に除外されている**（`Add` の中でパス直書きの比較）。キャッシュを作ると終了時に `WARNING: 1 ObjectDB instance was leaked at exit` が必ず出るため。**原因は未特定**だが、`ReversibleTubeTrail` の `private MeshInstance3D meshInstance_ = new();` が `Instantiate()` 時点で親なし Node を作り `AddChild` は `_Ready()` の中、という構造が候補（ツリーに入らないキャッシュでは孤児のまま残る）。詳細と直し方の候補は [#25](https://code.ledyba.org/yoraba-taiju/taiju.gd/issues/25)。
 - `path` は `uid://` でも来るので `NormalizePath` が `ResourceUid.UidToPath` で解決する。
 
 ## Stager

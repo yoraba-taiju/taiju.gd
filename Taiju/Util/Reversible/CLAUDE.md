@@ -118,7 +118,7 @@ leap2 で 50 まで前進       leap=2 tick=50
 
 1 と 2 は**分離できない**。`Sparse`/`SparseArray` が `HistoryLength` 個で足りるのは「1 tick につきエントリは高々 1 個」だから。`historyBranches_` が leap 方向に `HistoryLength` 個で足りるのも同じ理屈（leap は最低 1 tick 時計を動かす、という前提）に依存している。よって `HistoryLength` を 10000 にするなら `historyBranches_` も 10000 以上必要。
 
-**この「leap は最低 1 tick 時計を動かす」という前提は現在破れている**。→ [TODO.md](../../../TODO.md)
+**この「leap は最低 1 tick 時計を動かす」という前提は現在破れている**。→ [#8](https://code.ledyba.org/yoraba-taiju/taiju.gd/issues/8)
 
 なお `HistoryLength` は 2 の冪である必要はない。履歴系は全て `%` 演算（`RingBuffer` だけはマスク方式だが別クラスで自前に `CalcMinimumPow2` しており無関係）。
 
