@@ -18,13 +18,28 @@ cd Taiju && dotnet build
 ```
 
 ```bash
-cd TaijuTest && dotnet test
+cd Taiju && dotnet test
 ```
 
 - ゲーム本体の実行・シーン編集は Godot エディタから（`Taiju/project.godot` を開く）。メインシーンは `Scenes/Stages/Stage01/Loading.tscn`。
 - **ステージ JSON の再生成**: Godot エディタの 2D 画面上部にある「⛏️ Compile Stages」ボタン。`Scenes/Stages/Stage01/Stage.tscn` を編集したら押す。**押さないと `Stage.tscn.json` が古いままでゲームに反映されない**。エクスポート時は自動で走る。
 - 単一テスト実行: `dotnet test --filter FullyQualifiedName~DenseValueTest`
-- **`TaijuTest` は現在ビルドできない**（TFM 不一致 + 旧名前空間）。詳細と直し方は [TODO.md](TODO.md)。
+
+## テストの契約
+
+テストは gdUnit4Net で、**`Taiju.csproj` に同居している**（`Taiju/Tests/`）。gdUnit4 のテストアダプタはテスト csproj のあるディレクトリを Godot プロジェクトルートとみなすので、別プロジェクトには分離できない。テスト関連の参照は `Debug` 構成にだけ効き、`ExportDebug`/`ExportRelease` では `Tests/` ごと除外される。
+
+- **`GODOT_BIN` 環境変数が必須**。未設定だと純ロジックのテストも含めて 1 件も走らず exit 1 になる（`.runsettings` は環境依存のパスを持たないので、各自で設定する）。
+
+  ```bash
+  export GODOT_BIN=/path/to/Godot_v4.7.1-stable_mono_win64_console.exe
+  ```
+
+- テストクラスに `[TestSuite]`、テストメソッドに `[TestCase]`、アサーションは `AssertThat(x).IsEqual(y)` / `AssertThrown(() => ...).IsInstanceOf<T>()`。
+- **Godot に触るテストだけ `[RequireGodotRuntime]` を付ける**。付けたものはヘッドレスの Godot を起動して実行され、付けないものはエンジン抜きで走る（速い）。ノード生成・`res://` の読み込み・`RandomNumberGenerator` のようなネイティブクラスは付ける側。
+- **基底クラスから継承した `[TestCase]` は discover されない**。型引数違いで同じ検査を回したいときは、共有ロジックを基底の普通のメソッドに置き、各 `[TestSuite]` で `[TestCase] public void Foo() => FooImpl();` と並べる（`Tests/Util/Reversible/Value/` が実例）。
+- `gdunit4_testadapter_v5/` はアダプタが実行のたびに自動生成する。`.gitignore` 済み。
+- **`dotnet test` は Godot エディタを一度ヘッドレス起動する**副作用があり、そのとき一部の `.cs` が Godot に書き換えられる（→ [TODO.md](TODO.md)）。
 
 ## 巻き戻しの契約
 
