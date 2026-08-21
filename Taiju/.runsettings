@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  gdUnit4Net (dotnet test) の設定。
+  GODOT_BIN は環境ごとに違うのでここには書かない。環境変数で渡すこと。
+    PowerShell: $env:GODOT_BIN = "C:\path\to\Godot_v4.7.1-stable_mono_win64_console.exe"
+    bash:       export GODOT_BIN=/path/to/Godot_v4.7.1-stable_mono_linux.x86_64
+  未設定だと純ロジックのテストも含めて 1 件も走らず、exit 1 になる。
+-->
+<RunSettings>
+  <RunConfiguration>
+    <!-- Godot は並列実行に耐えないので 1 に固定する -->
+    <MaxCpuCount>1</MaxCpuCount>
+    <ResultsDirectory>./TestResults</ResultsDirectory>
+    <!-- Godot ランタイムの起動 + アセット import 分の余裕を見ておく -->
+    <TestSessionTimeout>600000</TestSessionTimeout>
+    <!-- GODOT_BIN 未設定などで 1 件も走らなかったときに黙って成功させない -->
+    <TreatNoTestsAsError>true</TreatNoTestsAsError>
+  </RunConfiguration>
+
+  <GdUnit4>
+    <DisplayName>FullyQualifiedName</DisplayName>
+    <CaptureStdOut>true</CaptureStdOut>
+    <!-- assets/ を含む初回 import はそれなりに時間がかかる -->
+    <CompileProcessTimeout>180000</CompileProcessTimeout>
+  </GdUnit4>
+</RunSettings>
