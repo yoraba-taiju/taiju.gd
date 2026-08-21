@@ -4,4 +4,30 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <LangVersion>12</LangVersion>
   </PropertyGroup>
+
+  <!--
+    テストは Debug 構成でのみビルドする。
+    エクスポート (ExportDebug / ExportRelease) では Tests/ と自動生成される
+    gdunit4_testadapter_v5/ を除外し、テストフレームワークを一切含めない。
+    実行方法は ../CLAUDE.md を参照 (GODOT_BIN 環境変数が必須)。
+  -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <TestFramework>GdUnit4</TestFramework>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="gdUnit4.api" Version="5.1.0-rc5" />
+    <PackageReference Include="gdUnit4.test.adapter" Version="3.1.1" />
+    <PackageReference Include="gdUnit4.analyzers" Version="1.0.0">
+      <PrivateAssets>none</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)' != 'Debug'">
+    <Compile Remove="Tests/**" />
+    <Compile Remove="gdunit4_testadapter_v5/**" />
+  </ItemGroup>
 </Project>

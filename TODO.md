@@ -8,16 +8,22 @@
 
 ## テスト
 
-- [ ] **`TaijuTest` を復活させる**（今はビルドすら通らない）
-  - `TaijuTest.csproj` の TFM が `net6.0`、`Taiju.csproj` が `net8.0` で NU1201。`net8.0` に上げる。
-  - テストの `using` が旧名前空間 `Taiju.Objects.Reversible.*` のまま。`Taiju.Util.Reversible.*` に置換する（`TaijuTest/Util/*` だけは既に新しい）。
-  - ただし直す前に下の「Godot 込みのテスト方法」を先に決めたい。純粋ロジック用の枠組みと二重に用意したくない。
-- [ ] **Godot 込みのテスト方法を導入する**
-  - 現状の NUnit + `dotnet test` は `Clock` / `Dense` / `Sparse` / `RingBuffer` のような **Godot に依存しない純粋ロジックしかテストできない**。
-  - 本当にテストしたいのは「ノードを 100 tick 進めて 50 tick 巻き戻したら状態が一致するか」という**巻き戻しの往復性**で、これには `ReversibleCompanion` / `ClockNode` / シーンツリーが要る。
-  - 候補: GUT / GdUnit4（C# 対応、エディタ内 & CLI 実行可）などのアドオン、あるいは Godot をヘッドレス起動して自作のテストシーンを走らせる方式。要調査。
+gdUnit4Net を `Taiju.csproj` 同居で導入済み（`Taiju/Tests/`、33 ケース）。使い方の契約は [CLAUDE.md](CLAUDE.md) の「テストの契約」を参照。旧 `TaijuTest/` は移植して削除した。
+
+- [ ] **巻き戻しの往復性ハーネスを作る**（本命。枠組みだけ入れて中身はまだ）
   - 欲しい性質: **同じ入力列を Forward → Back → Leap で流して、記録した状態と復元した状態が一致することを機械的に検査する**汎用ハーネス。敵を 1 体足すたびに手で確認するのは無理がある。
-  - 最初に入れるべきケース 3 つは [Taiju/Util/Reversible/CLAUDE.md](Taiju/Util/Reversible/CLAUDE.md) の末尾に記載（検証済みの性質なので、そのまま移せる）。
+  - 部品は揃っていることを確認済み: `ISceneRunner.SimulateFrames(n)` が `_Process` を回し、`SimulateActionPress/Release` が `Input.IsActionPressed` に届く。**`Player` の入力直読みに seam を入れる必要はない**。
+  - 障害は絶対パス規約。`ReversibleCompanion.Ready` が `/root/Root/Clock`、`ClockNode._Ready` が `/root/Root/Player`、`Player._Ready` が `/root/Root/Field/HUD/{Score,SpellGauge}` を掴むので、**ノード 1 個を動かすだけで骨格全部が要る**。`Main.tscn` の骨だけを持つテストベッド `.tscn` を用意するのが素直。
+  - [Taiju/Util/Reversible/CLAUDE.md](Taiju/Util/Reversible/CLAUDE.md) 末尾の 3 ケースは `Tests/Util/Reversible/ClockTest.cs` に入れた（Godot 非依存で通る）。
+- [ ] **オーファンノード検出を使う**
+  - gdUnit4 はテスト実行中に解放し損ねた Node を `Detected <N> orphan nodes during test execution!` として報告する。
+  - 下の「`ResourceManager` が `Arrow.tscn` だけ先読みキャッシュを作らない回避策」＝終了時の `1 ObjectDB instance was leaked at exit` は同じ種類の検出なので、**ゲームを起動して × ボタンを押す代わりにテストで仮説検証できる**見込み。
+- [ ] **`dotnet test` が `.cs` を書き換える**（gdUnit4 のせいではない）
+  - `dotnet test` は Godot エディタを一度ヘッドレス起動する（`godot --path . -e --headless`）。そのとき `Taiju/Objects/Rush/Rush.cs` と `Taiju/Scenes/Stages/Stage01/Forest.cs` が **BOM 除去 + インデントがタブ化**されて書き戻る。
+  - **gdUnit4 とは無関係**。`godot --path Taiju -e --headless --quit-after 1000` 単体で再現する（＝Godot エディタで開くだけで起きる。以前からこの 2 ファイルが変更済みになっていたのはこれが原因）。
+  - なぜこの 2 ファイルだけなのかは未特定。BOM の有無・改行コード・末尾改行では区別がつかなかった。
+  - リポジトリの規約は 2 スペースなので、**毎回 `git checkout` で戻す運用になっている**。Godot 側の設定（`text_editor/behavior/indent/type`）か、`.editorconfig` の追加で抑えられるか要調査。
+- [ ] **CI に載せるときの注意**: `GODOT_BIN` が壊れていれば `TreatNoTestsAsError` で exit 1 になるが、「純ロジックだけ走って Godot ランタイムのテストが黙って消える」モードはこれでは捕まらない。期待テスト件数を検証するか、カナリアを 1 本置くこと。
 
 ## 巻き戻し
 

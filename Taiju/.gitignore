@@ -2,6 +2,10 @@
 /.idea/
 /*.csproj.old
 
+### gdUnit4 ###
+# テストアダプタが実行のたびに自動生成する
+gdunit4_testadapter_v5/
+
 # Created by https://www.toptal.com/developers/gitignore/api/godot,intellij,rider,visualstudiocode,visualstudio
 # Edit at https://www.toptal.com/developers/gitignore?templates=godot,intellij,rider,visualstudiocode,visualstudio
 
