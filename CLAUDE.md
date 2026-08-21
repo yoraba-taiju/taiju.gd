@@ -25,6 +25,12 @@ cd Taiju && dotnet test
 - **ステージ JSON の再生成**: Godot エディタの 2D 画面上部にある「⛏️ Compile Stages」ボタン。`Scenes/Stages/Stage01/Stage.tscn` を編集したら押す。**押さないと `Stage.tscn.json` が古いままでゲームに反映されない**。エクスポート時は自動で走る。
 - 単一テスト実行: `dotnet test --filter FullyQualifiedName~DenseValueTest`
 
+## バージョン管理とワークフロー
+
+このリポジトリは Forgejoでホストしています。Issue や PR を作成・操作するときは、GitHub の `gh` ではなく `fgj` コマンドを使ってください。使い方と既知の落とし穴（マージ結果の検証、405 エラーの対処）は `fgj` スキルにまとめてあります。
+
+変更を入れるときの手順（worktree → ブランチ → コミット → PR → Approve → マージ → 後片付け）は `pr-workflow` スキルに従ってください。
+
 ## テストの契約
 
 テストは gdUnit4Net で、**`Taiju.csproj` に同居している**（`Taiju/Tests/`）。gdUnit4 のテストアダプタはテスト csproj のあるディレクトリを Godot プロジェクトルートとみなすので、別プロジェクトには分離できない。テスト関連の参照は `Debug` 構成にだけ効き、`ExportDebug`/`ExportRelease` では `Tests/` ごと除外される。
@@ -130,7 +136,7 @@ cd Taiju && dotnet test
 
 ### 魔素（Magic Element）
 
-ゲーム中の呼称は「**魔素**」。コード上の識別子も `MagicElement` 系で揃っている（`Player.NumMagicElements` / `MagicElementItem` / `numMagicElementsPerTick_`）。**MP とは呼ばない**。
+ゲーム中の呼称は「**魔素**」。コード上の識別子も `MagicElement` 系で揃っている（`Player.NumMagicElements` / `MagicElementItem` / `numMagicElementsPerTick_`）。
 
 - 敵を倒すと `MagicElementItem` が落ち、ソラに吸われて増える。
 - 巻き戻し 1 tick ごとに `numMagicElementsPerTick_` 消費、尽きると `ClockOperation.Stop`。
