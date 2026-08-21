@@ -34,6 +34,10 @@ project/assembly_name="Taiju"
 movie_writer/movie_file="C:/Users/kaede/src/code.ledyba.org/yoraba-taiju/taiju.gd/test.avi"
 movie_writer/disable_vsync=true
 
+[editor_overrides]
+
+text_editor/behavior/files/convert_indent_on_save=false
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/editor/plugin.cfg")
