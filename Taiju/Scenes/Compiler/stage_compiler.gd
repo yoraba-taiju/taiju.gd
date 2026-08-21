@@ -39,7 +39,7 @@ func compile_stage(scene_path: String):
 				"EventType": "Trigger",
 				"X": node.position.x,
 				"Y": node.position.y,
-				"Type": node.type,
+				"Id": node.id,
 			})
 		elif node is Preload:
 			events.append({

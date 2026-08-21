@@ -24,10 +24,8 @@ Stager._ProcessForward: stagePosition が進み、X < stagePosition + 1280 の�
 | `Event` | — | 基底。位置しか持たない |
 | `Spawn` | `path: String` (*.tscn) | 敵 1 体。子に `Path2D` を置くと軌道になる |
 | `Rush` | — | `Spawn` をまとめる。子の `Spawn` 座標はこのノードからの相対 |
-| `Trigger` | `trigger_name: String` | 演出フック（未使用） |
+| `Trigger` | `id: String` | 演出フック（未使用）。`id` で演出を識別する |
 | `Preload` | `path: String` (*.tscn) | 出現はしないがロードだけしておきたいもの |
-
-**`trigger.gd` は `trigger_name` を export しているが、`stage_compiler.gd` は `node.type` を読もうとしており不整合**。Trigger は Stage01 でまだ使われていないため顕在化していない。使い始める前に直すこと。
 
 ## コンパイラ（`Scenes/Compiler/stage_compiler.gd`）
 
