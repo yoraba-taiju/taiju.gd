@@ -45,7 +45,7 @@ public class ResourceManager {
     // フィールド初期化子で Node を作っているのは ReversibleTubeTrail だけで、その派生は
     // Arrow だけ、というのも合う。ただし未検証。
     // これが原因なら _Ready() 生成に寄せるか NotificationPredelete で自前解放すれば
-    // この条件は消せる。→ TODO.md
+    // この条件は消せる。→ https://code.ledyba.org/yoraba-taiju/taiju.gd/issues/25
     if (resource is PackedScene scene && path != "res://Objects/Effect/Arrow.tscn") {
       entry.NodeCache = scene.Instantiate<Node>();
     }
