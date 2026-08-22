@@ -31,7 +31,7 @@ project/assembly_name="Taiju"
 
 [editor]
 
-movie_writer/movie_file="C:/Users/kaede/src/code.ledyba.org/yoraba-taiju/taiju.gd/test.avi"
+movie_writer/movie_file="./test.avi"
 movie_writer/disable_vsync=true
 
 [editor_overrides]
