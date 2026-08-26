@@ -1,20 +1,11 @@
-[gd_scene load_steps=28 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene load_steps=13 format=3 uid="uid://ceqv14au1y2ag"]
 
-[ext_resource type="Script" uid="uid://xerpjryc82k5" path="res://Objects/ClockNode.cs" id="1_alw2w"]
-[ext_resource type="Script" uid="uid://byj8w8pd71fwb" path="res://Objects/Player.cs" id="1_erwvk"]
-[ext_resource type="Script" uid="uid://clc46teldv4rk" path="res://Util/Godot/Camera.cs" id="2_1p5hy"]
+[ext_resource type="PackedScene" path="res://Scenes/Stages/Common/StageSkeleton.tscn" id="1_skel"]
 [ext_resource type="Texture2D" uid="uid://ci480n5f4lr7t" path="res://assets/Background/Skybox/BlueSky.hdr" id="3_h1m7h"]
-[ext_resource type="PackedScene" uid="uid://co8ax7f470wis" path="res://Objects/Witch/Sora.tscn" id="4_h45ke"]
 [ext_resource type="PackedScene" uid="uid://vspygtuqr03c" path="res://Objects/Enemy/Drone4/Drone4_Kamikaze.tscn" id="7_fdhvb"]
-[ext_resource type="Script" uid="uid://cxxvayvisde34" path="res://Objects/Witch/SoraBulletServer.cs" id="7_hxyi1"]
-[ext_resource type="PackedScene" uid="uid://cp8q8tkg6dn4i" path="res://UI/SpellGauge.tscn" id="8_grg3l"]
-[ext_resource type="Script" uid="uid://bbu6uiafbe25c" path="res://Objects/BulletServer/Server/CircleBulletServer.cs" id="8_qfb4r"]
 [ext_resource type="Script" uid="uid://cawdxy2pwskny" path="res://Scenes/Stages/Stage01/Stager.cs" id="11_1p5hy"]
 [ext_resource type="Script" uid="uid://c5d37pw5skb8u" path="res://Scenes/Stages/Stage01/Forest.cs" id="11_frkhe"]
-[ext_resource type="Script" uid="uid://ds68boil06e4q" path="res://UI/HUD/Score.cs" id="12_2w5on"]
 [ext_resource type="Material" uid="uid://dxb0h08vdwfrl" path="res://Scenes/Stages/Stage01/Forest.tres" id="12_frkhe"]
-[ext_resource type="Texture2D" uid="uid://m8cnuhlku0wo" path="res://assets/Objects/Enemy/Bullets/CircleBullet/Red.png" id="14_knvo7"]
-[ext_resource type="Texture2D" uid="uid://chx21rgwj6x4c" path="res://assets/Objects/Enemy/Bullets/CircleBullet/Blue.png" id="15_p07sh"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_erwvk"]
 panorama = ExtResource("3_h1m7h")
@@ -35,125 +26,21 @@ glow_blend_mode = 0
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_y7npk"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jlq0k"]
-transparency = 1
-shading_mode = 0
-albedo_texture = ExtResource("14_knvo7")
-billboard_mode = 1
-billboard_keep_scale = true
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_hhw22"]
-material = SubResource("StandardMaterial3D_jlq0k")
-orientation = 2
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gpj2h"]
-transparency = 1
-shading_mode = 0
-albedo_texture = ExtResource("15_p07sh")
-billboard_mode = 1
-billboard_keep_scale = true
-grow_amount = 0.095
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_xvsfn"]
-material = SubResource("StandardMaterial3D_gpj2h")
-orientation = 2
-
-[sub_resource type="LabelSettings" id="LabelSettings_1vqvh"]
-font_size = 32
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vj3aa"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_17g3q"]
 material = ExtResource("12_frkhe")
 
-[sub_resource type="Environment" id="Environment_grg3l"]
+[node name="Root" instance=ExtResource("1_skel")]
 
-[node name="Root" type="Node3D"]
-
-[node name="Player" type="Node3D" parent="."]
-script = ExtResource("1_erwvk")
-
-[node name="Clock" type="Node3D" parent="."]
-script = ExtResource("1_alw2w")
-
-[node name="MainCamera" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
-cull_mask = 1023
-current = true
-fov = 45.0
-script = ExtResource("2_1p5hy")
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" parent="."]
 environment = SubResource("Environment_t1wdw")
 camera_attributes = SubResource("CameraAttributesPractical_y7npk")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
-transform = Transform3D(0.707107, -0.353553, 0.612372, 0, 0.866025, 0.499999, -0.707107, -0.353553, 0.612372, 0, 100, 0)
-layers = 1025
-light_cull_mask = 4293919745
-
-[node name="Field" type="Node3D" parent="."]
-
-[node name="Witch" type="Node3D" parent="Field"]
-
-[node name="Sora" parent="Field/Witch" instance=ExtResource("4_h45ke")]
-
-[node name="WitchEffect" type="Node3D" parent="Field"]
-
-[node name="WitchBullet" type="Node3D" parent="Field"]
-
-[node name="SoraBulletServer" type="Node3D" parent="Field/WitchBullet"]
-script = ExtResource("7_hxyi1")
-
-[node name="Enemy" type="Node3D" parent="Field"]
-
-[node name="DefaultRush" type="Node3D" parent="Field/Enemy"]
 
 [node name="Drone4" parent="Field/Enemy/DefaultRush" instance=ExtResource("7_fdhvb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.151, 19.853008, 0)
 
-[node name="EnemyEffect" type="Node3D" parent="Field"]
-
-[node name="EnemyBullet" type="Node3D" parent="Field"]
-
-[node name="RedCircleBulletServer" type="Node3D" parent="Field/EnemyBullet"]
-script = ExtResource("8_qfb4r")
-Mesh = SubResource("PlaneMesh_hhw22")
-
-[node name="BlueCircleBulletServer" type="Node3D" parent="Field/EnemyBullet"]
-script = ExtResource("8_qfb4r")
-Mesh = SubResource("PlaneMesh_xvsfn")
-
-[node name="HUD" type="CanvasLayer" parent="Field"]
-layer = -1
-
-[node name="Score" type="Node2D" parent="Field/HUD"]
-position = Vector2(16, 26)
-script = ExtResource("12_2w5on")
-
-[node name="Label" type="Label" parent="Field/HUD/Score"]
-visibility_layer = 524288
-anchors_preset = -1
-offset_right = 94.0
-offset_bottom = 45.0
-text = "Score:"
-label_settings = SubResource("LabelSettings_1vqvh")
-
-[node name="Counter" type="Label" parent="Field/HUD/Score"]
-visibility_layer = 524288
-anchors_preset = -1
-offset_left = 100.0
-offset_top = 2.0
-offset_right = 283.0
-offset_bottom = 47.0
-text = "0000000000"
-label_settings = SubResource("LabelSettings_1vqvh")
-
-[node name="SpellGauge" parent="Field/HUD" instance=ExtResource("8_grg3l")]
-visibility_layer = 524288
-position = Vector2(16, 673)
-
-[node name="Stager" type="Node3D" parent="."]
+[node name="Stager" parent="."]
 script = ExtResource("11_1p5hy")
 
 [node name="Forest" type="Node3D" parent="Stager"]
@@ -164,26 +51,3 @@ transform = Transform3D(600, 0, 0, 0, 596.713, -62.7171, 0, 62.7171, 596.713, 0,
 material_overlay = SubResource("ShaderMaterial_vj3aa")
 mesh = SubResource("PlaneMesh_17g3q")
 skeleton = NodePath("../..")
-
-[node name="OverlayLayer" type="CanvasLayer" parent="."]
-
-[node name="OverlayViewportContainer" type="SubViewportContainer" parent="OverlayLayer"]
-clip_contents = true
-anchors_preset = -1
-offset_right = 1280.0
-offset_bottom = 720.0
-stretch = true
-
-[node name="OverlayViewport" type="SubViewport" parent="OverlayLayer/OverlayViewportContainer"]
-transparent_bg = true
-handle_input_locally = false
-canvas_cull_mask = 4294966272
-size = Vector2i(1280, 720)
-render_target_update_mode = 4
-
-[node name="OverlayCamera" type="Camera3D" parent="OverlayLayer/OverlayViewportContainer/OverlayViewport"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
-cull_mask = 1047552
-environment = SubResource("Environment_grg3l")
-current = true
-fov = 45.0
