@@ -106,22 +106,33 @@ cd Taiju && dotnet test
 
 ## ノードツリーの規約
 
-ほぼ全ノードが `_Ready()` で `GetNode<T>("/root/Root/...")` の**絶対パス直書き**で他ノードを掴む。`Scenes/Stages/Stage01/Main.tscn` のツリー構造がそのまま暗黙の契約になっている：
+ほぼ全ノードが `_Ready()` で `GetNode<T>("/root/Root/...")` の**絶対パス直書き**で他ノードを掴む。この骨格は `Scenes/Stages/Common/StageSkeleton.tscn` が持っていて、各ステージの `Main.tscn` はこれを**継承シーン**として派生させる：
 
 ```
-/root/Root
+/root/Root           … StageRoot（骨格の契約を検査するだけ）
   ├ Player           … 入力を読み state を持つだけ（Node3D だが描画しない）
   ├ Clock            … ClockNode
   ├ MainCamera       … Util/Godot/Camera（HalfScreenSize を公開）
+  ├ WorldEnvironment … 空とライト。空は派生シーンが上書きする
   ├ Field
   │  ├ Witch/Sora, WitchEffect, WitchBullet/SoraBulletServer
   │  ├ Enemy/DefaultRush, EnemyEffect
   │  ├ EnemyBullet/{Red,Blue}CircleBulletServer
   │  └ HUD/{Score, SpellGauge}
-  └ Stager           … ステージ進行 + Forest（背景）
+  ├ Stager           … ステージ進行。**スクリプトは派生シーンが付ける**
+  └ OverlayLayer/…   … HUD 用のサブビューポート
 ```
 
-**このパスを変えると広範囲が壊れる**。ノードを移動する場合は `grep -r '/root/Root'` で全参照を洗うこと。
+継承シーンなので、**派生側では骨格の子ノードを削除も改名もできない**。パスの契約はここで構造的に守られる。ステージ固有のもの（背景の `Forest`、空、敵の初期配置）は派生シーン側で追加・上書きする。
+
+骨格が守れない 2 つは `Scenes/Stages/StageRoot.cs` が `_EnterTree()` で検査する：
+
+- **ルート名が `Root` であること**。継承シーンでもルートノードだけは改名できてしまう。
+- **`Stager` にスクリプトが付いていること**。`Stages.Stager` は abstract なので骨格はスクリプト無しの `Node3D` を置くだけで、付けるのは派生シーンの仕事。
+
+`_Ready()` ではなく `_EnterTree()` なのは、`_Ready()` が子から先に呼ばれるため。子の `GetNode` が失敗し切った後ではエラーの山に埋もれる。
+
+**骨格のパスを変えると広範囲が壊れる**。ノードを移動する場合は `grep -r '/root/Root'` で全参照を洗うこと。
 
 時間を進めるのは `Objects/ClockNode.cs` ただ一つ。`Player` の `CurrentClockOperation` を毎フレーム見て `Tick`/`Back`/`Leap` を呼ぶ。**入力 → `Player` → `ClockNode` → 各ノード、という一方向の流れ**を崩さないこと。
 
