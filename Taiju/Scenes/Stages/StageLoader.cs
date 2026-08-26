@@ -9,7 +9,11 @@ public partial class StageLoader : Node2D {
   [Export(PropertyHint.File, "*.tscn")] public string StageScenePath { get; private set; }
   public Node3D StageScene { get; private set; }
 
-  private static readonly string[] CommonPreloadScenes = [
+  /**
+   * ステージによらず必ず要るシーン。
+   * ハーネス (Tests/Harness/ReversibilityHarness.cs) も同じものを積むので internal。
+   */
+  internal static readonly string[] CommonPreloadScenes = [
     "res://Objects/Effect/Arrow.tscn",
     "res://Objects/Effect/MagicCircle.tscn",
     "res://Objects/Effect/MagicElementItem.tscn",

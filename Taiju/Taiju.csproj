@@ -10,6 +10,10 @@
     エクスポート (ExportDebug / ExportRelease) では Tests/ と自動生成される
     gdunit4_testadapter_v5/ を除外し、テストフレームワークを一切含めない。
     実行方法は ../CLAUDE.md を参照 (GODOT_BIN 環境変数が必須)。
+
+    Tests/ にはリソース (Tests/Harness/HarnessStage.tscn) もあり、これは同じく Tests/ にある
+    スクリプトを参照している。ここで除外できるのは .cs だけなので、
+    エクスポートプリセット側のフィルタでも Tests/ を除外すること。
   -->
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>

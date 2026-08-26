@@ -46,6 +46,20 @@ cd Taiju && dotnet test
 - **基底クラスから継承した `[TestCase]` は discover されない**。型引数違いで同じ検査を回したいときは、共有ロジックを基底の普通のメソッドに置き、各 `[TestSuite]` で `[TestCase] public void Foo() => FooImpl();` と並べる（`Tests/Util/Reversible/Value/` が実例）。
 - `gdunit4_testadapter_v5/` はアダプタが実行のたびに自動生成する。`.gitignore` 済み。
 
+### 往復性ハーネス
+
+`Tests/Harness/` に、**forward で通った各 `(leap, tick)` の状態と、back で戻ってきたときの状態が一致するか**を機械的に突き合わせるハーネスがある。**敵を 1 体足したら `Tests/Harness/EnemyReversibilityTest.cs` に検体を 1 件足す**のが、記録漏れを手で確認せずに済ませる唯一の方法。
+
+使い方は同ファイルの既存 3 件をコピーすれば足りる（`ForwardAsync` → `BackAsync` → `LeapAsync` → `ForwardAsync` → `BackAsync`）。踏むと静かに壊れるものだけ挙げる:
+
+- **`ReversibilityHarness` は `using` で受ける**。破棄しないとシーンが `/root` に残り、次のテストが読み込んだ骨格と名前がぶつかって、新しいノードが古い `Clock` を掴む。
+- **leap まで通す**。`_ProcessLeap` と `Dense` の leap 分岐処理（`BranchTickOfLeap` からの埋め戻し・`AdjustTick`）は、leap を跨がないとまるごと素通りになる。
+- **検体を自機に届かせない**。当たると `Player` が `ClockState.OnDamage` に入って勝手に巻き戻し始める（[#34](https://code.ledyba.org/yoraba-taiju/taiju.gd/issues/34)）。`ForwardAsync` はそれを検出して報告する。
+- **forward は back より 1 tick 以上多く進める**。開始時点の tick は記録されない。
+- 観測点・空振り防止・見えない範囲の話は `Tests/Harness/ReversibilityHarness.cs` と `HarnessObserver.cs` の冒頭コメントにある。
+
+ハーネス自身が正しく赤を出せることは `Tests/Harness/HarnessSelfTest.cs` が合成検体（`Probes.cs`）で検査している。**ハーネスをいじったらまずここを通すこと**。
+
 ## 巻き戻しの契約
 
 これを守れば内部を知らなくても巻き戻し可能なオブジェクトが書ける。
