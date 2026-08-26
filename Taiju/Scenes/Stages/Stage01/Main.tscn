@@ -1,6 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://ceqv14au1y2ag"]
+[gd_scene format=3 uid="uid://ceqv14au1y2ag"]
 
-[ext_resource type="PackedScene" path="res://Scenes/Stages/Common/StageSkeleton.tscn" id="1_skel"]
+[ext_resource type="PackedScene" uid="uid://42gm4gq42sm0" path="res://Scenes/Stages/Common/StageSkeleton.tscn" id="1_skel"]
 [ext_resource type="Texture2D" uid="uid://ci480n5f4lr7t" path="res://assets/Background/Skybox/BlueSky.hdr" id="3_h1m7h"]
 [ext_resource type="PackedScene" uid="uid://vspygtuqr03c" path="res://Objects/Enemy/Drone4/Drone4_Kamikaze.tscn" id="7_fdhvb"]
 [ext_resource type="Script" uid="uid://cawdxy2pwskny" path="res://Scenes/Stages/Stage01/Stager.cs" id="11_1p5hy"]
@@ -31,22 +31,22 @@ glow_blend_mode = 0
 [sub_resource type="PlaneMesh" id="PlaneMesh_17g3q"]
 material = ExtResource("12_frkhe")
 
-[node name="Root" instance=ExtResource("1_skel")]
+[node name="Root" unique_id=679297079 instance=ExtResource("1_skel")]
 
-[node name="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" parent="." index="3" unique_id=573361929]
 environment = SubResource("Environment_t1wdw")
 camera_attributes = SubResource("CameraAttributesPractical_y7npk")
 
-[node name="Drone4" parent="Field/Enemy/DefaultRush" instance=ExtResource("7_fdhvb")]
+[node name="Drone4" parent="Field/Enemy/DefaultRush" parent_id_path=PackedInt32Array(1621496599) index="0" unique_id=685936179 instance=ExtResource("7_fdhvb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.151, 19.853008, 0)
 
-[node name="Stager" parent="."]
+[node name="Stager" parent="." index="5" unique_id=858018214]
 script = ExtResource("11_1p5hy")
 
-[node name="Forest" type="Node3D" parent="Stager"]
+[node name="Forest" type="Node3D" parent="Stager" index="0" unique_id=1192815698]
 script = ExtResource("11_frkhe")
 
-[node name="Mesh" type="MeshInstance3D" parent="Stager/Forest"]
+[node name="Mesh" type="MeshInstance3D" parent="Stager/Forest" index="0" unique_id=438093694]
 transform = Transform3D(600, 0, 0, 0, 596.713, -62.7171, 0, 62.7171, 596.713, 0, -110, -180)
 material_overlay = SubResource("ShaderMaterial_vj3aa")
 mesh = SubResource("PlaneMesh_17g3q")
