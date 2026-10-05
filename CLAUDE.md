@@ -55,6 +55,7 @@ cd Taiju && dotnet test
 
 - **`ReversibilityHarness` は `using` で受ける**。破棄しないとシーンが `/root` に残り、次のテストが読み込んだ骨格と名前がぶつかって、新しいノードが古い `Clock` を掴む。
 - **`HarnessObserver` より後に `_Process` が回るノードを作らない**。観測はこのノードの `_Process` から行っていて、`ProcessPriority = int.MaxValue` とルートの最後の子という二重の担保で最後に回している。ここが崩れると全 tick が丸ごと 1 tick ずれ、原因がいちばん読みにくい赤になる。
+- **検体を窓の中で `Destroy()` させない**。破壊した tick ちょうどに戻るとノードが 1 tick 早く復活するので（[#38](https://code.ledyba.org/yoraba-taiju/taiju.gd/issues/38)）、その 1 件だけ差分が出て、新しい敵のバグと見分けがつかない。敵が画面外へ出て `EnemyBase` が片付けるのがいちばん踏みやすい形。
 - **検体の配置と窓は、遅いマシンを基準に決める**。`ClockNode` は 1 フレームに最大 1 tick しか進めないが、敵の移動と状態遷移は実時間で進む。60fps を割ると 1 tick あたりの移動距離が伸びるので、負荷の高い CI ほど早く自機に届く。
 
 ハーネス自身が正しく赤を出せることは `Tests/Harness/HarnessSelfTest.cs` が合成検体（`Probes.cs`）で検査している。**ハーネスをいじったらまずここを通すこと**。

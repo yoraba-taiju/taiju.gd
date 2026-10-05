@@ -275,12 +275,22 @@ internal sealed class ReversibilityHarness : IDisposable {
     }
 
     var target = clock_.CurrentTick + ticks;
+    var leapAtStart = clock_.CurrentLeap;
     phase_ = Phase.Forward;
     try {
       var stalled = 0u;
       while (clock_.CurrentTick < target) {
         var before = clock_.CurrentTick;
         await runner_.AwaitIdleFrame();
+        if (clock_.CurrentLeap != leapAtStart) {
+          // BackAsync の直後に LeapAsync を挟まずここへ来ると、離したままの time_back を
+          // Player が拾って勝手に leap する。黙って通すと forward フェーズが
+          // (新しい leap, 分岐 tick) を「記録」してしまい、leap の瞬間の突き合わせが
+          // まるごと飛ぶ上に leapCalls_ が 0 のままなので、検査したつもりで通ってしまう。
+          throw new InvalidOperationException(
+            $"forward 中に leap が {leapAtStart} から {clock_.CurrentLeap} へ進んだ。" +
+            "BackAsync の直後に forward するなら、あいだに LeapAsync を呼ぶこと。");
+        }
         if (clock_.CurrentTick < before) {
           // 自機が被弾すると Player は ClockState.OnDamage に入り、入力に関係なく
           // 巻き戻しを始める。放っておくと巻き戻しの限界まで戻り、そこで Clock.Back() が

@@ -266,6 +266,23 @@ public class HarnessSelfTest {
   }
 
   /**
+   * BackAsync の直後に LeapAsync を挟まず forward したら拒否すること。
+   *
+   * time_back は離されたまま残っているので、Player が次のフレームでそれを拾って勝手に
+   * leap する。黙って通すと leap の瞬間の突き合わせがまるごと飛ぶのに、
+   * LeapAsync を呼んでいないので回数の検査も素通りする ── 検査したつもりで緑になる。
+   */
+  [TestCase]
+  [RequireGodotRuntime]
+  public async Task ForwardRightAfterBackWithoutLeapingIsRefused() {
+    using var harness = await BootWithAsync<RecordingProbe>();
+    await harness.ForwardAsync(ForwardTicks);
+    await harness.BackAsync(BackTicks);
+    (await AssertThrown(harness.ForwardAsync(10)))
+      .IsInstanceOf<InvalidOperationException>();
+  }
+
+  /**
    * いまの tick より多く戻そうとしたら拒否すること。
    * uint なので、素で引くと巨大な目標に化けて「1 度も巻き戻さず正常終了」になる。
    */
