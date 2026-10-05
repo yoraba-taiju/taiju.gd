@@ -43,8 +43,7 @@ public class EnemyReversibilityTest {
     await harness.LeapAsync();
     await harness.ForwardAsync(leapForwardTicks);
     await harness.BackAsync(leapBackTicks);
-    // back 2 回ぶん + leap の瞬間の 1 回。
-    harness.AssertRoundTrip(backTicks + 1 + leapBackTicks);
+    harness.AssertRoundTrip();
   }
 
   [TestCase]
@@ -68,13 +67,27 @@ public class EnemyReversibilityTest {
     });
 
   /**
-   * Kamikaze は自機に向かって突っ込んでくるので、放っておくと窓の中で衝突する。
-   * 衝突すると Player が ClockState.OnDamage に入って勝手に巻き戻し始め、往復性どころではなくなる
-   * (そうなったら ForwardAsync がその旨を報告して止まる)。
+   * Kamikaze は自機に向かって突っ込んでくる。画面の隅から出して窓を短くとってあるのは、
+   * 衝突と画面外への退場をどちらも窓の外に落とすため。この配置での衝突は tick 130
+   * (Godot 4.7.2 のヘッドレスで 3 回測って全部 130)、窓は 100 tick。
    *
-   * 画面の隅から出して窓を短くとってあるのはそのため。この配置での衝突はこの環境で tick 130〜131 で、
-   * 窓は 100 tick。遷移が integrateTime 基準なので速いマシンほど衝突 tick は下がりうるが、
-   * 詰まったら ForwardAsync が「forward 中に時間が巻き戻った」と言って止まる。
+   * 窓を越えたときに何が起きるかは、魔素があるかどうかで変わる:
+   *
+   *   - **1 回目の forward 中は魔素 0** なので、衝突しても Player.OnDamageBySora が
+   *     何もしない (魔素が閾値未満だと ClockState を変えない)。このフェーズで効く危険は
+   *     むしろ画面外への退場で、EnemyBase が Destroy() すると [#38] の 1 tick ずれを踏んで
+   *     往復性と無関係な赤になる。
+   *   - **BackAsync の後の forward では魔素が満タン**なので (BackAsync が毎回補充する)、
+   *     衝突すれば ClockState.OnDamage に入って勝手に巻き戻し始める。これは ForwardAsync が
+   *     「forward 中に時間が巻き戻った」と名指しで止めてくれる。
+   *
+   * 余裕の見方に注意。ClockNode は 1 フレームに最大 1 tick しか進めないが、敵の移動と
+   * 状態遷移は integrateTime / 物理、つまり実時間で進む。したがって **60fps を割ると
+   * 1 tick あたりの実時間が伸びて、敵は tick あたり遠くまで進む** ので、衝突 tick は
+   * 遅いマシン・負荷の高い CI 側で下がる。速いマシンでは 1 tick ≈ 1/60 秒に収束するだけ。
+   * 窓を広げたいときは tick ではなく実時間を固定する (Engine.MaxFps / --fixed-fps) 方向で考える。
+   *
+   * [#38]: https://code.ledyba.org/yoraba-taiju/taiju.gd/issues/38
    */
   [TestCase]
   [RequireGodotRuntime]

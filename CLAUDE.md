@@ -24,6 +24,7 @@ cd Taiju && dotnet test
 - ゲーム本体の実行・シーン編集は Godot エディタから（`Taiju/project.godot` を開く）。メインシーンは `Scenes/Stages/Stage01/Loading.tscn`。
 - **ステージ JSON の再生成**: Godot エディタの 2D 画面上部にある「⛏️ Compile Stages」ボタン。`Scenes/Stages/Stage01/Stage.tscn` を編集したら押す。**押さないと `Stage.tscn.json` が古いままでゲームに反映されない**。エクスポート時は自動で走る。
 - 単一テスト実行: `dotnet test --filter FullyQualifiedName~DenseValueTest`
+- **エクスポートプリセットのフィルタで `Tests/` を除外すること**。`Taiju.csproj` が除外できるのは `.cs` だけで、`Tests/Harness/HarnessStage.tscn` のようなリソースは残る。除外しないと、参照先スクリプトがコンパイルから外れた壊れたリソースが PCK に入る。`export_presets.cfg` は Git 管理外なので各自の設定が必要。
 
 ## バージョン管理とワークフロー
 
@@ -48,17 +49,17 @@ cd Taiju && dotnet test
 
 ### 往復性ハーネス
 
-`Tests/Harness/` に、**forward で通った各 `(leap, tick)` の状態と、back で戻ってきたときの状態が一致するか**を機械的に突き合わせるハーネスがある。**敵を 1 体足したら `Tests/Harness/EnemyReversibilityTest.cs` に検体を 1 件足す**のが、記録漏れを手で確認せずに済ませる唯一の方法。
+`Tests/Harness/` に、**ある `(leap, tick)` に居るときの監視対象の状態が、その時刻について記録されている状態と一致するか**を機械的に突き合わせるハーネスがある。**敵を 1 体足したら `Tests/Harness/EnemyReversibilityTest.cs` に検体を 1 件足すこと。**
 
-使い方は同ファイルの既存 3 件をコピーすれば足りる（`ForwardAsync` → `BackAsync` → `LeapAsync` → `ForwardAsync` → `BackAsync`）。踏むと静かに壊れるものだけ挙げる:
+使い方は同ファイルの既存 3 件をコピーすれば足りる。踏むと静かに壊れるものを挙げる:
 
 - **`ReversibilityHarness` は `using` で受ける**。破棄しないとシーンが `/root` に残り、次のテストが読み込んだ骨格と名前がぶつかって、新しいノードが古い `Clock` を掴む。
-- **leap まで通す**。`_ProcessLeap` と `Dense` の leap 分岐処理（`BranchTickOfLeap` からの埋め戻し・`AdjustTick`）は、leap を跨がないとまるごと素通りになる。
-- **検体を自機に届かせない**。当たると `Player` が `ClockState.OnDamage` に入って勝手に巻き戻し始める（[#34](https://code.ledyba.org/yoraba-taiju/taiju.gd/issues/34)）。`ForwardAsync` はそれを検出して報告する。
-- **forward は back より 1 tick 以上多く進める**。開始時点の tick は記録されない。
-- 観測点・空振り防止・見えない範囲の話は `Tests/Harness/ReversibilityHarness.cs` と `HarnessObserver.cs` の冒頭コメントにある。
+- **`HarnessObserver` より後に `_Process` が回るノードを作らない**。観測はこのノードの `_Process` から行っていて、`ProcessPriority = int.MaxValue` とルートの最後の子という二重の担保で最後に回している。ここが崩れると全 tick が丸ごと 1 tick ずれ、原因がいちばん読みにくい赤になる。
+- **検体の配置と窓は、遅いマシンを基準に決める**。`ClockNode` は 1 フレームに最大 1 tick しか進めないが、敵の移動と状態遷移は実時間で進む。60fps を割ると 1 tick あたりの移動距離が伸びるので、負荷の高い CI ほど早く自機に届く。
 
 ハーネス自身が正しく赤を出せることは `Tests/Harness/HarnessSelfTest.cs` が合成検体（`Probes.cs`）で検査している。**ハーネスをいじったらまずここを通すこと**。
+
+いま観測しているのは `Node3D.Transform` と `IReversibleNode.IsAlive` だけなので、`Dense` に載せていない素のフィールドの食い違いは位置か生死に出るまで見えない（[#35](https://code.ledyba.org/yoraba-taiju/taiju.gd/issues/35) がその実例）。`Dense.Mut` の leap 分岐処理を通るのは合成検体の `RecordingProbe` だけで、`Clock.AdjustTick` は恒等になる場合しか通っていない。
 
 ## 巻き戻しの契約
 
