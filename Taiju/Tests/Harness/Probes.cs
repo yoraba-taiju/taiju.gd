@@ -168,7 +168,8 @@ public partial class DyingProbe : ReversibleNode3D {
  * 物理シグナル (body_entered) の中から自分を Destroy する検体。弾で倒される経路の模型。
  *
  * 本物の撃破は SoraBullet.OnBodyEntered → EnemyBase.Hit → Destroy() で、物理ステップの中で
- * 走る。そこではまだ ClockNode が tick していないので、DestroyedAt には 1 つ前の tick が入る。
+ * 走る。そこではまだ ClockNode が tick していないので、そのフレームで tick が進むなら
+ * DestroyedAt には 1 つ前の tick が入る (進まないフレームでは _Process から壊したのと同じになる)。
  * DyingProbe (_Process の中で Destroy する) とは DestroyedAt の意味が違うので、別の検体にしてある。
  *
  * 壊れる tick はフレームの刻みで前後する (実測で 42〜44) ので、テストは DestroyedAtTick を見る。

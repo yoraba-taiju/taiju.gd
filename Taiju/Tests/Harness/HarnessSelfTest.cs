@@ -187,6 +187,13 @@ public class HarnessSelfTest {
    *
    * 条件を `>` に変えると、この経路では差分が 3 件に増える (d の IsAlive と Transform、
    * d-1 の Transform) ことを確かめてある。#38 の直し方を考えるときは両方の経路で測ること。
+   *
+   * **この結果は、衝突したフレームで tick が進むことに依存している。** tick が進まない
+   * フレーム (ClockNode の leftToTick_ が 0 より大きい) で当たると、そのフレームの
+   * _ProcessForward が tick d の記録を IsAlive = false で上書きするので、_Process 経路と
+   * 同じく d の IsAlive の差分になるはず。ヘッドレスのこの環境では毎フレーム tick が進むので、
+   * そちらは測れていない。フレームが tick より速く回る環境でこのテストが IsAlive の差分で
+   * 赤になったら、まずこれを疑うこと。
    */
   [TestCase]
   [RequireGodotRuntime]
