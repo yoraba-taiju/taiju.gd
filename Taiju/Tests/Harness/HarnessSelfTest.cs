@@ -150,32 +150,71 @@ public class HarnessSelfTest {
   }
 
   /**
-   * Destroy / Rescue を窓の中で通す。
+   * Destroy / Rescue を窓の中で通す (_Process の中で Destroy する経路)。
    *
-   * **これは現状を固定するテストで、緑であることは「正しい」を意味しない。**
-   * `ClockNode.ProcessRescue` の復活条件が `DestroyedAt >= CurrentTick` なので、
-   * 破壊した tick ちょうどに戻るとそこだけノードが生き返る
-   * ([#38](https://code.ledyba.org/yoraba-taiju/taiju.gd/issues/38))。
-   * ずれは境界の 1 tick だけで、他の tick は一致する ── その形まで含めて固定している。
+   * **これと次のテストは現状を固定するテストで、緑であることは「正しい」を意味しない。**
+   * 破壊した tick の前後で状態が 1 件食い違う
+   * ([#38](https://code.ledyba.org/yoraba-taiju/taiju.gd/issues/38))。原因は 2 つ重なっている:
    *
-   * #38 を直したらこのテストは赤になる。そのときは差分 0 件を期待する形に書き換えること。
+   *   - DestroyedAt の意味が呼び出し元で変わる。_Process からは tick が進んだ後の値が入るので、
+   *     ProcessRescue の `DestroyedAt >= CurrentTick` では破壊 tick ちょうどで生き返る
+   *   - Rescue() は ProcessMode を SetDeferred で戻すので、復活したフレームでは
+   *     _ProcessBack が走らず、Godot 側の状態が 1 tick 古いまま残る
+   *
+   * この経路では 2 つ目が表に出ない (破壊したフレームで位置を記録してから止まるので、
+   * 古いまま残る位置がたまたま記録と一致する)。見えるのは破壊 tick の IsAlive だけ。
+   *
+   * #38 を直すとこのテストは赤になる。条件を `>` に変えるだけでは直らないことは
+   * 確かめてある (この経路では D-1 に Transform の差分が移る)。直したら測り直して書き換えること。
    */
   [TestCase]
   [RequireGodotRuntime]
-  public async Task DyingProbeShowsTheKnownRescueOffByOne() {
+  public async Task DyingProbeShowsTheKnownDiffAtTheDestroyTick() {
     const uint dieAtTick = 60;
     using var harness = await BootWithAsync<DyingProbe>(probe => probe.DieAtTick = dieAtTick);
     await harness.ForwardAsync(ForwardTicks);
     await harness.BackAsync(100);
 
+    AssertSingleKnownDiff(harness, dieAtTick, "IsAlive");
+  }
+
+  /**
+   * Destroy / Rescue を窓の中で通す (物理シグナルの中で Destroy する経路)。
+   *
+   * 弾で倒されるのはこちらの経路。物理ステップの中ではまだ tick が進んでいないので、
+   * DestroyedAt には 1 つ前の tick d が入り、`>=` で IsAlive は記録と一致する。
+   * それでも差分は消えず、Rescue() の SetDeferred のせいで復活した tick d の位置が古いまま残る。
+   *
+   * 条件を `>` に変えると、この経路では差分が 3 件に増える (d の IsAlive と Transform、
+   * d-1 の Transform) ことを確かめてある。#38 の直し方を考えるときは両方の経路で測ること。
+   */
+  [TestCase]
+  [RequireGodotRuntime]
+  public async Task PhysicsDyingProbeShowsTheKnownDiffAtTheDestroyTick() {
+    PhysicsDyingProbe probe = null;
+    using var harness = await ReversibilityHarness.BootAsync(scene =>
+      probe = PhysicsDyingProbe.PlaceWithWall(scene.GetNode<Node3D>("Field/Enemy/DefaultRush")));
+    await harness.ForwardAsync(ForwardTicks);
+
+    AssertThat(probe.DestroyedAtTick)
+      .OverrideFailureMessage("検体が窓の中で壁に当たっていない。配置を見直すこと。")
+      .IsLess(ForwardTicks);
+
+    await harness.BackAsync(100);
+
+    AssertSingleKnownDiff(harness, probe.DestroyedAtTick, "Transform");
+  }
+
+  /** 差分がちょうど 1 件、leap 0 の tick に、what の項目で出ていること。 */
+  private static void AssertSingleKnownDiff(ReversibilityHarness harness, uint tick, string what) {
     var report = harness.DiffReport;
     AssertThat(harness.DiffCount).OverrideFailureMessage(
       $"差分は破壊 tick の 1 件だけのはず。実際の報告:\n{(report.Length > 0 ? report : "(差分なし)")}")
       .IsEqual(1);
-    AssertThat(report.Contains($"(leap 0, tick {dieAtTick})")).OverrideFailureMessage(
-      $"差分が破壊 tick ({dieAtTick}) 以外に出ている:\n{report}").IsTrue();
-    AssertThat(report.Contains("IsAlive")).OverrideFailureMessage(
-      $"差分が IsAlive 以外に出ている:\n{report}").IsTrue();
+    AssertThat(report.Contains($"(leap 0, tick {tick})")).OverrideFailureMessage(
+      $"差分が tick {tick} 以外に出ている:\n{report}").IsTrue();
+    AssertThat(report.Contains($" の {what}:")).OverrideFailureMessage(
+      $"差分が {what} 以外に出ている:\n{report}").IsTrue();
   }
 
   /**
@@ -213,6 +252,25 @@ public class HarnessSelfTest {
 
     AssertThat(harness.ObservedMotion).IsFalse();
     AssertThat(harness.DiffReport).IsEqual("");
+  }
+
+  /**
+   * leap 0 では動き、leap 1 では止まっている検体を「検査できていない」と判定すること。
+   * 動いたかどうかは leap ごとに見る。どれか 1 つの leap で動けば足りるとすると、
+   * leap 1 の区間で静止物を比べているだけなのを見逃す。
+   */
+  [TestCase]
+  [RequireGodotRuntime]
+  public async Task MotionIsRequiredInEveryLeap() {
+    using var harness = await BootWithAsync<StopsAfterLeapProbe>();
+    await harness.ForwardAsync(ForwardTicks);
+    await harness.BackAsync(BackTicks);
+    await harness.LeapAsync();
+    await harness.ForwardAsync(LeapForwardTicks);
+    await harness.BackAsync(LeapBackTicks);
+
+    AssertThat(harness.DiffReport).IsEqual("");
+    AssertThat(harness.ObservedMotion).IsFalse();
   }
 
   /**

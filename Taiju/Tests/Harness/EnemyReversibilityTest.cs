@@ -18,7 +18,9 @@ namespace Taiju.Tests.Harness;
  *   - Drone4/Kamikaze    … 履歴記録方式 + 状態機械 + 自機追従
  *
  * どれも forward -> back -> leap -> forward -> back まで通す。leap を跨がないと
- * _ProcessLeap と Dense の leap 分岐処理がまるごと素通りになる。
+ * _ProcessLeap と、そこで読む Dense.Ref の leap 分岐 (AdjustTick を通る読み出し) が素通りになる。
+ * なお本物の敵は leap のフレームで Ref を読むので、Dense.Mut の leap 分岐
+ * (BranchTickOfLeap からの埋め戻し) には入らない。そこを通すのは合成検体の RecordingProbe。
  */
 [TestSuite]
 public class EnemyReversibilityTest {

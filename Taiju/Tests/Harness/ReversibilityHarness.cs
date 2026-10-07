@@ -67,7 +67,7 @@ namespace Taiju.Tests.Harness;
  *   - `BackAsync` に渡した tick 数の合計と、実際に突き合わせた回数が**一致する**こと
  *     (`IsGreaterEqual` ではなく等号。回数はハーネスが自分で積算する)
  *   - `LeapAsync` を呼んだ回数と、leap の瞬間に突き合わせた回数が一致すること
- *   - 突き合わせた区間で監視対象が実際に動いたこと
+ *   - 突き合わせた区間で、leap ごとに監視対象が実際に動いたこと
  *
  * 両側とも空集合だった突き合わせは回数に数えない。「回数も合い動きもあるのに、
  * 個々の比較は何も見ていない」を防ぐため。
@@ -409,23 +409,28 @@ internal sealed class ReversibilityHarness : IDisposable {
   public int LeapComparisons => leapComparisons_;
 
   /**
-   * 突き合わせた区間で監視対象が動いたか。
-   * false なら静止物を比べていただけで、往復性を何も検査していない。
+   * 突き合わせた区間で、**どの leap でも**監視対象が動いたか。
+   *
+   * leap ごとに見るのは、どれか 1 つの leap で動いていれば足りるとすると、
+   * 別の leap の区間では静止物を比べているだけ、という状態を見逃すため。
+   * false なら、少なくとも 1 つの区間で往復性を何も検査していない。
    */
   public bool ObservedMotion {
     get {
+      var checkedAny = false;
       foreach (var group in comparedExpected_.Keys.GroupBy(key => key.Leap)) {
         var keys = group.ToArray();
         if (keys.Length < 2) {
           continue;
         }
+        checkedAny = true;
         var oldest = comparedExpected_[keys.MinBy(key => key.Tick)];
         var newest = comparedExpected_[keys.MaxBy(key => key.Tick)];
-        if (Differs(forward_[oldest], forward_[newest])) {
-          return true;
+        if (!Differs(forward_[oldest], forward_[newest])) {
+          return false;
         }
       }
-      return false;
+      return checkedAny;
     }
   }
 
@@ -482,7 +487,8 @@ internal sealed class ReversibilityHarness : IDisposable {
       .IsEqual(leapCalls_);
     AssertThat(ObservedMotion)
       .OverrideFailureMessage(
-        "突き合わせた区間で監視対象がまったく動いていない。静止物を比べているだけで、往復性を検査できていない。")
+        "突き合わせた区間のうち少なくとも 1 つの leap で、監視対象がまったく動いていない。" +
+        "そこでは静止物を比べているだけで、往復性を検査できていない。")
       .IsTrue();
     var report = DiffReport;
     AssertThat(report)

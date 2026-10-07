@@ -189,7 +189,7 @@ x.Ref at tick 45 = 40    ← 41..50 が分岐点の値 40 で埋められてい�
 
 上記の実測は `Clock.cs` と `Value/Dense.cs` をスクラッチのコンソールプロジェクトに複製して再現したもの。`Dense.cs` は Godot 非依存、`Clock.cs` も `using Godot;` を落とすだけ（`GD.PrintRich` は未使用の `DebugBranch` からしか呼ばれない）でビルドが通る。
 
-**この 3 つは TODO のテストハーネスができたら真っ先にテストケースにすべき性質**:
+この 3 つの性質は `Tests/Util/Reversible/ClockTest.cs` がテストしている:
 
 1. `Back()` の到達回数がちょうど `HistoryLength - 1` であること
 2. 分岐点より過去への再分岐で、古い leap の有効期限が引き下げられること
